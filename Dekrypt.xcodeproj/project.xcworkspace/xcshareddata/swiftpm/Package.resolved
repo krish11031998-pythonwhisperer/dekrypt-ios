@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptService-Swift-Package.git",
       "state" : {
-        "revision" : "e9ed92b3dbfcd3b36a4664d6e383d785c3ec22b3",
-        "version" : "1.0.2"
+        "revision" : "6b323a47ad9e49b4dce76450275b16cbce0d30dc",
+        "version" : "1.0.3"
       }
     },
     {

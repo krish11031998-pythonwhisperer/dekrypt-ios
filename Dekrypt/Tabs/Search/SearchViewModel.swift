@@ -22,6 +22,7 @@ class SearchViewModel {
         case trendingCoins
         case tickers
         case news
+        case recentlySearch
         
         var name: String {
             switch self {
@@ -33,6 +34,8 @@ class SearchViewModel {
                 return "Tickers"
             case .news:
                 return "News"
+            case .recentlySearch:
+                return "Recently Searched"
             }
         }
     }
@@ -96,11 +99,11 @@ class SearchViewModel {
             .eraseToAnyPublisher()
         
         let sections = Publishers.CombineLatest(placeHolderSection, search)
-            .map {
+            .map { [weak self] in
                 if let searchResult = $1 {
                     return searchResult
                 } else {
-                    return $0
+                    return $0 + [self?.setupRecentlySearchedCoins()].compactMap({ $0 })
                 }
             }
             .eraseToAnyPublisher()
@@ -165,9 +168,9 @@ class SearchViewModel {
             DiffableCollectionItem<RecentTickerSearchView>(.init(ticker: coin, action: nil))
         }
         
-        let header = CollectionSectionHeader(.init(label: Section.trendingCoins.name))
+        let header = CollectionSectionHeader(.init(label: Section.recentlySearch.name, addHorizontalInset: false))
         
-        return .init(Section.trendingCoins.rawValue, cells: cells, header: header, sectionLayout: sectionLayout)
+        return .init(Section.recentlySearch.rawValue, cells: cells, header: header, sectionLayout: sectionLayout)
     }
         
     

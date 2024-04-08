@@ -87,15 +87,20 @@ public class NewsFeedViewControllerModel {
         let preloadedNews = AnyPublisher<[NewsModel], Never>.just(preloadedNews)
         
         let fetchNews = fetchedNews.merge(with: preloadedNews)
-            .map { [weak self] in
+            .map { [weak self] fetchedNews in
                 guard let self else { return }
-                if !$0.isEmpty {
+                if !fetchedNews.isEmpty {
                     self.page += 1
                 }
                 if self.news.isEmpty {
-                    self.news = $0
+                    self.news = fetchedNews
                 } else {
-                    self.news.append(contentsOf: $0)
+                    let removedDuplicates = fetchedNews.filter { news in
+                        !self.news.contains { newsEl in
+                            newsEl == news
+                        }
+                    }
+                    self.news.append(contentsOf: removedDuplicates)
                 }
                 return ()
             }

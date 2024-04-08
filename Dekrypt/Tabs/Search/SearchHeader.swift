@@ -52,7 +52,7 @@ class SearchHeader: UIView {
             .withUnretained(self)
             .sinkReceive { (header, event) in
                 header.onSearch?.send(header.textField.text)
-                if let text = header.textField.text {
+                if let text = header.textField.text, !text.isEmpty {
                     TickerUserDefaultService.shared.addRecentlySearchedTicker(ticker: text)
                 }
             }
