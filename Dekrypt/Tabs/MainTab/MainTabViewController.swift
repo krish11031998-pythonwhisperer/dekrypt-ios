@@ -32,12 +32,21 @@ class MainTabViewController: UITabBarController {
     }
     
     private func tabBarViewController(user: UserModel? = nil) -> [UINavigationController] {
+        #if DEBUG
         let homeViewController = HomeViewController().withNavigationController(swipable: true).tabBarItem(.home)
         let newsViewController = NewsFeedViewController().withNavigationController(swipable: true).tabBarItem(.news)
         let profileViewController = ProfileViewController().withNavigationController().tabBarItem(.profile)
         let searchViewController = SearchViewController().withNavigationController().tabBarItem(.search)
         
         return [homeViewController, searchViewController, newsViewController, profileViewController]
+        #else
+        let homeViewController = HomeViewController(socialService: SocialHighlightService.shared, videoService: VideoService.shared).withNavigationController(swipable: true).tabBarItem(.home)
+        let newsViewController = NewsFeedViewController(newsService: NewsService.shared).withNavigationController(swipable: true).tabBarItem(.news)
+        let profileViewController = ProfileViewController().withNavigationController().tabBarItem(.profile)
+        let searchViewController = SearchViewController(searchService: TickerService.shared).withNavigationController().tabBarItem(.search)
+        
+        return [homeViewController, searchViewController, newsViewController, profileViewController]
+        #endif
     }
     
 }

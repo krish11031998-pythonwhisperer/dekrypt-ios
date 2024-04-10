@@ -72,9 +72,8 @@ class TickerViewModel {
             .map { (vm, tab) in
                 let header = CollectionSupplementaryView<SegmentControl<Tab>>(.init(selectedTab: vm.selectedTab))
                 
-                let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44.0), insets: .section(.init(vertical: .standardColumnSectionSpacing, horizontal: 0)), spacing: .standardColumnSpacing)
-                    .addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44)),
-                                pinHeader: true)
+                let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44.0), insets: .sectionInsets, spacing: .standardColumnSpacing)
+                    .addHeader(pinHeader: true)
                 
                 let cells = vm.tickers.filter { ticker in
                     switch tab {
@@ -100,7 +99,7 @@ class TickerViewModel {
                     let action = {
                         vm.selectedNavigation.send(.toTicker(ticker.ticker, ticker.name))
                     }
-                    return DiffableCollectionItem<TickerCardCellView>(.init(mention: ticker, action: action))
+                    return DiffableCollectionItem<TickerCardCellView>(.init(mention: ticker, addHorizontal: false, action: action))
                 })
                 
                 let section: DiffableCollectionSection = .init(Section.tickers.rawValue, cells: cells, header: header, sectionLayout: sectionLayout)

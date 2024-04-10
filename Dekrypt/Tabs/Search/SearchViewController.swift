@@ -40,6 +40,7 @@ class SearchViewController: UIViewController {
     private func setupView() {
         view.addSubview(collectionView)
         collectionView.fillSuperview()
+        collectionView.showsVerticalScrollIndicator = false
         
         let headerContainer = UIView()
         headerContainer.addSubview(header)

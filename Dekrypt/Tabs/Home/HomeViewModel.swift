@@ -19,7 +19,7 @@ class HomeViewModel {
     }
     
     enum Section: Int, Hashable {
-        case news = 0, headline, event, tickerMentions, video
+        case news = 0, headline, event, tickerMentions, video, insights
         
         var name: String {
             switch self {
@@ -33,6 +33,8 @@ class HomeViewModel {
                 return "Ticker Mentions"
             case .video:
                 return "Video"
+            case .insights:
+                return "Insights"
             }
         }
     }
@@ -44,6 +46,8 @@ class HomeViewModel {
         case toTickerDetail(MentionTickerModel)
         case toVideo([VideoModel])
         case toAllNews([NewsModel])
+        case toAllInsights([InsightDigestModel])
+        case toInsight(InsightDigestModel)
     }
     
 
@@ -60,15 +64,15 @@ class HomeViewModel {
     
     func transform() -> Output {
         
-        let socialHighlights = fetchHighlights(refresh: false).combineLatest(fetchVideos(refresh: false))
+        let sections = Publishers.CombineLatest3(fetchHighlights(refresh: false), fetchVideos(refresh: false), fetchInsights(refresh: false))
             .receive(on: DispatchQueue.global(qos: .background))
-            .map { [weak self] hightlights, videos -> [DiffableCollectionSection] in
+            .map { [weak self] (hightlights, videos, insights) -> [DiffableCollectionSection] in
                 guard let self else { return [] }
-                return self.buildSections(highlight: hightlights, videos: videos)
+                return self.buildSections(highlight: hightlights, videos: videos, insights: insights)
             }
             .eraseToAnyPublisher()
         
-        return .init(sections: socialHighlights, navigation: navigation.eraseToAnyPublisher())
+        return .init(sections: sections, navigation: navigation.eraseToAnyPublisher())
     }
     
     
@@ -77,12 +81,7 @@ class HomeViewModel {
     private func fetchHighlights(refresh: Bool) -> AnyPublisher<SocialHighlightModel, Never> {
         socialService.fetchSocialHighlight(refresh: refresh)
             .compactMap(\.data)
-            .catch({ [weak self] error in
-                self?.errorMessage.send(error.localizedDescription)
-                return Just(SocialHighlightModel(news: nil, events: nil, topMention: nil, headlines: nil))
-                    .setFailureType(to: Never.self)
-                    .eraseToAnyPublisher()
-            })
+            .replaceError(with: .init(news: nil, events: nil, topMention: nil, headlines: nil))
             .eraseToAnyPublisher()
     }
     
@@ -92,17 +91,21 @@ class HomeViewModel {
     private func fetchVideos(refresh: Bool) -> AnyPublisher<[VideoModel], Never> {
         videoService.fetchVideo(entity: nil, page: 1, limit: 10)
             .compactMap(\.data)
-            .catch({ error in
-                print("(DEBUG) Error: ", error.localizedDescription)
-                let videos: [VideoModel] = []
-                return Just(videos).setFailureType(to: Never.self).eraseToAnyPublisher()
-            })
+            .replaceError(with: [])
             .eraseToAnyPublisher()
     }
     
     
+    // MARK: - Fetch Insight
     
-    private func buildSections(highlight: SocialHighlightModel, videos: [VideoModel]) -> [DiffableCollectionSection] {
+    private func fetchInsights(refresh: Bool) -> AnyPublisher<[InsightDigestModel], Never> {
+        socialService.fetchInsightDigest(page: 1, limit: 10)
+            .compactMap(\.data)
+            .replaceError(with: [])
+            .eraseToAnyPublisher()
+    }
+    
+    private func buildSections(highlight: SocialHighlightModel, videos: [VideoModel], insights: [InsightDigestModel]) -> [DiffableCollectionSection] {
         var section: [DiffableCollectionSection] = []
         
         if let headlines = highlight.headlines {
@@ -122,6 +125,8 @@ class HomeViewModel {
         }
         
         section.append(videoSection(videos: videos))
+        
+        section.append(insightsSection(insights: insights))
         
         return section
     }
@@ -241,7 +246,7 @@ class HomeViewModel {
     
     private func videoSection(videos: [VideoModel]) -> DiffableCollectionSection {
         
-        let inset: NSDirectionalEdgeInsets = .init(vertical: .standardColumnSpacing, horizontal: .appHorizontalPadding)
+        let inset: NSDirectionalEdgeInsets = .sectionInsets
         let interItemSpacing: CGFloat = .appHorizontalPadding.half
         let width = CGFloat.totalWidth.half - interItemSpacing.half - .appHorizontalPadding
         let height = width/0.75
@@ -261,7 +266,7 @@ class HomeViewModel {
         section.addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44)))
        
         
-        let cells = videos.limit(to: 3).map { video in
+        let cells = videos.limit(to: 4).map { video in
             DiffableCollectionItem<VideoCard>(.init(model: video, size: .small) { [weak self] in
                 self?.navigation.send(.toVideo(videos))
                 
@@ -272,5 +277,31 @@ class HomeViewModel {
         
         return .init(Section.video.rawValue, cells: cells, header: header, sectionLayout: section)
         
+    }
+    
+    
+    // MARK: - Insights
+    
+    private func insightsSection(insights: [InsightDigestModel]) -> DiffableCollectionSection {
+        
+        let layout = NSCollectionLayoutSection.singleRowLayout(width: .absolute(300), height: .absolute(325), insets: .sectionInsets, spacing: .appHorizontalPadding).addHeader()
+        
+        layout.orthogonalScrollingBehavior = .groupPaging
+        
+        let viewMoreCallBack: Callback = { [weak self] in
+            self?.navigation.send(.toAllInsights(insights))
+        }
+        
+        let insightCallback: (InsightDigestModel) -> Callback = { [weak self] insight in
+            return {
+                self?.navigation.send(.toInsight(insight))
+            }
+        }
+        
+        let sectionHeader = CollectionSectionHeader(.init(label: "Insights", accessory: .viewMore("View more", viewMoreCallBack), addHorizontalInset: false))
+        
+        let cells = insights.map { DiffableCollectionItem<InsightView>(.init(insight: $0, mode: .carousel, action: insightCallback($0))) }
+        
+        return .init(Section.insights.rawValue, cells: cells, header: sectionHeader, sectionLayout: layout)
     }
 }

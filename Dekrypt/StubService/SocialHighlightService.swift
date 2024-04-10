@@ -24,12 +24,13 @@ public class StubSocialHighlightService: SocialHighlightServiceInterface {
     }
     
     public func fetchInsightDigest(page: Int, limit: Int) -> GenericResultPublisher<[InsightDigestModel]> {
-        .just(.init(data: nil, success: false, err: nil))
+        Bundle.main.loadDataFromBundle(name: "sunDownDigestResponse", extensionStr: "json")
     }
     
     
     public func fetchSocialHighlight(refresh: Bool) -> AnyPublisher<SocialHighlightResult, Error> {
         Bundle.main.loadDataFromBundle(name: "socialHighlights", extensionStr: "json")
     }
+    
     
 }

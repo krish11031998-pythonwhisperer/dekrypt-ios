@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptService-Swift-Package.git",
       "state" : {
-        "revision" : "6b323a47ad9e49b4dce76450275b16cbce0d30dc",
-        "version" : "1.0.3"
+        "revision" : "debd93fdb831a8ee942cf4de3908255ff6c10417",
+        "version" : "1.0.7"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git",
       "state" : {
-        "revision" : "43492b36649e204721afee4416b21dab09f17515",
-        "version" : "1.2.4"
+        "revision" : "f213492324536cd960314509a6229dcf6f4074f9",
+        "version" : "1.2.9"
       }
     },
     {

@@ -19,6 +19,7 @@ public class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
     private var bag: Set<AnyCancellable> = .init()
     private lazy var headerView: HeaderView = { .init() }()
+    private weak var headerViewTopConstraint: NSLayoutConstraint!
     private let headerViewAnimator: UIViewPropertyAnimator = { .init(duration: 0.3, curve: .easeIn) }()
     
     public init(socialService: SocialHighlightServiceInterface = StubSocialHighlightService(), 
@@ -37,6 +38,11 @@ public class HomeViewController: UIViewController {
         bind()
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        headerViewTopConstraint.constant = view.safeAreaInsets.top == 0 ? .appVerticalPadding : view.safeAreaInsets.top
+    }
+    
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         hideNavbar()
@@ -47,7 +53,6 @@ public class HomeViewController: UIViewController {
         collectionView.fillSuperview()
         collectionView.backgroundColor = .surfaceBackground
         collectionView.showsVerticalScrollIndicator = false
-//        collectionView.contentInsetAdjustmentBehavior = .never
         setupHeader()
     }
     
@@ -59,9 +64,10 @@ public class HomeViewController: UIViewController {
         headerView.configure(with: .init(name: "Welcome to Dekrypt"))
         headerContainer.addSubview(headerView)
         headerView
-            .pinTopAnchorTo(constant: navBarHeight)
             .pinHorizontalAnchorsTo(constant: 0)
             .pinBottomAnchorTo(constant: 0)
+        headerViewTopConstraint = headerView.topAnchor.constraint(equalTo: headerContainer.topAnchor)
+        headerViewTopConstraint.isActive = true
         
         view.addSubview(headerContainer)
         headerContainer
@@ -82,11 +88,10 @@ public class HomeViewController: UIViewController {
         let output = viewModel.transform()
         
         output.sections
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] sections in
-                guard let self else { return }
-                self.collectionView.reloadWithDynamicSection(sections: sections)
-            }
+            .withUnretained(self)
+            .sinkReceive({ (vc, sections) in
+                vc.collectionView.reloadWithDynamicSection(sections: sections)
+            })
             .store(in: &bag)
         
         output.navigation
@@ -105,27 +110,13 @@ public class HomeViewController: UIViewController {
                     vc.pushTo(target: TickerDetailView(tickerService: TickerService.shared, eventService: EventService.shared, ticker: detail.ticker, tickerName: detail.name))
                 case .toVideo(let videoModel):
                     vc.pushTo(target: YoutubeViewController(videoModel: videoModel), asSheet: true)
+                case .toInsight(_):
+                    print("(DEBUG) Clicked on insight")
+                case .toAllInsights(let insights):
+                    vc.pushTo(target: InsightViewController())
                 }
             }
             .store(in: &bag)
-        
-        // Collection Scroll
-        
-        collectionView.publisher(for: \.contentOffset)
-            .map { [weak self] in
-                guard let self, $0.y <= 0 else { return -1 }
-                let topInset = collectionView.contentInset.top + self.navBarHeight
-                let yOff = abs($0.y)
-                let percent = (yOff/topInset)
-                let normalized = min(max(percent, 0), 1.0)
-                return 1 - normalized
-            }
-            .filter({ $0 != -1 })
-            .sinkReceive { [weak self] fraction in
-                self?.headerViewAnimator.fractionComplete = fraction
-            }
-            .store(in: &bag)
-            
     }
     
     
