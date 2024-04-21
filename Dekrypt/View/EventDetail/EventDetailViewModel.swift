@@ -146,9 +146,9 @@ class EventDetailViewModel {
         let action: ((String) -> Void) = { [weak self] ticker in
             self?.selectedTicker.send(ticker)
         }
-        let cell = DiffableCollectionItem<ProfileTickerGrid>(.init(tickers: tickers, action: action))
+        let cell = DiffableCollectionItem<TickerGrid>(.init(tickers: tickers, action: action))
         
-        let height = ProfileTickerGrid.height(tickers: tickers, width: .totalWidth - (2 * .appHorizontalPadding)) + (2 * .standardColumnSpacing)
+        let height = TickerGrid.height(tickers: tickers, width: .totalWidth - (2 * .appHorizontalPadding)) + (2 * .standardColumnSpacing)
         
         let sectionLayout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1), height: .absolute(height), insets: .section(.init(top: .standardColumnSpacing, leading: 0, bottom: .zero, trailing: 0)), spacing: .standardColumnSpacing)
             .addHeader(size: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)))

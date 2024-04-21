@@ -107,7 +107,7 @@ class HomeViewModel {
     
     private func buildSections(highlight: SocialHighlightModel, videos: [VideoModel], insights: [InsightDigestModel]) -> [DiffableCollectionSection] {
         var section: [DiffableCollectionSection] = []
-        
+  
         if let headlines = highlight.headlines {
             section.append(headlineSection(headlines: headlines))
         }
@@ -136,7 +136,7 @@ class HomeViewModel {
     
     private func newsSection(news newsList: [NewsModel]) -> DiffableCollectionSection {
         
-        let shortNewsList = (newsList.count > 5 ? Array(newsList[0...4]) : newsList)
+        let shortNewsList = newsList.limit(to: 10)
         let cells = shortNewsList.indices.map { idx in
             let news = shortNewsList[idx]
             let cellModel = NewsView.Model(model: news, isFirst: idx == 0, isLast: shortNewsList.count - 1 == idx) { [weak self] in
@@ -190,10 +190,12 @@ class HomeViewModel {
                 self?.navigation.send(.toEvent(event))
             }))
         }
-        
+        let ratio: CGFloat = 375/310
+        let width: CGFloat = .totalWidth
         let sectionHeader = CollectionSectionHeader(.init(label: Section.event.name, addHorizontalInset: false))
-        let height = CGFloat(375/310) * (CGFloat.totalWidth - (2 * .appHorizontalPadding))
-        let sectionLayout: NSCollectionLayoutSection = .singleRowLayout(width: .fractionalWidth(1.0), height: .absolute(height), insets: .section(.sectionInsets), spacing: .appHorizontalPadding)
+        let height: CGFloat = ratio * width
+        let sectionLayout: NSCollectionLayoutSection = .singleRowLayout(width: .absolute(0.8 * .totalWidth), height: .absolute(height),
+                                                                        insets: .sectionInsets, spacing: .appHorizontalPadding)
             .addHeader()
         
         sectionLayout.orthogonalScrollingBehavior = .groupPagingCentered
@@ -263,13 +265,12 @@ class HomeViewModel {
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = interItemSpacing
         section.contentInsets = inset
-        section.addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44)))
+        section.addHeader()
        
         
         let cells = videos.limit(to: 4).map { video in
             DiffableCollectionItem<VideoCard>(.init(model: video, size: .small) { [weak self] in
                 self?.navigation.send(.toVideo(videos))
-                
             })
         }
         
@@ -300,7 +301,7 @@ class HomeViewModel {
         
         let sectionHeader = CollectionSectionHeader(.init(label: "Insights", accessory: .viewMore("View more", viewMoreCallBack), addHorizontalInset: false))
         
-        let cells = insights.map { DiffableCollectionItem<InsightView>(.init(insight: $0, mode: .carousel, action: insightCallback($0))) }
+        let cells = insights.limit(to: 1).map { DiffableCollectionItem<InsightView>(.init(insight: $0, mode: .carousel, action: insightCallback($0))) }
         
         return .init(Section.insights.rawValue, cells: cells, header: sectionHeader, sectionLayout: layout)
     }

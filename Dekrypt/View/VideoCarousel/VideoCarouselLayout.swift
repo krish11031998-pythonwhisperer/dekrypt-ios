@@ -17,7 +17,7 @@ class VideoCarouselLayout: UICollectionViewLayout {
     private var cache: [VideoCarouselCellAttribute] = []
     private var contentHeight: CGFloat = .zero
     
-    var itemHeight: CGFloat = .totalHeight * 0.8
+    var itemHeight: CGFloat = .totalHeight
     
     var items: Int {
         collectionView?.numberOfItems(inSection: 0) ?? 0
@@ -37,7 +37,7 @@ class VideoCarouselLayout: UICollectionViewLayout {
             let attribute = VideoCarouselCellAttribute(forCellWith: .init(item: idx, section: 0))
             attribute.frame = .init(origin: .init(x: .zero, y: maxY), size: .init(width: .totalWidth, height: itemHeight))
             cache.append(attribute)
-            maxY = max(attribute.frame.height, maxY)
+            maxY = max(attribute.frame.maxY, maxY)
         }
         contentHeight = maxY
     }
@@ -46,13 +46,17 @@ class VideoCarouselLayout: UICollectionViewLayout {
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         cache.compactMap { attribute in
-            guard attribute.frame.intersects(rect) else { return nil }
-            if attribute.frame.minY == contentOffsetY {
-                // Play Video
+            guard attribute.frame.intersects(rect) else {
+                attribute.playVideo = false
+                return nil
+            }
+            
+            if attribute.frame.minY - contentOffsetY == 0 {
                 attribute.playVideo = true
             } else {
                 attribute.playVideo = false
             }
+            
             return attribute
         }
     }

@@ -51,6 +51,7 @@ public class TickerDetailView: UIViewController {
         collectionView.fillSuperview()
         standardNavBar()
         collectionView.showsVerticalScrollIndicator = false
+        startLoadingAnimation()
     }
     
     
@@ -60,7 +61,9 @@ public class TickerDetailView: UIViewController {
         output.section
             .withUnretained(self)
             .sinkReceive { (vc, section) in
-                vc.collectionView.reloadWithDynamicSection(sections: section)
+                vc.endLoadingAnimation {
+                    vc.collectionView.reloadWithDynamicSection(sections: section)
+                }
             }
             .store(in: &bag)
         

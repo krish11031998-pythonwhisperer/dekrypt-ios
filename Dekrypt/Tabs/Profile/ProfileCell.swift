@@ -61,7 +61,7 @@ public struct ProfileCell: ConfigurableView {
             ProfileCell(model: model)
         }
         .margins(.horizontal, .appHorizontalPadding)
-        .margins(.bottom, .zero)//.standardColumnSpacing)
+        .margins(.bottom, .zero)
     }
     
     

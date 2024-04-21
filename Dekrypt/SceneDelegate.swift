@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import Combine
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    private var bag: Set<AnyCancellable> = .init()
+    private var mainTab: MainTabViewController!
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -19,9 +21,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = MainTabViewController()
         window.makeKeyAndVisible()
         self.window = window
+        
+        
+        // MARK: - MainTabViewController created
+        
+        self.mainTab = MainTabViewController()
+        mainTab.loadViewIfNeeded()
+        
+        
+        // MARK: - Splash Screen Setup and Setting up MainViewController
+        
+        setupSplashAndMainView()
+    }
+    
+    private func setupSplashAndMainView() {
+        self.window?.rootViewController = SplashScreenViewController()
+        
+        mainTab.initialLoad
+            .delay(for: 1.0, scheduler: DispatchQueue.main)
+            .withUnretained(self)
+            .sinkReceive { (delegate, _) in
+                guard let splashScreen = delegate.window?.rootViewController else { return }
+                
+                splashScreen.view.animate(.fadeOut()) { [weak delegate] in
+                    delegate?.window?.rootViewController = delegate?.mainTab
+                }
+                
+            }
+            .store(in: &bag)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -14,10 +14,11 @@
 		EF1E8A262BC348D300FC84D3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A252BC348D300FC84D3 /* SearchViewController.swift */; };
 		EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */; };
 		EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */; };
+		EFA716042BD56B860001F555 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA716032BD56B860001F555 /* TabViewController.swift */; };
+		EFA716062BD571F00001F555 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFA716052BD571F00001F555 /* Assets.xcassets */; };
+		EFA716092BD591D00001F555 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EFA716082BD591D00001F555 /* GoogleMobileAds */; };
 		EFB133852BAE49A200004025 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133842BAE49A200004025 /* AppDelegate.swift */; };
 		EFB133872BAE49A200004025 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133862BAE49A200004025 /* SceneDelegate.swift */; };
-		EFB133892BAE49A200004025 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133882BAE49A200004025 /* ViewController.swift */; };
-		EFB1338E2BAE49A300004025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFB1338D2BAE49A300004025 /* Assets.xcassets */; };
 		EFB133912BAE49A300004025 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = EFB133902BAE49A300004025 /* Base */; };
 		EFB1339A2BAE49B400004025 /* KKit in Frameworks */ = {isa = PBXBuildFile; productRef = EFB133992BAE49B400004025 /* KKit */; };
 		EFB133B92BAE4A0C00004025 /* EventDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB1339B2BAE4A0C00004025 /* EventDetailHeaderView.swift */; };
@@ -38,12 +39,19 @@
 		EFB133C82BAE4A0C00004025 /* NewsViewControllerModel .swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B02BAE4A0C00004025 /* NewsViewControllerModel .swift */; };
 		EFB133C92BAE4A0C00004025 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B22BAE4A0C00004025 /* ProfileCell.swift */; };
 		EFB133CA2BAE4A0C00004025 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */; };
-		EFB133CB2BAE4A0C00004025 /* ProfileTickerGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B42BAE4A0C00004025 /* ProfileTickerGrid.swift */; };
 		EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */; };
 		EFB133CD2BAE4A0C00004025 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */; };
 		EFB133D02BAEEE1E00004025 /* DekryptUI in Frameworks */ = {isa = PBXBuildFile; productRef = EFB133CF2BAEEE1E00004025 /* DekryptUI */; };
 		EFB8DD002BC560D9001AC56F /* InsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB8DCFF2BC560D9001AC56F /* InsightsViewController.swift */; };
 		EFB8DD022BC560FD001AC56F /* InsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB8DD012BC560FD001AC56F /* InsightViewModel.swift */; };
+		EFDA7EE92BCDBA980036E720 /* VideoCarouselCellV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EE82BCDBA980036E720 /* VideoCarouselCellV2.swift */; };
+		EFDA7EF52BD521250036E720 /* AuthPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EEF2BD521250036E720 /* AuthPublisher.swift */; };
+		EFDA7EF62BD521250036E720 /* AppleAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EF12BD521250036E720 /* AppleAuthService.swift */; };
+		EFDA7EF72BD521250036E720 /* AuthInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EF22BD521250036E720 /* AuthInterface.swift */; };
+		EFDA7EF82BD521250036E720 /* FirebaseAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EF32BD521250036E720 /* FirebaseAuthService.swift */; };
+		EFDA7EFB2BD521A70036E720 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EFDA7EFA2BD521A70036E720 /* GoogleSignIn */; };
+		EFDA7EFD2BD521A70036E720 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EFDA7EFC2BD521A70036E720 /* GoogleSignInSwift */; };
+		EFDA7F002BD523E70036E720 /* SplashScreenVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,11 +62,11 @@
 		EF1E8A252BC348D300FC84D3 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentPageControl.swift; sourceTree = "<group>"; };
+		EFA716032BD56B860001F555 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		EFA716052BD571F00001F555 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
 		EFB133812BAE49A200004025 /* Dekrypt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dekrypt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFB133842BAE49A200004025 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EFB133862BAE49A200004025 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		EFB133882BAE49A200004025 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		EFB1338D2BAE49A300004025 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFB133902BAE49A300004025 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EFB133922BAE49A300004025 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EFB1339B2BAE4A0C00004025 /* EventDetailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailHeaderView.swift; sourceTree = "<group>"; };
@@ -79,11 +87,17 @@
 		EFB133B02BAE4A0C00004025 /* NewsViewControllerModel .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NewsViewControllerModel .swift"; sourceTree = "<group>"; };
 		EFB133B22BAE4A0C00004025 /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
-		EFB133B42BAE4A0C00004025 /* ProfileTickerGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTickerGrid.swift; sourceTree = "<group>"; };
 		EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		EFB8DCFF2BC560D9001AC56F /* InsightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewController.swift; sourceTree = "<group>"; };
 		EFB8DD012BC560FD001AC56F /* InsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightViewModel.swift; sourceTree = "<group>"; };
+		EFDA7EE82BCDBA980036E720 /* VideoCarouselCellV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCarouselCellV2.swift; sourceTree = "<group>"; };
+		EFDA7EEF2BD521250036E720 /* AuthPublisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthPublisher.swift; sourceTree = "<group>"; };
+		EFDA7EF12BD521250036E720 /* AppleAuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleAuthService.swift; sourceTree = "<group>"; };
+		EFDA7EF22BD521250036E720 /* AuthInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthInterface.swift; sourceTree = "<group>"; };
+		EFDA7EF32BD521250036E720 /* FirebaseAuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseAuthService.swift; sourceTree = "<group>"; };
+		EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenVIewController.swift; sourceTree = "<group>"; };
+		EFDA7F012BD5281A0036E720 /* Dekrypt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dekrypt.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +107,9 @@
 			files = (
 				EFB133D02BAEEE1E00004025 /* DekryptUI in Frameworks */,
 				EFB1339A2BAE49B400004025 /* KKit in Frameworks */,
+				EFA716092BD591D00001F555 /* GoogleMobileAds in Frameworks */,
+				EFDA7EFB2BD521A70036E720 /* GoogleSignIn in Frameworks */,
+				EFDA7EFD2BD521A70036E720 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +122,7 @@
 				EF1E8A192BBDEEDB00FC84D3 /* YoutubeViewController.swift */,
 				EF1E8A1E2BBF29A500FC84D3 /* VideoCarouselLayout.swift */,
 				EF1E8A202BBF30B500FC84D3 /* VidoCarouselCell.swift */,
+				EFDA7EE82BCDBA980036E720 /* VideoCarouselCellV2.swift */,
 			);
 			path = VideoCarousel;
 			sourceTree = "<group>";
@@ -138,12 +156,13 @@
 		EFB133832BAE49A200004025 /* Dekrypt */ = {
 			isa = PBXGroup;
 			children = (
+				EFA716052BD571F00001F555 /* Assets.xcassets */,
+				EFDA7F012BD5281A0036E720 /* Dekrypt.entitlements */,
+				EFDA7EF42BD521250036E720 /* Auth */,
 				EFB133B82BAE4A0C00004025 /* Tabs */,
 				EFB133A72BAE4A0C00004025 /* View */,
 				EFB133842BAE49A200004025 /* AppDelegate.swift */,
 				EFB133862BAE49A200004025 /* SceneDelegate.swift */,
-				EFB133882BAE49A200004025 /* ViewController.swift */,
-				EFB1338D2BAE49A300004025 /* Assets.xcassets */,
 				EFB1338F2BAE49A300004025 /* LaunchScreen.storyboard */,
 				EFB133922BAE49A300004025 /* Info.plist */,
 			);
@@ -163,6 +182,7 @@
 		EFB133A22BAE4A0C00004025 /* TickerDetailView */ = {
 			isa = PBXGroup;
 			children = (
+				EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */,
 				EFB1339F2BAE4A0C00004025 /* TickerDetailView.swift */,
 				EFB133A02BAE4A0C00004025 /* TickerDetailViewModel.swift */,
 				EFB133A12BAE4A0C00004025 /* TickerSentimentCard.swift */,
@@ -183,6 +203,7 @@
 		EFB133A72BAE4A0C00004025 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EFDA7EFF2BD523E70036E720 /* SplashScreen */,
 				EFB8DCFE2BC560CC001AC56F /* InsightsView */,
 				EF1E8A1D2BBF297C00FC84D3 /* VideoCarousel */,
 				EFB1339E2BAE4A0C00004025 /* EventDetail */,
@@ -208,6 +229,7 @@
 				EFB133AB2BAE4A0C00004025 /* MainTab.swift */,
 				EFB133AC2BAE4A0C00004025 /* MainTabModel.swift */,
 				EFB133AD2BAE4A0C00004025 /* MainTabViewController.swift */,
+				EFA716032BD56B860001F555 /* TabViewController.swift */,
 			);
 			path = MainTab;
 			sourceTree = "<group>";
@@ -226,8 +248,6 @@
 			children = (
 				EFB133B22BAE4A0C00004025 /* ProfileCell.swift */,
 				EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */,
-				EFB133B42BAE4A0C00004025 /* ProfileTickerGrid.swift */,
-				EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */,
 				EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */,
 			);
 			path = Profile;
@@ -254,6 +274,33 @@
 			path = InsightsView;
 			sourceTree = "<group>";
 		};
+		EFDA7EF02BD521250036E720 /* AuthPublishers */ = {
+			isa = PBXGroup;
+			children = (
+				EFDA7EEF2BD521250036E720 /* AuthPublisher.swift */,
+			);
+			path = AuthPublishers;
+			sourceTree = "<group>";
+		};
+		EFDA7EF42BD521250036E720 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				EFDA7EF02BD521250036E720 /* AuthPublishers */,
+				EFDA7EF12BD521250036E720 /* AppleAuthService.swift */,
+				EFDA7EF22BD521250036E720 /* AuthInterface.swift */,
+				EFDA7EF32BD521250036E720 /* FirebaseAuthService.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		EFDA7EFF2BD523E70036E720 /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */,
+			);
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -273,6 +320,9 @@
 			packageProductDependencies = (
 				EFB133992BAE49B400004025 /* KKit */,
 				EFB133CF2BAEEE1E00004025 /* DekryptUI */,
+				EFDA7EFA2BD521A70036E720 /* GoogleSignIn */,
+				EFDA7EFC2BD521A70036E720 /* GoogleSignInSwift */,
+				EFA716082BD591D00001F555 /* GoogleMobileAds */,
 			);
 			productName = Dekrypt;
 			productReference = EFB133812BAE49A200004025 /* Dekrypt.app */;
@@ -305,6 +355,8 @@
 			packageReferences = (
 				EFB133982BAE49B400004025 /* XCRemoteSwiftPackageReference "KKit-Swift-Package" */,
 				EFB133CE2BAEEE1E00004025 /* XCRemoteSwiftPackageReference "DekryptUI-SPM" */,
+				EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				EFA716072BD591D00001F555 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = EFB133822BAE49A200004025 /* Products */;
 			projectDirPath = "";
@@ -320,7 +372,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFB1338E2BAE49A300004025 /* Assets.xcassets in Resources */,
+				EFA716062BD571F00001F555 /* Assets.xcassets in Resources */,
 				EFB133912BAE49A300004025 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,29 +384,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFDA7F002BD523E70036E720 /* SplashScreenVIewController.swift in Sources */,
 				EFB133C62BAE4A0C00004025 /* MainTabViewController.swift in Sources */,
-				EFB133892BAE49A200004025 /* ViewController.swift in Sources */,
 				EFB133BA2BAE4A0C00004025 /* EventDetailView.swift in Sources */,
 				EFB133BB2BAE4A0C00004025 /* EventDetailViewModel.swift in Sources */,
 				EFB133CA2BAE4A0C00004025 /* ProfileHeaderView.swift in Sources */,
+				EFDA7EF82BD521250036E720 /* FirebaseAuthService.swift in Sources */,
 				EFB133852BAE49A200004025 /* AppDelegate.swift in Sources */,
 				EFB133CD2BAE4A0C00004025 /* ProfileViewModel.swift in Sources */,
 				EFB133C42BAE4A0C00004025 /* MainTab.swift in Sources */,
 				EFB8DD022BC560FD001AC56F /* InsightViewModel.swift in Sources */,
+				EFDA7EF62BD521250036E720 /* AppleAuthService.swift in Sources */,
 				EFB133872BAE49A200004025 /* SceneDelegate.swift in Sources */,
 				EFB133BE2BAE4A0C00004025 /* TickerSentimentCard.swift in Sources */,
 				EF1E8A262BC348D300FC84D3 /* SearchViewController.swift in Sources */,
 				EFB133BF2BAE4A0C00004025 /* TickerViewController.swift in Sources */,
 				EFB133C92BAE4A0C00004025 /* ProfileCell.swift in Sources */,
 				EFB133B92BAE4A0C00004025 /* EventDetailHeaderView.swift in Sources */,
+				EFDA7EF72BD521250036E720 /* AuthInterface.swift in Sources */,
+				EFA716042BD56B860001F555 /* TabViewController.swift in Sources */,
 				EF1E8A212BBF30B500FC84D3 /* VidoCarouselCell.swift in Sources */,
 				EFB133BC2BAE4A0C00004025 /* TickerDetailView.swift in Sources */,
-				EFB133CB2BAE4A0C00004025 /* ProfileTickerGrid.swift in Sources */,
 				EFB133C52BAE4A0C00004025 /* MainTabModel.swift in Sources */,
 				EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */,
 				EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */,
+				EFDA7EF52BD521250036E720 /* AuthPublisher.swift in Sources */,
 				EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */,
 				EFB133C82BAE4A0C00004025 /* NewsViewControllerModel .swift in Sources */,
+				EFDA7EE92BCDBA980036E720 /* VideoCarouselCellV2.swift in Sources */,
 				EFB133C32BAE4A0C00004025 /* HomeViewModel.swift in Sources */,
 				EFB133BD2BAE4A0C00004025 /* TickerDetailViewModel.swift in Sources */,
 				EF1E8A1A2BBDEEDB00FC84D3 /* YoutubeViewController.swift in Sources */,
@@ -506,6 +563,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Dekrypt/Dekrypt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8T963ZW2EJ;
@@ -533,6 +591,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Dekrypt/Dekrypt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8T963ZW2EJ;
@@ -579,6 +638,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EFA716072BD591D00001F555 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.3.0;
+			};
+		};
 		EFB133982BAE49B400004025 /* XCRemoteSwiftPackageReference "KKit-Swift-Package" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krish11031998-pythonwhisperer/KKit-Swift-Package.git";
@@ -595,9 +662,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EFA716082BD591D00001F555 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFA716072BD591D00001F555 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
 		EFB133992BAE49B400004025 /* KKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EFB133982BAE49B400004025 /* XCRemoteSwiftPackageReference "KKit-Swift-Package" */;
@@ -607,6 +687,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EFB133CE2BAEEE1E00004025 /* XCRemoteSwiftPackageReference "DekryptUI-SPM" */;
 			productName = DekryptUI;
+		};
+		EFDA7EFA2BD521A70036E720 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		EFDA7EFC2BD521A70036E720 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

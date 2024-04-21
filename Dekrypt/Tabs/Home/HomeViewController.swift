@@ -11,7 +11,7 @@ import KKit
 import DekryptUI
 import DekryptService
 
-public class HomeViewController: UIViewController {
+public class HomeViewController: UIViewController, TabViewController {
     
     private lazy var collectionView: UICollectionView = {
         .init(frame: .zero, collectionViewLayout: .init())
@@ -21,8 +21,8 @@ public class HomeViewController: UIViewController {
     private lazy var headerView: HeaderView = { .init() }()
     private weak var headerViewTopConstraint: NSLayoutConstraint!
     private let headerViewAnimator: UIViewPropertyAnimator = { .init(duration: 0.3, curve: .easeIn) }()
-    
-    public init(socialService: SocialHighlightServiceInterface = StubSocialHighlightService(), 
+    private(set) var initialLoad: PassthroughSubject<Void, Never> = .init()
+    public init(socialService: SocialHighlightServiceInterface = StubSocialHighlightService(),
                 videoService: VideoServiceInterface = StubVideoService()) {
         self.viewModel = .init(socialService: socialService, videoService: videoService)
         super.init(nibName: nil, bundle: nil)
@@ -82,16 +82,30 @@ public class HomeViewController: UIViewController {
         headerViewAnimator.pausesOnCompletion = true
         
         collectionView.contentInset.top = headerView.compressedSize.height
+        
+        startLoadingAnimation(centeralizeWithScreen: true)
     }
     
     private func bind() {
         let output = viewModel.transform()
+        let sections = output.sections.share()
         
-        output.sections
+        
+        sections
             .withUnretained(self)
             .sinkReceive({ (vc, sections) in
-                vc.collectionView.reloadWithDynamicSection(sections: sections)
+                vc.endLoadingAnimation {
+                    vc.collectionView.reloadWithDynamicSection(sections: sections)
+                }
             })
+            .store(in: &bag)
+        
+        sections
+            .prefix(1)
+            .withUnretained(self)
+            .sinkReceive { (vc, _) in
+                vc.initialLoad.send(())
+            }
             .store(in: &bag)
         
         output.navigation
@@ -123,5 +137,10 @@ public class HomeViewController: UIViewController {
     deinit {
         headerViewAnimator.stopAnimation(true)
     }
+    
+    
+    // MARK: - TabViewController
+    
+    var tabItem: MainTabModel { .home }
     
 }

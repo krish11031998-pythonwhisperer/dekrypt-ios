@@ -11,7 +11,7 @@ import KKit
 import Combine
 import DekryptUI
 
-public class ProfileViewController: UIViewController {
+public class ProfileViewController: UIViewController, TabViewController {
     
     private lazy var collectionView: UICollectionView = { .init(frame: .zero, collectionViewLayout: .init()) }()
     private let viewModel: ProfileViewModel = .init()
@@ -41,4 +41,8 @@ public class ProfileViewController: UIViewController {
             .store(in: &bag)
     }
     
+    
+    // MARK: - TabViewController
+    
+    var tabItem: MainTabModel { .profile }
 }

@@ -10,13 +10,13 @@ import DekryptService
 import UIKit
 import Combine
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, TabViewController {
     
     private lazy var collectionView: UICollectionView = .init(frame: .zero, collectionViewLayout: .init())
     private lazy var header: SearchHeader = .init(placeHolder: "Explore coins...", header: "Search", onSearch: viewModel.searchParam)
     private let viewModel: SearchViewModel
     private var bag: Set<AnyCancellable> = .init()
-    
+    private(set) var initialLoad: PassthroughSubject<Void, Never> = .init()
     init(searchService: TickerServiceInterface = TickerService.shared, lunarService: LunarCrushServiceInterface = LunarCrushService.shared) {
         self.viewModel = .init(searchService: searchService, lunarService: lunarService)
         super.init(nibName: nil, bundle: nil)
@@ -30,6 +30,7 @@ class SearchViewController: UIViewController {
         hideNavbar()
         setupView()
         bind()
+        startLoadingAnimation()
     }
     
     override func viewDidLayoutSubviews() {
@@ -63,11 +64,22 @@ class SearchViewController: UIViewController {
     
     private func bind() {
         let output = viewModel.transform()
+        let section = output.section.share()
         
-        output.section
+        section
             .withUnretained(self)
             .sinkReceive { (vc, section) in
-                vc.collectionView.reloadWithDynamicSection(sections: section)
+                vc.endLoadingAnimation { [weak vc] in
+                    vc?.collectionView.reloadWithDynamicSection(sections: section)
+                }
+            }
+            .store(in: &bag)
+        
+        section
+            .prefix(1)
+            .withUnretained(self)
+            .sinkReceive { (vc, _) in
+                vc.initialLoad.send(())
             }
             .store(in: &bag)
         
@@ -84,4 +96,8 @@ class SearchViewController: UIViewController {
             .store(in: &bag)
     }
     
+    
+    // MARK: - TabViewController
+    
+    var tabItem: MainTabModel { .search }
 }

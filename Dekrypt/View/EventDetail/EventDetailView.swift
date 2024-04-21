@@ -32,6 +32,7 @@ class EventDetailView: UIViewController {
         setupView()
         standardNavBar()
         bind()
+        startLoadingAnimation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +43,7 @@ class EventDetailView: UIViewController {
     private func setupView() {
         view.addSubview(collectionView)
         collectionView.fillSuperview()
-        collectionView.backgroundColor = .surfaceBackground
+        //collectionView.backgroundColor = .surfaceBackground
         collectionView.showsVerticalScrollIndicator = false
     }
     
@@ -52,7 +53,9 @@ class EventDetailView: UIViewController {
         output.section
             .withUnretained(self)
             .sinkReceive { (vc, sections) in
-                vc.collectionView.reloadWithDynamicSection(sections: sections)
+                vc.endLoadingAnimation { [weak vc] in
+                    vc?.collectionView.reloadWithDynamicSection(sections: sections)
+                }
             }
             .store(in: &bag)
         

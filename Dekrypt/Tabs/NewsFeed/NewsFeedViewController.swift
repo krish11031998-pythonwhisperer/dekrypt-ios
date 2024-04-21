@@ -12,7 +12,7 @@ import Combine
 import DekryptUI
 import DekryptService
 
-public class NewsFeedViewController: UIViewController {
+public class NewsFeedViewController: UIViewController, TabViewController {
 
     private lazy var collectionView: UICollectionView = { .init(frame: .zero, collectionViewLayout: .init()) }()
     
@@ -42,6 +42,7 @@ public class NewsFeedViewController: UIViewController {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.backgroundColor = .surfaceBackground
         setupNavBar()
+        startLoadingAnimation()
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -63,12 +64,14 @@ public class NewsFeedViewController: UIViewController {
         let output = viewModel.transform()
         
         output.section
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] section in
-                self?.collectionView.reloadWithDynamicSection(sections: section) {
-                    self?.afterReloading()
+            .withUnretained(self)
+            .sinkReceive({ (vc, section) in
+                vc.endLoadingAnimation { [weak vc] in
+                    vc?.collectionView.reloadWithDynamicSection(sections: section) {
+                        vc?.afterReloading()
+                    }
                 }
-            }
+            })
             .store(in: &bag)
         
         output.navigation
@@ -94,4 +97,9 @@ public class NewsFeedViewController: UIViewController {
             }
             .store(in: &bag)
     }
+    
+    
+    // MARK: - TabViewController
+    
+    var tabItem: MainTabModel { .news }
 }

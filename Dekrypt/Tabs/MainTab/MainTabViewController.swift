@@ -9,23 +9,34 @@ import Foundation
 import DekryptUI
 import UIKit
 import DekryptService
+import Combine
 
 class MainTabViewController: UITabBarController {
+    
+    private(set) var initialLoad: PassthroughSubject<Void, Never> = .init()
+    private var bag: Set<AnyCancellable> = .init()
+    private var home: HomeViewController!
+    private var news: NewsFeedViewController!
+    private var profile: ProfileViewController!
+    private var search: SearchViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMainApp()
+        home.loadViewIfNeeded()
+        search.loadViewIfNeeded()
+        setupInitialLoadListeners()
     }
     
     private func setupMainApp() {
         view.backgroundColor = .clear
-        let tabBar = { () -> MainTab in
-            let tabBar = MainTab()
-            tabBar.delegate = self
-            self.selectedIndex = 0
-            return tabBar
-        }()
-        self.setValue(tabBar, forKey: "tabBar")
+//        let tabBar = { () -> MainTab in
+//            let tabBar = MainTab()
+//            tabBar.delegate = self
+//            self.selectedIndex = 0
+//            return tabBar
+//        }()
+//        self.setValue(tabBar, forKey: "tabBar")
         setViewControllers(tabBarViewController(), animated: true)
         selectedIndex = 0
         tabBar.tintColor = .surfaceBackgroundInverse
@@ -33,20 +44,29 @@ class MainTabViewController: UITabBarController {
     
     private func tabBarViewController(user: UserModel? = nil) -> [UINavigationController] {
         #if DEBUG
-        let homeViewController = HomeViewController().withNavigationController(swipable: true).tabBarItem(.home)
-        let newsViewController = NewsFeedViewController().withNavigationController(swipable: true).tabBarItem(.news)
-        let profileViewController = ProfileViewController().withNavigationController().tabBarItem(.profile)
-        let searchViewController = SearchViewController().withNavigationController().tabBarItem(.search)
+        home = HomeViewController()
+        news = NewsFeedViewController()
+        profile = ProfileViewController()
+        search = SearchViewController()
         
-        return [homeViewController, searchViewController, newsViewController, profileViewController]
         #else
-        let homeViewController = HomeViewController(socialService: SocialHighlightService.shared, videoService: VideoService.shared).withNavigationController(swipable: true).tabBarItem(.home)
-        let newsViewController = NewsFeedViewController(newsService: NewsService.shared).withNavigationController(swipable: true).tabBarItem(.news)
-        let profileViewController = ProfileViewController().withNavigationController().tabBarItem(.profile)
-        let searchViewController = SearchViewController(searchService: TickerService.shared).withNavigationController().tabBarItem(.search)
-        
-        return [homeViewController, searchViewController, newsViewController, profileViewController]
+        home = HomeViewController(socialService: SocialHighlightService.shared, videoService: VideoService.shared)
+        news = NewsFeedViewController(newsService: NewsService.shared)
+        profile = ProfileViewController()
+        search = SearchViewController(searchService: TickerService.shared)
         #endif
+        return [home, search, news, profile].map { ($0 as! TabViewController).asTabController() }
+    }
+    
+    private func setupInitialLoadListeners() {
+        home.initialLoad.combineLatest(search.initialLoad)
+            .map { (_, _) in  () }
+            .withUnretained(self)
+            .sinkReceive { (vc, _) in
+                print("(DEBUG) initial Things loaded Up!")
+                vc.initialLoad.send(())
+            }
+            .store(in: &bag)
     }
     
 }

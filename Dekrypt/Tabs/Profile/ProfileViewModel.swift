@@ -93,11 +93,11 @@ public class ProfileViewModel {
     private func tickerSection() -> DiffableCollectionSection {
         let tickers: [String] = ["BTC", "ETH", "XRP", "USDT", "AVAX", "DOT", "MATIC", "LTC"]
         
-        let cell = DiffableCollectionItem<ProfileTickerGrid>(.init(tickers: tickers, action: { ticker in
+        let cell = DiffableCollectionItem<TickerGrid>(.init(tickers: tickers, action: { ticker in
             print("(DEBUG) clicked on this ticker: ", ticker)
         }))
         
-        let height = ProfileTickerGrid.height(tickers: tickers, width: .totalWidth - (2 * .appHorizontalPadding)) + (2 * .standardColumnSpacing)
+        let height = TickerGrid.height(tickers: tickers, width: .totalWidth - (2 * .appHorizontalPadding)) + (2 * .standardColumnSpacing)
         
         let sectionLayout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1), height: .absolute(height), insets: .section(.init(vertical: .standardColumnSpacing, horizontal: 0)), spacing: .standardColumnSpacing)
             .addHeader(size: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)))
