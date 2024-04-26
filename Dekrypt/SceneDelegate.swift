@@ -40,7 +40,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.rootViewController = SplashScreenViewController()
         
         mainTab.initialLoad
-            .delay(for: 1.0, scheduler: DispatchQueue.main)
             .withUnretained(self)
             .sinkReceive { (delegate, _) in
                 guard let splashScreen = delegate.window?.rootViewController else { return }

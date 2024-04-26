@@ -285,9 +285,9 @@ class HomeViewModel {
     
     private func insightsSection(insights: [InsightDigestModel]) -> DiffableCollectionSection {
         
-        let layout = NSCollectionLayoutSection.singleRowLayout(width: .absolute(300), height: .absolute(325), insets: .sectionInsets, spacing: .appHorizontalPadding).addHeader()
+        let layout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .absolute(325), insets: .sectionInsets, spacing: .appHorizontalPadding).addHeader()
         
-        layout.orthogonalScrollingBehavior = .groupPaging
+        //layout.orthogonalScrollingBehavior = .groupPaging
         
         let viewMoreCallBack: Callback = { [weak self] in
             self?.navigation.send(.toAllInsights(insights))

@@ -36,7 +36,6 @@ public class NewsDetailView: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
- //       imageView.clippedCornerRadius = 0
         return imageView
     }()
     private lazy var titleLabel: UILabel = { .init() }()
@@ -59,13 +58,29 @@ public class NewsDetailView: UIViewController {
         return button
     }()
     
-    private lazy var shareButton: CustomButton = {
-        let image: UIImage.Catalogue = .share
-        let button = CustomButton()
-        button.configureButton(.actionButton(image.image, title: "Share"))
-        button.addShadow(for: .small)
+    private lazy var shareButton: UIButton = {
+        let image: UIImage = .Catalogue.share.image.resized(size: .init(squared: 16)).withTintColor(.surfaceBackgroundInverse)
+        let button = UIButton()
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setFrame(.smallestSquare)
         return button
     }()
+    
+    private lazy var shareButtonBlurView: UIView = {
+        let blurView = UIVisualEffectView.init(effect: UIBlurEffect(style: .systemMaterial))
+        let view = UIView()
+        view.addSubview(blurView)
+        blurView.fillSuperview()
+        
+        view.addSubview(shareButton)
+        shareButton.fillSuperview()
+        view.cornerRadius = CGSize.smallestSquare.smallDim.half
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
+    private lazy var sentimentView: SentimentTextLabel = .init()
     
     private var imageHeight: NSLayoutConstraint!
     private lazy var shadowView: UIView = { .init() }()
@@ -111,6 +126,9 @@ public class NewsDetailView: UIViewController {
         super.viewDidLayoutSubviews()
         addGradient()
         addGradientToImage()
+        #if DEBUG
+        scrollView.contentSize.height = 2 * .totalHeight
+        #endif
     }
     
     private func setupView() {
@@ -118,7 +136,6 @@ public class NewsDetailView: UIViewController {
      
         view.addSubview(backButton)
         view.setFittingConstraints(childView: backButton, top: .safeAreaInsets.top, leading: .appHorizontalPadding, width: 32, height: 32)
-        
         titleLabel.numberOfLines = 0
         descriptionLabel.numberOfLines = 0
         
@@ -173,14 +190,22 @@ public class NewsDetailView: UIViewController {
         //ImageView
         let imageTransparentView = UIView()
         imageTransparentView.backgroundColor = .clear
+        imageTransparentView.addSubview(shareButtonBlurView)
+        shareButtonBlurView
+            .pinTrailingAnchorTo(constant: .appHorizontalPadding)
+            .pinBottomAnchorTo(constant: .appVerticalPadding)
         scrollView.addArrangedView(view: imageTransparentView)
         imageTransparentView.setHeight(height: .totalHeight * 0.4)
         
         //Article Introduction
         let articleIntro = setupArticleIntro()
-        let info = setupMiscView()
+        sentimentView.configureIndicator(label: news.sentiment.rawValue, color: news.sentiment.color, showIndicator: true)
         
-        let mainContent = [articleIntro, tickers, info, descriptionLabel].embedInVStack(spacing: 16)
+        articleIntro.addSubview(sentimentView)
+        sentimentView.pinTrailingAnchorTo(constant: 0)
+            .pinBottomAnchorTo(constant: 0)
+        
+        let mainContent = [articleIntro, tickers, descriptionLabel].embedInVStack(spacing: 24)
         mainContent.addInsets(insets: .init(vertical: 16, horizontal: .appHorizontalPadding))
         mainContent.backgroundColor = .surfaceBackground
         scrollView.addArrangedView(view: mainContent)
@@ -225,18 +250,6 @@ public class NewsDetailView: UIViewController {
     private func setupArticleIntro() -> UIView {
         let stack = [topicsLabel, titleLabel, authorLabel].embedInVStack(alignment: .leading, spacing: 8)
         return stack
-    }
-    
-    private func setupMiscView() -> UIView {
-        let sentimentLabel = SentimentTextLabel()
-        sentimentLabel.configureIndicator(label: news.sentiment.rawValue, color: news.sentiment.color, showIndicator: true)
-        
-        let miscStack = UIStackView.HStack(subViews: [sentimentLabel, .spacer(), shareButton], spacing: 8, alignment: .center)
-        miscStack.setHeight(height: 40)
-        
-        let mainStack = UIStackView.VStack(subViews: [.divider(height: 0.5), miscStack, .divider(height: 0.5)], spacing: 8)
-        mainStack.addInsets(insets: .init(vertical: 8, horizontal: 0))
-        return mainStack
     }
     
     private func setupObservers() {

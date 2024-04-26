@@ -29,12 +29,12 @@
       }
     },
     {
-      "identity" : "dekryptservice-swift-package",
+      "identity" : "dekryptservice-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptService-Swift-Package.git",
+      "location" : "https://github.com/krish11031998-pythonwhisperer/dekryptService-spm.git",
       "state" : {
-        "revision" : "38aede5d5fac155a6281aaf2c6959ca416715527",
-        "version" : "1.0.8"
+        "revision" : "911884977a35496ef737389e5fbffce0272f1c26",
+        "version" : "1.0.9"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git",
       "state" : {
-        "revision" : "148517e18716e7d40ba4e0465064609986a976c0",
-        "version" : "1.6.7"
+        "revision" : "1868222763fec22af1ba9097cbb6ec515f205f71",
+        "version" : "1.7.3"
       }
     },
     {
@@ -133,7 +133,7 @@
       "location" : "https://github.com/krish11031998-pythonwhisperer/KKit-Swift-Package.git",
       "state" : {
         "branch" : "master",
-        "revision" : "904aa6a042fcdb7d6e6808cf92a558e320e09cee"
+        "revision" : "14b3fb0269be71eb648aad2bf6eaeaf40161db08"
       }
     },
     {

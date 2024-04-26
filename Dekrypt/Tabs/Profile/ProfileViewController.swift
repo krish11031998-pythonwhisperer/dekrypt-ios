@@ -22,12 +22,20 @@ public class ProfileViewController: UIViewController, TabViewController {
         hideNavbar()
         setupView()
         bind()
+        checkIfUserIsLoggedIn()
     }
     
     private func setupView() {
         view.addSubview(collectionView)
         collectionView.fillSuperview()
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+    }
+    
+    private func checkIfUserIsLoggedIn(animate: Bool = true) {
+        if AppStorage.shared.user == nil {
+            //self.navigationController?.setViewControllers([OnboardingController(desiredHomeVC: ProfileViewController())], animated: animate)
+            self.navigationController?.setViewControllers([OnboardingScreen()], animated: animate)
+        }
     }
     
     private func bind() {

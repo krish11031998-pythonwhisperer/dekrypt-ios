@@ -19,7 +19,6 @@ class SplashScreenViewController: UIViewController {
         imageView.clippedCornerRadius = 75
         return imageView
     }()
-    
     private lazy var imageViewBackground: UIView = {
         let view = UIView()
         view.backgroundColor = .appWhite
@@ -30,6 +29,20 @@ class SplashScreenViewController: UIViewController {
     private lazy var appNameHeader: UILabel = { .init() }()
     private lazy var appDetailHeader: UILabel = { .init() }()
     private var hasAnimated: Bool = false
+    private let showIndicator: Bool
+    
+    init(showIndicator: Bool) {
+        self.showIndicator = showIndicator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    convenience init() {
+        self.init(showIndicator: true)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,8 +119,10 @@ class SplashScreenViewController: UIViewController {
                 self.hasAnimated = true
             }
             
-            UIView.animate(withDuration: 0.5, delay: 2, options: [.curveEaseInOut]) { [weak self] in
-                self?.loadingIndicator.start()
+            if showIndicator {
+                UIView.animate(withDuration: 0.5, delay: 2, options: [.curveEaseInOut]) { [weak self] in
+                    self?.loadingIndicator.start()
+                }
             }
         }
         

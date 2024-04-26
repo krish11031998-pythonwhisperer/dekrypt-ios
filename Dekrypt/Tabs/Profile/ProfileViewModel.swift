@@ -64,9 +64,10 @@ public class ProfileViewModel {
         return .init(section: Just(sections).setFailureType(to: Never.self).eraseToAnyPublisher())
     }
     
+    
+    // MARK: - Setup User Section
+    
     private func generalSection() -> DiffableCollectionSection {
-        
-        
         let cells = ProfileSettings.allCases
             .map { setting in
                 return DiffableCollectionItem<ProfileCell>(.init(label: setting.stylizedText, isLast: ProfileSettings.allCases.last == setting, action: {

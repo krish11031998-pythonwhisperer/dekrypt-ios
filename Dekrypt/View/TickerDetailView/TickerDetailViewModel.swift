@@ -265,7 +265,7 @@ public class TickerDetailViewModel {
             .addHeader()
         
         let videoCells = videos
-            .limit(to: 3)
+            .limit(to: 4)
             .indices
             .map { idx in
                 let video = videos[idx]

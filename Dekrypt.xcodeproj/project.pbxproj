@@ -17,6 +17,9 @@
 		EFA716042BD56B860001F555 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA716032BD56B860001F555 /* TabViewController.swift */; };
 		EFA716062BD571F00001F555 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFA716052BD571F00001F555 /* Assets.xcassets */; };
 		EFA716092BD591D00001F555 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EFA716082BD591D00001F555 /* GoogleMobileAds */; };
+		EFA7160B2BD5C0D30001F555 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFA7160A2BD5C0D30001F555 /* GoogleService-Info.plist */; };
+		EFA7160E2BD5C1930001F555 /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7160D2BD5C1930001F555 /* AppStorage.swift */; };
+		EFA716102BD5C8810001F555 /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7160F2BD5C8810001F555 /* OnboardingScreen.swift */; };
 		EFB133852BAE49A200004025 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133842BAE49A200004025 /* AppDelegate.swift */; };
 		EFB133872BAE49A200004025 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133862BAE49A200004025 /* SceneDelegate.swift */; };
 		EFB133912BAE49A300004025 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = EFB133902BAE49A300004025 /* Base */; };
@@ -64,6 +67,9 @@
 		EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentPageControl.swift; sourceTree = "<group>"; };
 		EFA716032BD56B860001F555 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		EFA716052BD571F00001F555 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
+		EFA7160A2BD5C0D30001F555 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EFA7160D2BD5C1930001F555 /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
+		EFA7160F2BD5C8810001F555 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
 		EFB133812BAE49A200004025 /* Dekrypt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dekrypt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFB133842BAE49A200004025 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EFB133862BAE49A200004025 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +143,14 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		EFA7160C2BD5C1860001F555 /* AppStorage */ = {
+			isa = PBXGroup;
+			children = (
+				EFA7160D2BD5C1930001F555 /* AppStorage.swift */,
+			);
+			path = AppStorage;
+			sourceTree = "<group>";
+		};
 		EFB133782BAE49A200004025 = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +170,7 @@
 		EFB133832BAE49A200004025 /* Dekrypt */ = {
 			isa = PBXGroup;
 			children = (
+				EFA7160A2BD5C0D30001F555 /* GoogleService-Info.plist */,
 				EFA716052BD571F00001F555 /* Assets.xcassets */,
 				EFDA7F012BD5281A0036E720 /* Dekrypt.entitlements */,
 				EFDA7EF42BD521250036E720 /* Auth */,
@@ -182,7 +197,6 @@
 		EFB133A22BAE4A0C00004025 /* TickerDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */,
 				EFB1339F2BAE4A0C00004025 /* TickerDetailView.swift */,
 				EFB133A02BAE4A0C00004025 /* TickerDetailViewModel.swift */,
 				EFB133A12BAE4A0C00004025 /* TickerSentimentCard.swift */,
@@ -246,9 +260,11 @@
 		EFB133B72BAE4A0C00004025 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */,
 				EFB133B22BAE4A0C00004025 /* ProfileCell.swift */,
 				EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */,
 				EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */,
+				EFA7160F2BD5C8810001F555 /* OnboardingScreen.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -285,6 +301,7 @@
 		EFDA7EF42BD521250036E720 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				EFA7160C2BD5C1860001F555 /* AppStorage */,
 				EFDA7EF02BD521250036E720 /* AuthPublishers */,
 				EFDA7EF12BD521250036E720 /* AppleAuthService.swift */,
 				EFDA7EF22BD521250036E720 /* AuthInterface.swift */,
@@ -374,6 +391,7 @@
 			files = (
 				EFA716062BD571F00001F555 /* Assets.xcassets in Resources */,
 				EFB133912BAE49A300004025 /* Base in Resources */,
+				EFA7160B2BD5C0D30001F555 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +422,7 @@
 				EFDA7EF72BD521250036E720 /* AuthInterface.swift in Sources */,
 				EFA716042BD56B860001F555 /* TabViewController.swift in Sources */,
 				EF1E8A212BBF30B500FC84D3 /* VidoCarouselCell.swift in Sources */,
+				EFA716102BD5C8810001F555 /* OnboardingScreen.swift in Sources */,
 				EFB133BC2BAE4A0C00004025 /* TickerDetailView.swift in Sources */,
 				EFB133C52BAE4A0C00004025 /* MainTabModel.swift in Sources */,
 				EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */,
@@ -414,6 +433,7 @@
 				EFDA7EE92BCDBA980036E720 /* VideoCarouselCellV2.swift in Sources */,
 				EFB133C32BAE4A0C00004025 /* HomeViewModel.swift in Sources */,
 				EFB133BD2BAE4A0C00004025 /* TickerDetailViewModel.swift in Sources */,
+				EFA7160E2BD5C1930001F555 /* AppStorage.swift in Sources */,
 				EF1E8A1A2BBDEEDB00FC84D3 /* YoutubeViewController.swift in Sources */,
 				EFB133C12BAE4A0C00004025 /* NewsDetailView.swift in Sources */,
 				EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */,
@@ -571,8 +591,8 @@
 				INFOPLIST_FILE = Dekrypt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -580,6 +600,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Krishna.Dekrypt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -599,8 +622,8 @@
 				INFOPLIST_FILE = Dekrypt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -608,6 +631,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Krishna.Dekrypt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
