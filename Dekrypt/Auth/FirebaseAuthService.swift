@@ -62,7 +62,7 @@ class FirebaseAuthService: AuthInterface {
         }.eraseToAnyPublisher()
     }
     
-    func signOutUser() -> AnyPublisher<(), Error> {
+    func signOutUserPublisher() -> AnyPublisher<(), Error> {
         Future { promise in
             guard let _ = try? Auth.auth().signOut() else {
                 promise(.failure(UserState.userSignOutFailure))
@@ -70,6 +70,14 @@ class FirebaseAuthService: AuthInterface {
             }
             promise(.success(()))
         }.eraseToAnyPublisher()
+    }
+    
+    func signOutUser() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("(ERROR) Sign Out: ", error.localizedDescription)
+        }
     }
     
     func sendVerificationLink(email: String) -> AnyPublisher<(), Error> {

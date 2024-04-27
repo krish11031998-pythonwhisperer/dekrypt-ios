@@ -14,7 +14,7 @@ import DekryptService
 protocol AuthInterface {
     func registerUser(email: String, password: String) -> AnyPublisher<AuthDataResult?, Error>
     func loginUser(email: String, password: String) -> AnyPublisher<AuthDataResult?, Error>
-    func signOutUser() -> AnyPublisher<(), Error>
+    func signOutUserPublisher() -> AnyPublisher<(), Error>
     
     func sendVerificationLink(email: String) -> AnyPublisher<(), Error>
     func sendResetPasswordLink(email: String) -> AnyPublisher<(), Error>

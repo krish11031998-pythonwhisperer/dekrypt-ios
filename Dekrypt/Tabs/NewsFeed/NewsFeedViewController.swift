@@ -57,6 +57,7 @@ public class NewsFeedViewController: UIViewController, TabViewController {
         } else {
             setupTransparentNavBar()
             standardNavBar(leftBarButton: .init(view: "News".styled(font: CustomFonts.semibold, color: .textColor, size: 24).generateLabel))
+            showNavbar()
         }
     }
     

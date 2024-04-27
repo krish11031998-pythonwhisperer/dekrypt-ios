@@ -22,7 +22,6 @@ public class ProfileViewController: UIViewController, TabViewController {
         hideNavbar()
         setupView()
         bind()
-        checkIfUserIsLoggedIn()
     }
     
     private func setupView() {
@@ -31,20 +30,27 @@ public class ProfileViewController: UIViewController, TabViewController {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
     
-    private func checkIfUserIsLoggedIn(animate: Bool = true) {
-        if AppStorage.shared.user == nil {
-            //self.navigationController?.setViewControllers([OnboardingController(desiredHomeVC: ProfileViewController())], animated: animate)
-            self.navigationController?.setViewControllers([OnboardingScreen()], animated: animate)
-        }
-    }
-    
     private func bind() {
         let output = viewModel.transform()
         
         output.section
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] section in
-                self?.collectionView.reloadWithDynamicSection(sections: section)
+            .withUnretained(self)
+            .sinkReceive{ (vc, section) in
+                vc.collectionView.reloadWithDynamicSection(sections: section)
+            }
+            .store(in: &bag)
+        
+        output.navigation
+            .withUnretained(self)
+            .sinkReceive { (vc, nav) in
+                switch nav {
+                case .errorMessage(let err):
+                    vc.presentErrorToast(error: err.localizedDescription)
+                case .onboarding:
+                    self.navigationController?.setViewControllers([OnboardingScreen()], animated: false)
+                case .toTicker(let ticker):
+                    vc.presentView(style: .sheet(), target: TickerDetailView(ticker: ticker, tickerName: ticker), onDimissal: nil)
+                }
             }
             .store(in: &bag)
     }

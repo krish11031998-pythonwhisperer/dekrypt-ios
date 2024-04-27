@@ -14,6 +14,7 @@ class AppStorage {
     
     static var shared: AppStorage = .init()
     @Published var user: UserModel? = nil
+    @Published var firstUserFetch: Bool = false
     private var auth: AuthPublisher
     private var bag: Set<AnyCancellable>
     
@@ -26,7 +27,7 @@ class AppStorage {
     
     var userPublisher: AnyPublisher<UserModel?, Never> {
         $user
-            .print("(DEBUG) userPublisher: ")
+            .handleEvents(receiveOutput: { print("(DEBUG) user: ", $0) })
             .share()
             .eraseToAnyPublisher()
     }
@@ -39,15 +40,17 @@ class AppStorage {
     
     private func bind() {
         auth
-            .withUnretained(self)
-            .flatMap { (appStorage, auth) -> AnyPublisher<UserModelResponse, Error> in
+            .flatMap { auth -> AnyPublisher<UserModelResponse, Error> in
                 guard let auth else {
                     return .just(UserModelResponse(data: nil, success: false, err: nil))
                 }
                 
                 return UserService.shared.getOrCreateUser(uid: auth.uid)
             }
-            .compactMap(\.data)
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.firstUserFetch = true
+            })
+            .map(\.data)
             .withUnretained(self)
             .sinkReceive { $0.user = $1 }
             .store(in: &bag)

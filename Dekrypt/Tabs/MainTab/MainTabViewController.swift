@@ -59,8 +59,8 @@ class MainTabViewController: UITabBarController {
     }
     
     private func setupInitialLoadListeners() {
-        home.initialLoad.combineLatest(search.initialLoad)
-            .map { (_, _) in  () }
+        Publishers.Zip3(home.initialLoad, search.initialLoad, AppStorage.shared.userPublisher.prefix(1))
+            .map { (_, _, _) in  () }
             .withUnretained(self)
             .sinkReceive { (vc, _) in
                 print("(DEBUG) initial Things loaded Up!")

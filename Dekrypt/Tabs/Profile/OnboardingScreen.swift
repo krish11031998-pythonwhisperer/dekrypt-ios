@@ -42,7 +42,7 @@ final class OnboardingScreen: UIViewController {
     
     
     private func setupView() {
-        view.backgroundColor = .surfaceBackgroundInverse
+        view.backgroundColor = .surfaceBackground
         setupButtons()
     }
     
@@ -78,8 +78,8 @@ extension OnboardingScreen {
             self.signInWithGoogle()
         }
         signInWithGoogleButton.configureButton(.signInButtonProviderConfig(
-            buttonText: UIImage.Catalogue.googleLogo.image + (" Sign in with Google".body1Bold(color: .appWhite) as! NSAttributedString),
-            backgroundColor: .appBlack,
+            buttonText: UIImage.Catalogue.googleLogo.image + (" Sign in with Google".body1Bold(color: .textColorInverse) as! NSAttributedString),
+            backgroundColor: .surfaceBackgroundInverse,
             borderStyling: .signInGoogle,
             action: action))
     }
@@ -99,8 +99,8 @@ extension OnboardingScreen {
     fileprivate func setupAppleSignInButton() {
         let action: Callback = { [weak self] in self?.signInWithApple() }
         signInWithAppleButton.configureButton(.signInButtonProviderConfig(
-            buttonText: UIImage.Catalogue.appleLogo.image.withTintColor(.appWhite) + (" Sign in with Apple".body1Bold(color: .appWhite) as! NSAttributedString),
-            backgroundColor: .appBlack,
+            buttonText: UIImage.Catalogue.appleLogo.image.withTintColor(.textColorInverse) + (" Sign in with Apple".body1Bold(color: .textColorInverse) as! NSAttributedString),
+            backgroundColor: .surfaceBackgroundInverse,
             borderStyling: .signInApple, action: action))
     }
     

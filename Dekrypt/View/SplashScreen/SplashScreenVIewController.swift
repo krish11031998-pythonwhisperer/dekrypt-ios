@@ -20,10 +20,7 @@ class SplashScreenViewController: UIViewController {
         return imageView
     }()
     private lazy var imageViewBackground: UIView = {
-        let view = UIView()
-        view.backgroundColor = .appWhite
-        view.addShadow(color: .surfaceBackgroundInverse, for: .medium)
-        return view
+        UIVisualEffectView(effect: UIBlurEffect(style: .regular))
     }()
     private lazy var loadingIndicator: LoadingIndicator = .init(showBackground: true, size: .init(squared: 32))
     private lazy var appNameHeader: UILabel = { .init() }()
@@ -61,7 +58,7 @@ class SplashScreenViewController: UIViewController {
     }
     
     private func setupView() {
-        view.backgroundColor = .appWhite
+        view.backgroundColor = .surfaceBackground
         
         [imageViewBackground, imageView]
             .forEach {
@@ -91,15 +88,16 @@ class SplashScreenViewController: UIViewController {
             .pinBottomAnchorTo(constant: .safeAreaInsets.bottom + .appVerticalPadding * 2)
             .pinCenterXAnchorTo(constant: 0)
         
-        "Dekrypt".styled(font: CustomFonts.bold, color: .appBlack, size: 32).render(target: appNameHeader)
+        "Dekrypt".styled(font: CustomFonts.bold, color: .textColor, size: 32).render(target: appNameHeader)
         "One stop platform for all your cryptocurrency news"
-            .body1Medium(color: .appBlack)
+            .body1Medium(color: .textColor)
             .render(target: appDetailHeader)
         
         imageViewBackground.alpha = 0
         loadingIndicator.alpha = 0
         appNameHeader.alpha = 0
         appDetailHeader.alpha = 0
+        appNameHeader.transform = .init(translationX: 0, y: 10)
     }
     
     private func animateAppearance() {
@@ -109,23 +107,23 @@ class SplashScreenViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [weak self] in
             guard let self else { return }
-            self.appNameHeader.animate(.slideInFromTop(from: headerFrom, to: headerTo))
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
+                self.appNameHeader.transform = .identity
+                self.appNameHeader.alpha = 1
+                self.imageViewBackground.alpha = 1
                 self.imageView.clippedCornerRadius = 75
                 self.imageView.transform = .init(scaleX: 0.75, y: 0.75)
                 self.imageViewBackground.alpha = 1
             } completion: {
                 guard $0 else { return }
                 self.hasAnimated = true
-            }
-            
-            if showIndicator {
-                UIView.animate(withDuration: 0.5, delay: 2, options: [.curveEaseInOut]) { [weak self] in
-                    self?.loadingIndicator.start()
+                if self.showIndicator {
+                    UIView.animate(withDuration: 0.5, delay: 2, options: [.curveEaseInOut]) { [weak self] in
+                        self?.loadingIndicator.start()
+                    }
                 }
             }
         }
-        
         
     }
     
