@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git",
       "state" : {
-        "revision" : "904df6468a828ed27d75a55f9cc3a0b0c52581a5",
-        "version" : "1.7.5"
+        "revision" : "b0c6c7f1feca42e9c151dc49e87ddb38e013cb2c",
+        "version" : "1.8.2"
       }
     },
     {
@@ -133,7 +133,7 @@
       "location" : "https://github.com/krish11031998-pythonwhisperer/KKit-Swift-Package.git",
       "state" : {
         "branch" : "master",
-        "revision" : "14b3fb0269be71eb648aad2bf6eaeaf40161db08"
+        "revision" : "48a590948477cffae1478c66ced4ea10708e3842"
       }
     },
     {

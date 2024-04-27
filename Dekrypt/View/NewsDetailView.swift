@@ -11,6 +11,7 @@ import Combine
 import KKit
 import DekryptUI
 import DekryptService
+import SwiftUI
 
 public class SentimentTextLabel: UILabel {
     public func configureIndicator(label: String, color: UIColor, showIndicator: Bool = false) {
@@ -42,15 +43,16 @@ public class NewsDetailView: UIViewController {
     private lazy var authorLabel: UILabel = { .init() }()
     private lazy var descriptionLabel: UILabel = { .init() }()
     private lazy var viewNews: UIView = { .init() }()
-    private lazy var scrollView: ScrollView = { .init(spacing: 0,
+    private lazy var scrollView: DekryptUI.ScrollView = { .init(spacing: 24,
                                                       ignoreSafeArea: true,
-                                                      inset: .zero,
+                                                                inset: .init(vertical: .appVerticalPadding, horizontal: .appHorizontalPadding),
                                                       axis: .vertical) }()
     private lazy var topicsLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         return label
     }()
+    
     private lazy var backButton: CustomButton = {
         let image: UIImage.Catalogue = .chevronLeft
         let button = CustomButton()
@@ -93,7 +95,7 @@ public class NewsDetailView: UIViewController {
         button.configureButton(.primaryCTA("View News"))
         return button
     }()
-    private var tickers: TickerSymbolsStackView = { .init() }()
+//    private var tickers: TickerSymbolsStackView = { .init() }()
     private let news: NewsModel
     
     init(news: NewsModel) {
@@ -147,12 +149,6 @@ public class NewsDetailView: UIViewController {
         setupTopics()
     }
     
-    private func setupTickers() {
-        guard let allTickers = news.tickers, !allTickers.isEmpty else { return }
-        tickers.isHidden = false
-        self.tickers.configure(tickers: allTickers)
-    }
-        
     private func setupNav() {
         if modalPresentationStyle == .custom {
             standardNavBar(rightBarButton: Self.closeButton(self),
@@ -174,7 +170,7 @@ public class NewsDetailView: UIViewController {
     }
     
     private func setupMainStack() {
-        tickers.isHidden = true
+//        tickers.isHidden = true
         
         scrollView.showsVerticalScrollIndicator = false
         view.insertSubview(scrollView, at: 0)
@@ -192,10 +188,12 @@ public class NewsDetailView: UIViewController {
         imageTransparentView.backgroundColor = .clear
         imageTransparentView.addSubview(shareButtonBlurView)
         shareButtonBlurView
-            .pinTrailingAnchorTo(constant: .appHorizontalPadding)
-            .pinBottomAnchorTo(constant: .appVerticalPadding)
+            .pinTrailingAnchorTo(constant: .zero)
+            .pinBottomAnchorTo(constant: .appVerticalPadding * 2)
         scrollView.addArrangedView(view: imageTransparentView)
         imageTransparentView.setHeight(height: .totalHeight * 0.4)
+        
+        scrollView.setCustomSpacing(view: imageTransparentView, spacing: 0)
         
         //Article Introduction
         let articleIntro = setupArticleIntro()
@@ -204,15 +202,15 @@ public class NewsDetailView: UIViewController {
         articleIntro.addSubview(sentimentView)
         sentimentView.pinTrailingAnchorTo(constant: 0)
             .pinBottomAnchorTo(constant: 0)
-        
-        let mainContent = [articleIntro, tickers, descriptionLabel].embedInVStack(spacing: 24)
-        mainContent.addInsets(insets: .init(vertical: 16, horizontal: .appHorizontalPadding))
-        mainContent.backgroundColor = .surfaceBackground
-        scrollView.addArrangedView(view: mainContent)
+        scrollView.addArrangedView(view: articleIntro)
         
         //Tickers
         setupTickers()
-        scrollView.addArrangedView(view: .spacer(height: .safeAreaInsets.bottom + Constants.buttonHeight + .appVerticalPadding))
+        
+        // Description
+        scrollView.addArrangedView(view: descriptionLabel)
+        
+        scrollView.contentInset.bottom = .safeAreaInsets.bottom + Constants.buttonHeight + .appVerticalPadding
         
         view.addSubview(viewMoreButton)
         view.setFittingConstraints(childView: viewMoreButton,
@@ -250,6 +248,21 @@ public class NewsDetailView: UIViewController {
     private func setupArticleIntro() -> UIView {
         let stack = [topicsLabel, titleLabel, authorLabel].embedInVStack(alignment: .leading, spacing: 8)
         return stack
+    }
+    
+    private func setupTickers() {
+        if let tickers = news.tickers, !tickers.isEmpty {
+            let model = TickerGrid.Model(tickers: tickers) { [weak self] ticker in
+                self?.pushTo(target: TickerDetailView(ticker: ticker, tickerName: ticker))
+            }
+            let tickerGrid = TickerGrid(model: model)
+            let hostingVC = UIHostingController(rootView: tickerGrid)
+            addChild(hostingVC)
+            hostingVC.didMove(toParent: self)
+            
+            hostingVC.view.setHeight(height: TickerGrid.height(tickers: tickers, width: .totalWidth - 2 * .appHorizontalPadding))
+            scrollView.addArrangedView(view: hostingVC.view)
+        }
     }
     
     private func setupObservers() {
@@ -297,13 +310,13 @@ public class NewsDetailView: UIViewController {
             }
             .store(in: &bag)
         
-        tickers
-            .tickerSelected
-            .withUnretained(self)
-            .sinkReceive { (strongSelf, ticker) in
-                strongSelf.pushTo(target: TickerDetailView(ticker: ticker, tickerName: ticker) )
-            }
-            .store(in: &bag)
+//        tickers
+//            .tickerSelected
+//            .withUnretained(self)
+//            .sinkReceive { (strongSelf, ticker) in
+//                strongSelf.pushTo(target: TickerDetailView(ticker: ticker, tickerName: ticker) )
+//            }
+//            .store(in: &bag)
     }
     
     private func addGradient() {
