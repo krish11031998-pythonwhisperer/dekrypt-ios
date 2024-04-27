@@ -53,7 +53,7 @@ class MainTabViewController: UITabBarController {
         home = HomeViewController(socialService: SocialHighlightService.shared, videoService: VideoService.shared)
         news = NewsFeedViewController(newsService: NewsService.shared)
         profile = ProfileViewController()
-        search = SearchViewController(searchService: TickerService.shared)
+        search = SearchViewController()
         #endif
         return [home, search, news, profile].map { ($0 as! TabViewController).asTabController() }
     }

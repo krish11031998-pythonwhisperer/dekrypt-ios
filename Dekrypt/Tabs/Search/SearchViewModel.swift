@@ -42,17 +42,20 @@ class SearchViewModel {
     
     enum Navigation {
         case toNews(NewsModel)
+        case toNewsFeed([NewsModel], String)
         case toTicker(ticker: String, name: String)
     }
     
     private(set) var searchParam: PassthroughSubject<String?, Never> = .init()
     private(set) var navigation: PassthroughSubject<Navigation, Never> = .init()
-    private let searchService: TickerServiceInterface
+    private let newsSearchService: NewsServiceInterface
+    private let tickerSearchService: TickerServiceInterface
     private let lunarService: LunarCrushServiceInterface
     private let errorMessage: PassthroughSubject<String?, Error> = .init()
     
-    init(searchService: TickerServiceInterface, lunarService: LunarCrushServiceInterface) {
-        self.searchService = searchService
+    init(tickerSearchService: TickerServiceInterface, newsSearchService: NewsServiceInterface, lunarService: LunarCrushServiceInterface) {
+        self.tickerSearchService = tickerSearchService
+        self.newsSearchService = newsSearchService
         self.lunarService = lunarService
     }
     
@@ -67,6 +70,7 @@ class SearchViewModel {
             .eraseToAnyPublisher()
         
         let search: AnyPublisher<[DiffableCollectionSection]?, Never> = searchParam
+            .subscribe(on: DispatchQueue.global(qos: .background))
             .prepend("")
             .compactMap({ $0 })
             .withUnretained(self)
@@ -74,16 +78,16 @@ class SearchViewModel {
              
                 guard !searchQuery.isEmpty else { return .just(nil) }
                 
-                let news: AnyPublisher<DiffableCollectionSection?, Never> = vm.searchService.fetchNews(ticker: searchQuery, page: 0, limit: 10, refresh: true)
+                let news: AnyPublisher<DiffableCollectionSection?, Never> = vm.newsSearchService.newsSearch(query: searchQuery, page: 0, limit: 10, refresh: true, topic: nil)
                     .catchWithErrorWithNever(errHandle: vm.errorMessage, withErr: URLSessionError.invalidResponse)
                     .withUnretained(self)
                     .map { (vm, newsResult) -> DiffableCollectionSection? in
                         guard let data = newsResult.data, !data.isEmpty else { return nil }
-                        return vm.setupSearchedNews(data)
+                        return vm.setupSearchedNews(data, search: searchQuery)
                     }
                     .eraseToAnyPublisher()
                 
-                let searchResult = vm.searchService.search(query: searchQuery)
+                let searchResult = vm.tickerSearchService.search(query: searchQuery)
                     .catchWithErrorWithNever(errHandle: vm.errorMessage, withErr: URLSessionError.invalidResponse)
                     .withUnretained(self)
                     .map { (vm, searchResult) -> DiffableCollectionSection? in
@@ -199,11 +203,11 @@ class SearchViewModel {
     
     // MARK: - Searched News
     
-    private func setupSearchedNews(_ news: [NewsModel]) -> DiffableCollectionSection {
+    private func setupSearchedNews(_ news: [NewsModel], search: String) -> DiffableCollectionSection {
         let layout = simpleRowLayout(addTrailingInset: true)
         
-        let viewMoreCallback: Callback = {
-            // self.navigation.send(.toNews(news))
+        let viewMoreCallback: Callback = { [weak self] in
+             self?.navigation.send(.toNewsFeed(news, search))
         }
         let sectionHeader = CollectionSectionHeader(.init(label: Section.news.name, accessory: .viewMore("View More", viewMoreCallback), addHorizontalInset: false))
         

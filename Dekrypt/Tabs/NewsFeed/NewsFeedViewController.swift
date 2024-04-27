@@ -12,16 +12,15 @@ import Combine
 import DekryptUI
 import DekryptService
 
-public class NewsFeedViewController: UIViewController, TabViewController {
+class NewsFeedViewController: UIViewController, TabViewController {
 
     private lazy var collectionView: UICollectionView = { .init(frame: .zero, collectionViewLayout: .init()) }()
     
     private let viewModel: NewsFeedViewControllerModel
     private var bag: Set<AnyCancellable> = .init()
     
-    
-    public init(newsService: NewsServiceInterface = NewsService.shared, preloadedNews: [NewsModel] = []) {
-        self.viewModel = .init(newsService: newsService, preloadedNews: preloadedNews)
+    init(newsService: NewsServiceInterface = NewsService.shared, includeSegmentControl: Bool = true, type: NewsFeedViewControllerModel.FeedType = .feed) {
+        self.viewModel = .init(newsService: newsService, includeSegmentControl: includeSegmentControl, type: type)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -80,8 +79,7 @@ public class NewsFeedViewController: UIViewController, TabViewController {
             .sinkReceive { (vc, navigation) in
                 switch navigation {
                 case .toNews(let news):
-                    vc.navigationController?.pushViewController(NewsDetailView(news: news), animated: true)
-                    break
+                    vc.pushTo(target: NewsDetailView(news: news))
                 }
             }
             .store(in: &bag)

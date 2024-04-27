@@ -42,7 +42,7 @@ class SearchHeader: UIView {
         
         addSubview(stack)
       
-        stack.fillSuperview(inset: .init(vertical: .zero, horizontal: .appHorizontalPadding))
+        stack.fillSuperview(inset: .init(top: 0, left: .appHorizontalPadding, bottom: .appVerticalPadding, right: .appHorizontalPadding))
         
         backgroundColor = .surfaceBackground
     }

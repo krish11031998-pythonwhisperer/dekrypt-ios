@@ -119,7 +119,7 @@ public class HomeViewController: UIViewController, TabViewController {
                 case .toTickers(let tickers):
                     vc.pushTo(target: TickerViewController(model: .init(tickers: tickers)))
                 case .toAllNews(let news):
-                    vc.pushTo(target: NewsFeedViewController(newsService: NewsService.shared, preloadedNews: news))
+                    vc.pushTo(target: NewsFeedViewController(newsService: NewsService.shared, type: .preloaded(.init(news: news))))
                 case .toTickerDetail(let detail):
                     vc.pushTo(target: TickerDetailView(tickerService: TickerService.shared, eventService: EventService.shared, ticker: detail.ticker, tickerName: detail.name))
                 case .toVideo(let videoModel):

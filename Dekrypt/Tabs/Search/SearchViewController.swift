@@ -17,8 +17,10 @@ class SearchViewController: UIViewController, TabViewController {
     private let viewModel: SearchViewModel
     private var bag: Set<AnyCancellable> = .init()
     private(set) var initialLoad: PassthroughSubject<Void, Never> = .init()
-    init(searchService: TickerServiceInterface = TickerService.shared, lunarService: LunarCrushServiceInterface = LunarCrushService.shared) {
-        self.viewModel = .init(searchService: searchService, lunarService: lunarService)
+    
+    
+    init(tickerSearchService: TickerServiceInterface = TickerService.shared, newsSearchService: NewsServiceInterface = NewsService.shared, lunarService: LunarCrushServiceInterface = LunarCrushService.shared) {
+        self.viewModel = .init(tickerSearchService: tickerSearchService, newsSearchService: newsSearchService, lunarService: lunarService)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -91,6 +93,8 @@ class SearchViewController: UIViewController, TabViewController {
                     vc.pushTo(target: NewsDetailView(news: news))
                 case .toTicker(let ticker, let name):
                     vc.pushTo(target: TickerDetailView(ticker: ticker, tickerName: name))
+                case .toNewsFeed(let news, let query):
+                    vc.pushTo(target: NewsFeedViewController(includeSegmentControl: false, type: .preloaded(.init(news: news, query: query, page: 2))))
                 }
             }
             .store(in: &bag)

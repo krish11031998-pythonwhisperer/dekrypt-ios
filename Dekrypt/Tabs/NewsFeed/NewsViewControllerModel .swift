@@ -21,22 +21,6 @@ fileprivate typealias NewsResponse = GenericResult<[NewsModel]>
 
 public class NewsFeedViewControllerModel {
     
-    private let newsService: NewsServiceInterface
-    private let preloadedNews: [NewsModel]
-    private let selectedTab: CurrentValueSubject<Tab, Never> = .init(Tab.all)
-    let nextPage: CurrentValueSubject<Bool, Never>
-    private let navigation: PassthroughSubject<Navigation, Never> = .init()
-    private var news: [NewsModel] = []
-    private var page: Int
-    private var limit: Int = 10
-    
-    public init(newsService: NewsServiceInterface, preloadedNews: [NewsModel] = []){
-        self.newsService = newsService
-        self.preloadedNews = preloadedNews
-        self.nextPage = .init(preloadedNews.isEmpty)
-        self.page = preloadedNews.isEmpty ? 0 : 1
-    }
-    
     // MARK: Tab
     
     enum Tab: String, CaseIterable, SegmentType {
@@ -56,6 +40,45 @@ public class NewsFeedViewControllerModel {
     }
     
     
+    // MARK: PreloadFeedModel
+    
+    struct PreloadedFeedModel {
+        let news: [NewsModel]
+        let query: String?
+        let page: Int
+        
+        init(news: [NewsModel], query: String? = nil, page: Int = 1) {
+            self.news = news
+            self.query = query
+            self.page = page
+        }
+    }
+    
+    // MARK: FeedType
+    
+    enum FeedType {
+        case feed
+        case preloaded(PreloadedFeedModel)
+        
+        var preloadedNews: [NewsModel] {
+            switch self {
+            case .feed:
+                return []
+            case .preloaded(let preloadedFeedModel):
+                return preloadedFeedModel.news
+            }
+        }
+        
+        var page: Int {
+            switch self {
+            case .feed:
+                return 0
+            case .preloaded(let preloadedFeedModel):
+                return preloadedFeedModel.page
+            }
+        }
+    }
+    
     // MARK: Section
     
     enum Section: Int {
@@ -67,6 +90,27 @@ public class NewsFeedViewControllerModel {
     
     enum Navigation {
         case toNews(NewsModel)
+    }
+    
+    private let newsService: NewsServiceInterface
+    private let preloadedNews: [NewsModel]
+    private let selectedTab: CurrentValueSubject<Tab, Never> = .init(Tab.all)
+    let nextPage: CurrentValueSubject<Bool, Never>
+    private let navigation: PassthroughSubject<Navigation, Never> = .init()
+    
+    private let type: FeedType
+    private var news: [NewsModel] = []
+    private var page: Int
+    private var limit: Int = 10
+    private let includeSegmentControl: Bool
+    
+    init(newsService: NewsServiceInterface, includeSegmentControl: Bool = true, type: FeedType = .feed) {
+        self.newsService = newsService
+        self.includeSegmentControl = includeSegmentControl
+        self.preloadedNews = type.preloadedNews
+        self.nextPage = .init(type.preloadedNews.isEmpty)
+        self.page = type.page
+        self.type = type
     }
     
     func transform() -> Output {
@@ -109,7 +153,7 @@ public class NewsFeedViewControllerModel {
         let section = Publishers.CombineLatest(fetchNews, selectedTab)
             .compactMap { [weak self] (_, tab) -> [DiffableCollectionSection]? in
                 guard let self else { return nil }
-                return self.parseNews(tab: tab)
+                return self.setupNewsSection(tab: tab)
             }
             .eraseToAnyPublisher()
         
@@ -117,8 +161,13 @@ public class NewsFeedViewControllerModel {
     }
     
     private func fetchNews(page: Int, refresh: Bool) -> AnyPublisher<[NewsModel], Never> {
-
-        newsService.fetchGeneralNews(page: page, limit: 10, refresh: refresh)
+        let newsResult: AnyPublisher<NewsResult, Error>
+        if case .preloaded(let preloadedFeedModel) = type, let query = preloadedFeedModel.query {
+            newsResult = newsService.newsSearch(query: query, page: page, limit: 10, refresh: refresh, topic: nil)
+        } else {
+            newsResult = newsService.fetchGeneralNews(page: page, limit: 10, refresh: refresh)
+        }
+        return newsResult
             .compactMap(\.data)
             .catch({ err -> AnyPublisher<[NewsModel], Never> in
                 print("(ERROR) err while fetching General News: ", err.localizedDescription)
@@ -129,14 +178,17 @@ public class NewsFeedViewControllerModel {
     
     // MARK: Parse News
     
-    private func parseNews(tab: Tab) -> [DiffableCollectionSection] {
+    private func setupNewsSection(tab: Tab) -> [DiffableCollectionSection] {
         
         let sectionHeaderModel = SegmentControl.Model(selectedTab: selectedTab)
         
         let sectionHeader = CollectionSupplementaryView<SegmentControl<Tab>>(sectionHeaderModel)
         
         let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44.0), insets: .sectionInsets, spacing: .appVerticalPadding)
-            .addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44)), pinHeader: true)
+          
+        if includeSegmentControl {
+            sectionLayout.addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44)), pinHeader: true)
+        }
         
         let cell = self.news.indices
             .compactMap { idx -> (DiffableCollectionCellProvider)? in
@@ -174,6 +226,6 @@ public class NewsFeedViewControllerModel {
                 return nil
             }
         
-        return [DiffableCollectionSection(Section.news.rawValue, cells: cell, header: sectionHeader, sectionLayout: sectionLayout)]
+        return [DiffableCollectionSection(Section.news.rawValue, cells: cell, header: includeSegmentControl ? sectionHeader : nil, sectionLayout: sectionLayout)]
     }
 }
