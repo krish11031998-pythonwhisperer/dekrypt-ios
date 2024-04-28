@@ -49,7 +49,7 @@ public class TickerDetailViewModel {
     struct Output {
         let section: AnyPublisher<[DiffableCollectionSection], Never>
         let navigation: AnyPublisher<Navigation, Never>
-        let reloadFavorite: AnyPublisher<ItemReloadBody, Never>
+        // let reloadFavorite: AnyPublisher<ItemReloadBody, Never>
         let errorMessage: AnyPublisher<String?, Error>
     }
     
@@ -72,79 +72,86 @@ public class TickerDetailViewModel {
     
     func transform() -> Output {
         
-        // Ticker Info
-        let tickerInfo = tickerService.fetchTickerDetail(ticker: tickerName, refresh: false)
-            .catchWithErrorWithNever(errHandle: errorMessage, withErr: TickerError.tickerError)
-            .compactMap(\.data)
-            .eraseToAnyPublisher()
-        
-        // News
-        let news = tickerService.fetchNews(ticker: ticker, page: 1, limit: 20, refresh: false)
-            .catchWithErrorWithNever(errHandle: errorMessage, withErr: TickerError.tickerError)
-            .compactMap(\.data)
-            .eraseToAnyPublisher()
-        
-        // Videos
-        let videos = tickerService.fetchVideos(ticker: [ticker], limit: 10, page: 1, refresh: false)
-            .catchWithErrorWithNever(errHandle: errorMessage, withErr: TickerError.tickerError)
-            .compactMap(\.data)
-            .eraseToAnyPublisher()
-        
-        // Event
-        let event = tickerService.fetchEvent(ticker: ticker, page: 1, limit: 10, refresh: false)
-            .catchWithErrorWithNever(errHandle: errorMessage, withErr: TickerError.tickerError)
-            .compactMap(\.data)
-            .eraseToAnyPublisher()
-        
-        let isFavorite = $isFavorite.eraseToAnyPublisher()
-        
-        let sections: AnyPublisher<[DiffableCollectionSection], Never> = Publishers.CombineLatest4(tickerInfo, news, videos, event)
-            .combineLatest(isFavorite.first())
-            .map({ ($0.0, $0.1, $0.2, $0.3, $1) })
+        let isFavorite = $isFavorite.share().eraseToAnyPublisher()
+
+        let addedToWatchlist = isFavorite
+            .combineLatest(AppStorage.shared.userPublisher.compactMap({ $0 }))
             .withUnretained(self)
-            .compactMap { (weakSelf, model) -> [DiffableCollectionSection]? in
-                let sentiments = (model.0.sentiment ?? .init(total: nil, timeline: nil))
-                return weakSelf.setupTickerInfo(ticker: model.0.ticker, sentiment: sentiments, news: model.1, videos: model.2, events: model.3, isFavorite: model.4)
+            .flatMap { (vm, model) in
+                let (isFavorite, user) = model
+                return UserService.shared.addAssetToWatchlist(uid: user.uid, asset: vm.ticker)
+            }
+            .eraseToAnyPublisher()
+        
+        let sections: AnyPublisher<[DiffableCollectionSection], Never> = AppStorage.shared.userPublisher
+            .removeDuplicates()
+            .withUnretained(self)
+            .flatMap { (vm, user) -> AnyPublisher<TickerDetailModel, Never> in
+                vm.tickerService.fetchTickerDetail(ticker: vm.ticker, isPro: user?.isPro ?? false, refresh: false)
+                    .compactMap(\.data)
+                    .catch({ err -> AnyPublisher<TickerDetailModel, Never> in
+                        print("(ERROR) err: ", err.localizedDescription)
+                        return .just(TickerDetailModel(ticker: nil, sentiment: nil, videos: nil, news: nil, events: nil))
+                    })
+                    .eraseToAnyPublisher()
+            }
+            .combineLatest(isFavorite)
+            .withUnretained(self)
+            .map { (vm, model) in
+                vm.setupTickerInfo(tickerDetail: model.0, isFavorite: model.1)
             }
             .eraseToAnyPublisher()
         
         // Reload Header when favorite
         
-        let reloadHeader: AnyPublisher<ItemReloadBody, Never> = $isFavorite
-            .dropFirst(1)
-            .withLatestFrom(tickerInfo.compactMap(\.ticker).eraseToAnyPublisher())
-            .withUnretained(self)
-            .compactMap { (vm, data) -> DiffableCollectionCellProvider? in
-                let (isFavorite, ticker) = data
-                let header = DiffableCollectionItem<TickerInfoView>(.init(ticker: ticker, isFavorite: isFavorite, addFavorite: vm.addFavorite))
-                return header
-            }
-            .map({ (Section.price, 0, $0, false) })
-            .eraseToAnyPublisher()
+//        let reloadHeader: AnyPublisher<ItemReloadBody, Never> = $isFavorite
+//            .dropFirst(1)
+//            .withLatestFrom(tickerInfo.compactMap(\.ticker).eraseToAnyPublisher())
+//            .withUnretained(self)
+//            .compactMap { (vm, data) -> DiffableCollectionCellProvider? in
+//                let (isFavorite, ticker) = data
+//                let header = DiffableCollectionItem<TickerInfoView>(.init(ticker: ticker, isFavorite: isFavorite, addFavorite: vm.addFavorite))
+//                return header
+//            }
+//            .map({ (Section.price, 0, $0, false) })
+//            .eraseToAnyPublisher()
         
-        return .init(section: sections, navigation: navigation.eraseToAnyPublisher(), reloadFavorite: reloadHeader, errorMessage: errorMessage.eraseToAnyPublisher())
+        return .init(section: sections,
+                     navigation: navigation.eraseToAnyPublisher(),
+                     errorMessage: errorMessage.eraseToAnyPublisher())
     }
     
-    private func setupTickerInfo(ticker: DekryptService.TickerModel?, sentiment: SentimentForTicker?, news: [NewsModel], videos: [VideoModel], events: [EventModel], isFavorite: TickerInfoView.State) -> [DiffableCollectionSection] {
+    private func setupTickerInfo(tickerDetail: DekryptService.TickerDetailModel, isFavorite: TickerInfoView.State) -> [DiffableCollectionSection] {
         
-        let priceSection = setupPriceChartSection(ticker: ticker, isFavorite: isFavorite)
+        var sections: [DiffableCollectionSection] = []
         
-        var sentimentSection: DiffableCollectionSection? = nil
-        if let timeline = sentiment?.timeline {
-            sentimentSection = setupSentimentSection(total: sentiment?.total, sentiment: Array(timeline.values))
+        if let tickerSection = setupPriceChartSection(ticker: tickerDetail.ticker, isFavorite: isFavorite) {
+            sections.append(tickerSection)
         }
         
-        // Ticker Summary
-        let tickerSummarySection = setupSummarySection(ticker: ticker)
-        // News Section
-        let newsSection = setupNewsSection(news: news)
-        // Video Section
-        let videoSection = setupVideoSection(videos: videos)
-        // Event Section
-        let eventSection = setupEventSection(events: events)
+        if let summary = setupSummarySection(ticker: tickerDetail.ticker) {
+            sections.append(summary)
+        }
         
-        return [priceSection, tickerSummarySection, sentimentSection, newsSection, videoSection, eventSection].compactMap({ $0 })
-        // return [priceSection, tickerSummarySection, sentimentSection, newsSection, videoSection].compactMap({ $0 })
+        if let timeline = tickerDetail.sentiment?.timeline,
+           let sentimentSection = setupSentimentSection(total: tickerDetail.sentiment?.total, sentiment: Array(timeline.values))
+        {
+            sections.append(sentimentSection)
+        }
+        
+        if let news = tickerDetail.news {
+            sections.append(setupNewsSection(news: news))
+        }
+        
+        if let videos = tickerDetail.videos {
+            sections.append(setupVideoSection(videos: videos))
+        }
+        
+        if let events = tickerDetail.events {
+            sections.append(setupEventSection(events: events))
+        }
+        
+        return sections
     }
     
     

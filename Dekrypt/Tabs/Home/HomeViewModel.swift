@@ -64,7 +64,8 @@ class HomeViewModel {
     
     func transform() -> Output {
         
-        let sections = Publishers.CombineLatest3(fetchHighlights(refresh: false), fetchVideos(refresh: false), fetchInsights(refresh: false))
+        let sections = Publishers.CombineLatest3(fetchHighlights(refresh: false), fetchVideos(refresh: false), fetchInsights(refresh: false)).combineLatest(AppStorage.shared.userPublisher)
+            .map { data, _ in data }
             .receive(on: DispatchQueue.global(qos: .background))
             .map { [weak self] (hightlights, videos, insights) -> [DiffableCollectionSection] in
                 guard let self else { return [] }
@@ -116,9 +117,12 @@ class HomeViewModel {
             section.append(newsSection(news: news))
         }
         
-        if let events = highlight.events {
-            section.append(eventSection(events: events))
+        if AppStorage.shared.user?.isPro ?? false {
+            if let events = highlight.events {
+                section.append(eventSection(events: events))
+            }
         }
+        
         
         if let mention = highlight.topMention {
             section.append(tickerMentionSection(mention: mention))
@@ -126,7 +130,9 @@ class HomeViewModel {
         
         section.append(videoSection(videos: videos))
         
-        section.append(insightsSection(insights: insights))
+        if AppStorage.shared.user?.isPro ?? false  {
+            section.append(insightsSection(insights: insights))
+        }
         
         return section
     }

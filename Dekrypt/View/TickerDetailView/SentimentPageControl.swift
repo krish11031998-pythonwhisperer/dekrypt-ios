@@ -58,7 +58,7 @@ class SentimentPageControl: UICollectionReusableView, ConfigurableCollectionSupp
         
         pageControl.direction = .leftToRight
         pageControl.currentPageIndicatorTintColor = .appBlue
-        pageControl.pageIndicatorTintColor = .greyscale400
+        pageControl.pageIndicatorTintColor = .systemGray3
     }
     
     private func bind() {

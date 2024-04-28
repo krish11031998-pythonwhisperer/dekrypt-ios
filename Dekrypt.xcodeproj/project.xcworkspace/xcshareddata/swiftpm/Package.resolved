@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/dekryptService-spm.git",
       "state" : {
-        "revision" : "911884977a35496ef737389e5fbffce0272f1c26",
-        "version" : "1.0.9"
+        "revision" : "a7b5e4821e1114d9a21feac46bd4a863381bcd43",
+        "version" : "1.1.2"
       }
     },
     {

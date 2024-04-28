@@ -67,12 +67,12 @@ public class TickerDetailView: UIViewController {
             }
             .store(in: &bag)
         
-        output.reloadFavorite
-            .withUnretained(self)
-            .sinkReceive { (vc, header) in
-                vc.collectionView.reloadItems(header.2, section: header.0.rawValue, index: header.1, alsoReload: header.3)
-            }
-            .store(in: &bag)
+//        output.reloadFavorite
+//            .withUnretained(self)
+//            .sinkReceive { (vc, header) in
+//                vc.collectionView.reloadItems(header.2, section: header.0.rawValue, index: header.1, alsoReload: header.3)
+//            }
+//            .store(in: &bag)
         
         output.navigation
             .withUnretained(self)
