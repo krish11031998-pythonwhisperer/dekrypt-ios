@@ -96,6 +96,7 @@ public class NewsFeedViewControllerModel {
     private let preloadedNews: [NewsModel]
     private let selectedTab: CurrentValueSubject<Tab, Never> = .init(Tab.all)
     let nextPage: CurrentValueSubject<Bool, Never>
+    private let refreshData: CurrentValueSubject<Bool, Never> = .init(false)
     private let navigation: PassthroughSubject<Navigation, Never> = .init()
     
     private let type: FeedType
@@ -115,12 +116,24 @@ public class NewsFeedViewControllerModel {
     
     func transform() -> Output {
         
-        let fetchedNews = nextPage
+        let refreshedNews = refreshData
             .filter({ $0 })
-            .map { [weak self] in
-                ($0, (self?.page ?? -1) + 1)
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.page = 0
+                self?.news.removeAll()
+            })
+            .withUnretained(self)
+            .flatMap { (vm, refresh) in
+                vm.fetchNews(page: 0, refresh: refresh)
             }
-            .handleEvents(receiveOutput: { print("(DEBUG) output from nextPage: ", $0) })
+            .eraseToAnyPublisher()
+        
+        let fetchedNews = nextPage
+            .filter({ [weak self] in
+                guard let self else { return false }
+                return $0 && !self.refreshData.value
+            })
+            .map { [weak self] in ($0, (self?.page ?? -1) + 1) }
             .removeDuplicates(by: { $0.1 == $1.1 })
             .flatMap { [weak self] (nextPage, page) -> AnyPublisher<[NewsModel], Never> in
                 guard let self else { return Just([]).setFailureType(to: Never.self).eraseToAnyPublisher() }
@@ -130,21 +143,21 @@ public class NewsFeedViewControllerModel {
         
         let preloadedNews = AnyPublisher<[NewsModel], Never>.just(preloadedNews)
         
-        let fetchNews = fetchedNews.merge(with: preloadedNews)
-            .map { [weak self] fetchedNews in
-                guard let self else { return }
+        let fetchNews = Publishers.Merge3(fetchedNews, refreshedNews, preloadedNews)
+            .withUnretained(self)
+            .map { (vm, fetchedNews) in
                 if !fetchedNews.isEmpty {
-                    self.page += 1
+                    vm.page += 1
                 }
-                if self.news.isEmpty {
-                    self.news = fetchedNews
+                if vm.news.isEmpty {
+                    vm.news = fetchedNews
                 } else {
                     let removedDuplicates = fetchedNews.filter { news in
-                        !self.news.contains { newsEl in
+                        !vm.news.contains { newsEl in
                             newsEl == news
                         }
                     }
-                    self.news.append(contentsOf: removedDuplicates)
+                    vm.news.append(contentsOf: removedDuplicates)
                 }
                 return ()
             }
@@ -227,5 +240,12 @@ public class NewsFeedViewControllerModel {
             }
         
         return [DiffableCollectionSection(Section.news.rawValue, cells: cell, header: includeSegmentControl ? sectionHeader : nil, sectionLayout: sectionLayout)]
+    }
+    
+    
+    // MARK: - Refresh
+    
+    public func refresh() {
+        refreshData.send(true)
     }
 }

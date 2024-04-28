@@ -18,6 +18,8 @@ class NewsFeedViewController: UIViewController, TabViewController {
     
     private let viewModel: NewsFeedViewControllerModel
     private var bag: Set<AnyCancellable> = .init()
+    private lazy var refreshControl: UIRefreshControl = .init()
+    private var reachedEndCancellable: AnyCancellable?
     
     init(newsService: NewsServiceInterface = NewsService.shared, includeSegmentControl: Bool = true, type: NewsFeedViewControllerModel.FeedType = .feed) {
         self.viewModel = .init(newsService: newsService, includeSegmentControl: includeSegmentControl, type: type)
@@ -40,6 +42,7 @@ class NewsFeedViewController: UIViewController, TabViewController {
         collectionView.fillSuperview()
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.backgroundColor = .surfaceBackground
+        collectionView.refreshControl = refreshControl
         setupNavBar()
         startLoadingAnimation()
     }
@@ -61,6 +64,15 @@ class NewsFeedViewController: UIViewController, TabViewController {
     }
     
     private func bind() {
+        
+        refreshControl
+            .publisher(for: .valueChanged)
+            .withUnretained(self)
+            .sinkReceive { (vc, _) in
+                vc.viewModel.refresh()
+            }
+            .store(in: &bag)
+        
         let output = viewModel.transform()
         
         output.section
@@ -86,7 +98,12 @@ class NewsFeedViewController: UIViewController, TabViewController {
     }
     
     private func afterReloading() {
-        collectionView.reachedEnd?
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
+        
+        reachedEndCancellable?.cancel()
+        reachedEndCancellable = collectionView.reachedEnd?
             .removeDuplicates()
             .filter({ $0 })
             .receive(on: DispatchQueue.main)
@@ -94,7 +111,6 @@ class NewsFeedViewController: UIViewController, TabViewController {
                 print("(DEBUG) hasReached End: ", state)
                 self.viewModel.nextPage.send(true)
             }
-            .store(in: &bag)
     }
     
     

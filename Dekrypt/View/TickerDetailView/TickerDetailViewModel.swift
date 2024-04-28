@@ -58,6 +58,7 @@ public class TickerDetailViewModel {
     private var errorMessage: PassthroughSubject<String?, Error> = .init()
     private var navigation: PassthroughSubject<Navigation, Never> = .init()
     private let currentSentimentPage: PassthroughSubject<Int, Never> = .init()
+    private let refreshData: CurrentValueSubject<Bool, Never> = .init(false)
     private let ticker: String
     private let tickerName: String
     private let tickerService: TickerServiceInterface
@@ -83,17 +84,12 @@ public class TickerDetailViewModel {
             }
             .eraseToAnyPublisher()
         
-        let sections: AnyPublisher<[DiffableCollectionSection], Never> = AppStorage.shared.userPublisher
-            .removeDuplicates()
+        let sections: AnyPublisher<[DiffableCollectionSection], Never> = Publishers.CombineLatest(AppStorage.shared.userPublisher
+            .removeDuplicates(), refreshData.eraseToAnyPublisher())
             .withUnretained(self)
-            .flatMap { (vm, user) -> AnyPublisher<TickerDetailModel, Never> in
-                vm.tickerService.fetchTickerDetail(ticker: vm.ticker, isPro: user?.isPro ?? false, refresh: false)
-                    .compactMap(\.data)
-                    .catch({ err -> AnyPublisher<TickerDetailModel, Never> in
-                        print("(ERROR) err: ", err.localizedDescription)
-                        return .just(TickerDetailModel(ticker: nil, sentiment: nil, videos: nil, news: nil, events: nil))
-                    })
-                    .eraseToAnyPublisher()
+            .flatMap { (vm, model) -> AnyPublisher<TickerDetailModel, Never> in
+                let (user, refresh) = model
+                return vm.fetchTickerDetail(user: user, refresh: refresh)
             }
             .combineLatest(isFavorite)
             .withUnretained(self)
@@ -152,6 +148,19 @@ public class TickerDetailViewModel {
         }
         
         return sections
+    }
+    
+    
+    // MARK: - FetchTickerDetail
+    
+    private func fetchTickerDetail(user: UserModel?, refresh: Bool) -> AnyPublisher<TickerDetailModel, Never> {
+        tickerService.fetchTickerDetail(ticker: ticker, isPro: user?.isPro ?? false, refresh: refresh)
+            .compactMap(\.data)
+            .catch({ err -> AnyPublisher<TickerDetailModel, Never> in
+                print("(ERROR) err: ", err.localizedDescription)
+                return .just(TickerDetailModel(ticker: nil, sentiment: nil, videos: nil, news: nil, events: nil))
+            })
+            .eraseToAnyPublisher()
     }
     
     
@@ -321,4 +330,10 @@ public class TickerDetailViewModel {
         self.selectedTimeLine = selected
     }
     
+    
+    // MARK: - Refresh
+    
+    public func refresh() {
+        refreshData.send(true)
+    }
 }

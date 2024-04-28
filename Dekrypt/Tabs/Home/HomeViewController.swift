@@ -27,6 +27,7 @@ public class HomeViewController: UIViewController, TabViewController {
         self.viewModel = .init(socialService: socialService, videoService: videoService)
         super.init(nibName: nil, bundle: nil)
     }
+    private lazy var refreshControl: UIRefreshControl = .init()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -53,6 +54,7 @@ public class HomeViewController: UIViewController, TabViewController {
         collectionView.fillSuperview()
         collectionView.backgroundColor = .surfaceBackground
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.refreshControl = refreshControl
         setupHeader()
     }
     
@@ -87,15 +89,26 @@ public class HomeViewController: UIViewController, TabViewController {
     }
     
     private func bind() {
+        
+        refreshControl
+            .publisher(for: .valueChanged)
+            .sinkReceive { [weak self] value in
+                self?.viewModel.refresh()
+            }
+            .store(in: &bag)
+        
         let output = viewModel.transform()
         let sections = output.sections.share()
-        
         
         sections
             .withUnretained(self)
             .sinkReceive({ (vc, sections) in
                 vc.endLoadingAnimation {
                     vc.collectionView.reloadWithDynamicSection(sections: sections)
+                }
+                
+                if vc.refreshControl.isRefreshing {
+                    vc.refreshControl.endRefreshing()
                 }
             })
             .store(in: &bag)

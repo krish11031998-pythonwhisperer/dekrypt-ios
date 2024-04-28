@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git",
       "state" : {
-        "revision" : "b0c6c7f1feca42e9c151dc49e87ddb38e013cb2c",
-        "version" : "1.8.2"
+        "revision" : "0d555387033be2b8765ce755846c00e8efe97415",
+        "version" : "1.8.3"
       }
     },
     {

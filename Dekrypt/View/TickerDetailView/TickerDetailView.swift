@@ -21,6 +21,7 @@ public class TickerDetailView: UIViewController {
     }()
     private let viewModel: TickerDetailViewModel
     private var bag: Set<AnyCancellable> = .init()
+    private lazy var refreshControl: UIRefreshControl = .init()
     
     init(tickerService: TickerServiceInterface, eventService: EventServiceInterface, ticker: String, tickerName: String) {
         self.viewModel = .init(tickerService: tickerService, eventService: eventService, ticker: ticker, tickerName: tickerName)
@@ -49,6 +50,7 @@ public class TickerDetailView: UIViewController {
     private func setupView() {
         view.addSubview(collectionView)
         collectionView.fillSuperview()
+        collectionView.refreshControl = refreshControl
         standardNavBar()
         collectionView.showsVerticalScrollIndicator = false
         startLoadingAnimation()
@@ -56,6 +58,15 @@ public class TickerDetailView: UIViewController {
     
     
     private func bind() {
+        
+        refreshControl
+            .publisher(for: .valueChanged)
+            .withUnretained(self)
+            .sinkReceive { (vc, _) in
+                vc.viewModel.refresh()
+            }
+            .store(in: &bag)
+        
         let output = viewModel.transform()
         
         output.section
@@ -63,6 +74,10 @@ public class TickerDetailView: UIViewController {
             .sinkReceive { (vc, section) in
                 vc.endLoadingAnimation {
                     vc.collectionView.reloadWithDynamicSection(sections: section)
+                }
+                
+                if vc.refreshControl.isRefreshing {
+                    vc.refreshControl.endRefreshing()
                 }
             }
             .store(in: &bag)

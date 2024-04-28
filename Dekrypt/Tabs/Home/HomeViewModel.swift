@@ -55,6 +55,7 @@ class HomeViewModel {
     private let videoService: VideoServiceInterface
     private let errorMessage: PassthroughSubject<String, Never> = .init()
     private let navigation: PassthroughSubject<Navigation, Never> = .init()
+    private let refreshData: CurrentValueSubject<Bool, Never> = .init(false)
     
     init(socialService: SocialHighlightServiceInterface, videoService: VideoServiceInterface) {
         self.socialService = socialService
@@ -64,13 +65,30 @@ class HomeViewModel {
     
     func transform() -> Output {
         
-        let sections = Publishers.CombineLatest3(fetchHighlights(refresh: false), fetchVideos(refresh: false), fetchInsights(refresh: false)).combineLatest(AppStorage.shared.userPublisher)
-            .map { data, _ in data }
+        let refreshPublisher = refreshData
+            .removeDuplicates()
+            .filter({ $0 })
+            .prepend(true)
+            .eraseToAnyPublisher()
+        
+        let sections = Publishers.CombineLatest(AppStorage.shared.userPublisher, refreshPublisher)
+            .withUnretained(self)
+            .flatMap { (vm, model) in
+                let (user, refresh) = model
+                return Publishers.CombineLatest3(vm.fetchHighlights(refresh: refresh), vm.fetchVideos(refresh: refresh), vm.fetchInsights(refresh: refresh))
+                    .eraseToAnyPublisher()
+            }
             .receive(on: DispatchQueue.global(qos: .background))
             .map { [weak self] (hightlights, videos, insights) -> [DiffableCollectionSection] in
                 guard let self else { return [] }
                 return self.buildSections(highlight: hightlights, videos: videos, insights: insights)
             }
+            .handleEvents(receiveOutput: { [weak self] _ in
+                guard let self else { return }
+                if self.refreshData.value {
+                    self.refreshData.send(false)
+                }
+            })
             .eraseToAnyPublisher()
         
         return .init(sections: sections, navigation: navigation.eraseToAnyPublisher())
@@ -310,5 +328,12 @@ class HomeViewModel {
         let cells = insights.limit(to: 1).map { DiffableCollectionItem<InsightView>(.init(insight: $0, mode: .carousel, action: insightCallback($0))) }
         
         return .init(Section.insights.rawValue, cells: cells, header: sectionHeader, sectionLayout: layout)
+    }
+    
+    
+    // MARK: - Refresh
+    
+    public func refresh() {
+        refreshData.send(true)
     }
 }
