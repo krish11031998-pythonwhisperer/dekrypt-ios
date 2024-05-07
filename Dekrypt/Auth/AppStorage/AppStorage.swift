@@ -18,8 +18,8 @@ class AppStorage {
     private var auth: AuthPublisher
     private var bag: Set<AnyCancellable>
     
-    init(user: UserModel? = nil) {
-        self.user = user
+    init() {
+        self.user = UserDefaults.Key.user.value()
         self.auth = .init()
         self.bag = .init()
         bind()
@@ -27,6 +27,7 @@ class AppStorage {
     
     var userPublisher: AnyPublisher<UserModel?, Never> {
         $user
+            .removeDuplicates()
             .handleEvents(receiveOutput: { print("(DEBUG) user: ", $0) })
             .share()
             .eraseToAnyPublisher()
@@ -52,7 +53,12 @@ class AppStorage {
             })
             .map(\.data)
             .withUnretained(self)
-            .sinkReceive { $0.user = $1 }
+            .sinkReceive { 
+                if UserDefaults.Key.user.value() != $1 {
+                    UserDefaults.Key.user.setValue($1)
+                }
+                $0.user = $1
+            }
             .store(in: &bag)
     }
  }

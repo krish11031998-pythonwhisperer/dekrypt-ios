@@ -22,6 +22,13 @@ public class TickerDetailView: UIViewController {
     private let viewModel: TickerDetailViewModel
     private var bag: Set<AnyCancellable> = .init()
     private lazy var refreshControl: UIRefreshControl = .init()
+    private lazy var addFavorites: UIBarButtonItem = {
+        NavbarButton.navbarButton(img: .local(img: .Catalogue.heartOutline.image))
+    }()
+    private lazy var addHabit: UIBarButtonItem = {
+        NavbarButton.navbarButton(img: .local(img: .Catalogue.trendingUp.image))
+    }()
+    
     
     init(tickerService: TickerServiceInterface, eventService: EventServiceInterface, ticker: String, tickerName: String) {
         self.viewModel = .init(tickerService: tickerService, eventService: eventService, ticker: ticker, tickerName: tickerName)
@@ -44,7 +51,18 @@ public class TickerDetailView: UIViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavBar()
+    }
+    
+    private func setupNavBar() {
         showNavbar()
+        
+        if let isPro = AppStorage.shared.user?.isPro, isPro {
+            navigationItem.rightBarButtonItems = [addHabit, addFavorites]
+        } else {
+            navigationItem.rightBarButtonItems = [addFavorites]
+        }
+        
     }
     
     private func setupView() {
@@ -67,7 +85,19 @@ public class TickerDetailView: UIViewController {
             }
             .store(in: &bag)
         
-        let output = viewModel.transform()
+        let addFavorites = addFavorites
+            .tapPublisher
+            .throttle(for: .seconds(1), scheduler: DispatchQueue.main, latest: true)
+            .eraseToAnyPublisher()
+
+        
+        let addHabit = addHabit
+            .tapPublisher
+            .throttle(for: .seconds(1), scheduler: DispatchQueue.main, latest: true)
+            .eraseToAnyPublisher()
+
+        
+        let output = viewModel.transform(input: .init(addFavoritePublisher: addFavorites, addHabitPublisher: addHabit))
         
         output.section
             .withUnretained(self)
@@ -82,12 +112,24 @@ public class TickerDetailView: UIViewController {
             }
             .store(in: &bag)
         
-//        output.reloadFavorite
-//            .withUnretained(self)
-//            .sinkReceive { (vc, header) in
-//                vc.collectionView.reloadItems(header.2, section: header.0.rawValue, index: header.1, alsoReload: header.3)
-//            }
-//            .store(in: &bag)
+        AppStorage.shared.userPublisher
+            .handleEvents(receiveOutput: {
+                print("(DEBUG) from TickerDetail: ", $0?.isPro)
+            })
+            .withUnretained(self)
+            .sinkReceive { (vc, user) in
+                guard let user else {
+                    if vc.navigationItem.rightBarButtonItems?.first === vc.addHabit {
+                        vc.navigationItem.rightBarButtonItems?.removeFirst()
+                    }
+                    return
+                }
+                if user.isPro {
+                    vc.navigationItem.rightBarButtonItems?.insert(vc.addHabit, at: 0)
+                    vc.addFavorites.navBarButton?.isSelected = true
+                }
+            }
+            .store(in: &bag)
         
         output.navigation
             .withUnretained(self)
@@ -96,10 +138,23 @@ public class TickerDetailView: UIViewController {
                 switch navigation {
                 case .toNews(let news):
                     viewController = NewsDetailView(news: news)
+                    vc.pushTo(target: viewController)
                 case .toEvent(let event):
                     viewController = EventDetailView(event: event)
+                    vc.pushTo(target: viewController)
+                case .toHabit:
+                    viewController = TickerHabitBuilder()
+                    vc.pushTo(target: viewController)
+                case .showAlertForOnboarding:
+                    vc.presentErrorToast(error: "You have to sign in.")
                 }
-                vc.pushTo(target: viewController)
+            }
+            .store(in: &bag)
+        
+        output.addedFavorite
+            .withUnretained(self)
+            .sinkReceive { (vc, state) in
+                vc.addFavorites.navBarButton?.isSelected = state
             }
             .store(in: &bag)
         

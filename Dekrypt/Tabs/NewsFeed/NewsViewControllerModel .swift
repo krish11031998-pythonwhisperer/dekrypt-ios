@@ -164,6 +164,12 @@ public class NewsFeedViewControllerModel {
             .eraseToAnyPublisher()
         
         let section = Publishers.CombineLatest(fetchNews, selectedTab)
+            .handleEvents(receiveOutput: { [weak self] _ in
+                guard let self else { return }
+                if self.refreshData.value {
+                    self.refreshData.send(false)
+                }
+            })
             .compactMap { [weak self] (_, tab) -> [DiffableCollectionSection]? in
                 guard let self else { return nil }
                 return self.setupNewsSection(tab: tab)

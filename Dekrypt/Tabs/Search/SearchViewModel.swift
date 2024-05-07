@@ -60,18 +60,16 @@ class SearchViewModel {
     }
     
     func transform() -> Output {
-        let placeHolderSection = Publishers.Zip(lunarService.fetchCoinList(), lunarService.fetchCoinOfTheDay())
+        let placeHolderSection = tickerSearchService.fetchAllTickers()
             .catchWithErrorWithNever(errHandle: errorMessage, withErr: URLSessionError.invalidResponse)
             .withUnretained(self)
-            .map { (vm, coin) in
-                let (coinList, coinOfTheDay) = coin
-                return [vm.setupCoinOfTheDay(coinOfTheDay), vm.setupCoinsOfTheDay(coinList)].compactMap { $0 }
+            .map { (vm, coinList) in
+                return [vm.setupCoinsOfTheDay(coinList)]
             }
             .eraseToAnyPublisher()
         
-        let search: AnyPublisher<[DiffableCollectionSection]?, Never> = searchParam
-            .subscribe(on: DispatchQueue.global(qos: .background))
-            .prepend("")
+        let search: AnyPublisher<[DiffableCollectionSection], Never> = searchParam
+            //.prepend("")
             .compactMap({ $0 })
             .withUnretained(self)
             .flatMap { (vm, searchQuery) -> AnyPublisher<[DiffableCollectionSection]?, Never> in
@@ -100,16 +98,10 @@ class SearchViewModel {
                     .map { [$0, $1].compactMap({ $0 }) }
                     .eraseToAnyPublisher()
             }
+            .compactMap { $0 }
             .eraseToAnyPublisher()
         
-        let sections = Publishers.CombineLatest(placeHolderSection, search)
-            .map { [weak self] in
-                if let searchResult = $1 {
-                    return searchResult
-                } else {
-                    return $0 + [self?.setupRecentlySearchedCoins()].compactMap({ $0 })
-                }
-            }
+        let sections = Publishers.Merge(placeHolderSection, search)
             .eraseToAnyPublisher()
         
         return .init(section: sections)
@@ -143,10 +135,10 @@ class SearchViewModel {
     
     // MARK: - Coins Of the Day
     
-    private func setupCoinsOfTheDay(_ coinList: LunarCoinList) -> DiffableCollectionSection {
+    private func setupCoinsOfTheDay(_ coinList: [LunarCoinInfo]) -> DiffableCollectionSection {
         let sectionLayout = simpleRowLayout(addTrailingInset: false)
         
-        let cells = coinList.data.limit(to: 4).map { coin in
+        let cells = coinList.limit(to: 4).map { coin in
             let callback: Callback = { [weak self] in
                 self?.navigation.send(.toTicker(ticker: coin.symbol, name: coin.name))
             }

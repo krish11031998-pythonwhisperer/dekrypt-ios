@@ -44,12 +44,19 @@ public class TickerDetailViewModel {
     enum Navigation {
         case toNews(NewsModel)
         case toEvent(EventModel)
+        case toHabit
+        case showAlertForOnboarding
+    }
+    
+    struct Input {
+        let addFavoritePublisher: AnyPublisher<Void, Never>
+        let addHabitPublisher: AnyPublisher<Void, Never>?
     }
     
     struct Output {
         let section: AnyPublisher<[DiffableCollectionSection], Never>
         let navigation: AnyPublisher<Navigation, Never>
-        // let reloadFavorite: AnyPublisher<ItemReloadBody, Never>
+        let addedFavorite: AnyPublisher<Bool, Never>
         let errorMessage: AnyPublisher<String?, Error>
     }
     
@@ -71,7 +78,7 @@ public class TickerDetailViewModel {
         self.tickerName = tickerName
     }
     
-    func transform() -> Output {
+    func transform(input: Input) -> Output {
         
         let isFavorite = $isFavorite.share().eraseToAnyPublisher()
 
@@ -98,22 +105,48 @@ public class TickerDetailViewModel {
             }
             .eraseToAnyPublisher()
         
+        
+        let addFavoriteSharePublisher = input.addFavoritePublisher
+            .withLatestFrom(AppStorage.shared.userPublisher)
+            .map { _, user in user }
+            .share()
+        
+        let navToOnboardingWhenUserIsNotLoggedIn = addFavoriteSharePublisher
+            .filter { $0 == nil }
+            .map { _ in Navigation.showAlertForOnboarding }
+            .eraseToAnyPublisher()
+        
+        let addToWatchlist = addFavoriteSharePublisher
+            .compactMap({ $0 })
+            .withUnretained(self)
+            .flatMap { (vm, user) in
+                if let watching = user.watching, watching.contains(vm.ticker) {
+                    UserService.shared.removeAssetToWatchlist(uid: user.uid, asset: vm.ticker)
+                        .map { _ in false }
+                        .replaceError(with: true)
+                        .eraseToAnyPublisher()
+                } else {
+                    UserService.shared.addAssetToWatchlist(uid: user.uid, asset: vm.ticker)
+                        .map { _ in true }
+                        .replaceError(with: false)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
+        
         // Reload Header when favorite
         
-//        let reloadHeader: AnyPublisher<ItemReloadBody, Never> = $isFavorite
-//            .dropFirst(1)
-//            .withLatestFrom(tickerInfo.compactMap(\.ticker).eraseToAnyPublisher())
-//            .withUnretained(self)
-//            .compactMap { (vm, data) -> DiffableCollectionCellProvider? in
-//                let (isFavorite, ticker) = data
-//                let header = DiffableCollectionItem<TickerInfoView>(.init(ticker: ticker, isFavorite: isFavorite, addFavorite: vm.addFavorite))
-//                return header
-//            }
-//            .map({ (Section.price, 0, $0, false) })
-//            .eraseToAnyPublisher()
+        let navigationPublisher: AnyPublisher<Navigation, Never>
+        if let addHabitPublisher = input.addHabitPublisher {
+            navigationPublisher = Publishers.Merge3(navigation.eraseToAnyPublisher(), addHabitPublisher.map { _ in Navigation.toHabit }.eraseToAnyPublisher(), navToOnboardingWhenUserIsNotLoggedIn)
+                .eraseToAnyPublisher()
+        } else {
+            navigationPublisher = navigation.eraseToAnyPublisher()
+        }
+        
         
         return .init(section: sections,
-                     navigation: navigation.eraseToAnyPublisher(),
+                     navigation: navigationPublisher, addedFavorite: addToWatchlist,
                      errorMessage: errorMessage.eraseToAnyPublisher())
     }
     
@@ -172,7 +205,7 @@ public class TickerDetailViewModel {
         
         var cells: [DiffableCollectionCellProvider] = []
         
-        cells.append(DiffableCollectionItem<TickerInfoView>(.init(ticker: .init(id: nil, symbol: self.ticker, name: tickerName, hashingAlgorithms: nil, description: nil, image: .init(thumb: self.ticker.logoStr, small: self.ticker.logoStr, large: self.ticker.logoStr), marketData: nil, marketCapRank: nil, communityScore: nil, liquidityScore: nil), isFavorite: isFavorite, addFavorite: addFavorite)))
+        cells.append(DiffableCollectionItem<TickerInfoView>(.init(ticker: .init(id: nil, symbol: self.ticker, name: tickerName, hashingAlgorithms: nil, description: nil, image: .init(thumb: self.ticker.logoStr, small: self.ticker.logoStr, large: self.ticker.logoStr), marketData: nil, marketCapRank: nil, communityScore: nil, liquidityScore: nil), isFavorite: isFavorite)))
 
         guard let ticker else {
             cells.append(DiffableCollectionItem<TickerNoInfoView>(.init(ticker: tickerName)))

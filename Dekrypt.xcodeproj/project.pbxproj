@@ -14,6 +14,7 @@
 		EF1E8A262BC348D300FC84D3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A252BC348D300FC84D3 /* SearchViewController.swift */; };
 		EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */; };
 		EF4133672BDC4F5F00EF834B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF4133662BDC4F5E00EF834B /* GoogleService-Info.plist */; };
+		EF42AA9F2BE9490000C54D0F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */; };
 		EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */; };
 		EFA716042BD56B860001F555 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA716032BD56B860001F555 /* TabViewController.swift */; };
 		EFA716062BD571F00001F555 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFA716052BD571F00001F555 /* Assets.xcassets */; };
@@ -65,6 +66,7 @@
 		EF1E8A252BC348D300FC84D3 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		EF4133662BDC4F5E00EF834B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentPageControl.swift; sourceTree = "<group>"; };
 		EFA716032BD56B860001F555 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		EFA716052BD571F00001F555 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				EFA7160D2BD5C1930001F555 /* AppStorage.swift */,
+				EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */,
 			);
 			path = AppStorage;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				EF1E8A262BC348D300FC84D3 /* SearchViewController.swift in Sources */,
 				EFB133BF2BAE4A0C00004025 /* TickerViewController.swift in Sources */,
 				EFB133C92BAE4A0C00004025 /* ProfileCell.swift in Sources */,
+				EF42AA9F2BE9490000C54D0F /* UserDefaults.swift in Sources */,
 				EFB133B92BAE4A0C00004025 /* EventDetailHeaderView.swift in Sources */,
 				EFDA7EF72BD521250036E720 /* AuthInterface.swift in Sources */,
 				EFA716042BD56B860001F555 /* TabViewController.swift in Sources */,

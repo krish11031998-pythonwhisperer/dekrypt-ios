@@ -71,10 +71,9 @@ class HomeViewModel {
             .prepend(true)
             .eraseToAnyPublisher()
         
-        let sections = Publishers.CombineLatest(AppStorage.shared.userPublisher, refreshPublisher)
+        let sections = refreshPublisher //Publishers.CombineLatest(AppStorage.shared.userPublisher, refreshPublisher)
             .withUnretained(self)
-            .flatMap { (vm, model) in
-                let (user, refresh) = model
+            .flatMap { (vm, refresh) in
                 return Publishers.CombineLatest3(vm.fetchHighlights(refresh: refresh), vm.fetchVideos(refresh: refresh), vm.fetchInsights(refresh: refresh))
                     .eraseToAnyPublisher()
             }
