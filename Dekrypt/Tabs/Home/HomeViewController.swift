@@ -136,7 +136,7 @@ public class HomeViewController: UIViewController, TabViewController {
                 case .toTickerDetail(let detail):
                     vc.pushTo(target: TickerDetailView(tickerService: TickerService.shared, eventService: EventService.shared, ticker: detail.ticker, tickerName: detail.name))
                 case .toVideo(let videoModel):
-                    vc.pushTo(target: YoutubeViewController(videoModel: videoModel), asSheet: true)
+                    vc.pushTo(target: VideoFeedViewController(videoModel: videoModel), asSheet: true)
                 case .toInsight(_):
                     print("(DEBUG) Clicked on insight")
                 case .toAllInsights(let insights):

@@ -170,16 +170,13 @@ public class VideoPlayerViewV2: DiffableConfigurableCollectionCell {
         model.video.sourceName.styled(font: CustomFonts.regular, color: .gray, size: 10).render(target: sourceLabel)
         model.video.title.body1Medium(color: .appWhite).render(target: videoNameLabel)
         model.video.text.styled(font: CustomFonts.thin, color: .appWhite, size: 10).render(target: videoDescriptionLabel)
-        print("(DEBUG) setting player.alpha to zero \(model.video.newsId)")
-        player.alpha = 0
+        DispatchQueue.main.async {
+            self.player.alpha = 0
+        }
     }
     
     public func playOrPauseVideo(play shouldPlay: Bool) {
         self.shouldPlay = shouldPlay
-        player.alpha = 0
     }
     
-    public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        print("(DEBUG) frame @\(layoutAttributes.indexPath   ): ", layoutAttributes.frame)
-    }
 }

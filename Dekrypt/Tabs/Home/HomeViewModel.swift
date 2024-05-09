@@ -71,16 +71,18 @@ class HomeViewModel {
             .prepend(true)
             .eraseToAnyPublisher()
         
-        let sections = refreshPublisher //Publishers.CombineLatest(AppStorage.shared.userPublisher, refreshPublisher)
+        let sections = Publishers.CombineLatest(AppStorage.shared.userPublisher, refreshPublisher)
             .withUnretained(self)
-            .flatMap { (vm, refresh) in
+            .flatMap { (vm, data) in
+                let (user, refresh) = data
                 return Publishers.CombineLatest3(vm.fetchHighlights(refresh: refresh), vm.fetchVideos(refresh: refresh), vm.fetchInsights(refresh: refresh))
+                    .map { ($0.0, $0.1, $0.2, user) }
                     .eraseToAnyPublisher()
             }
             .receive(on: DispatchQueue.global(qos: .background))
-            .map { [weak self] (hightlights, videos, insights) -> [DiffableCollectionSection] in
+            .map { [weak self] (hightlights, videos, insights, user) -> [DiffableCollectionSection] in
                 guard let self else { return [] }
-                return self.buildSections(highlight: hightlights, videos: videos, insights: insights)
+                return self.buildSections(highlight: hightlights, videos: videos, insights: insights, user: user)
             }
             .handleEvents(receiveOutput: { [weak self] _ in
                 guard let self else { return }
@@ -123,7 +125,7 @@ class HomeViewModel {
             .eraseToAnyPublisher()
     }
     
-    private func buildSections(highlight: SocialHighlightModel, videos: [VideoModel], insights: [InsightDigestModel]) -> [DiffableCollectionSection] {
+    private func buildSections(highlight: SocialHighlightModel, videos: [VideoModel], insights: [InsightDigestModel], user: UserModel?) -> [DiffableCollectionSection] {
         var section: [DiffableCollectionSection] = []
   
         if let headlines = highlight.headlines {
@@ -134,7 +136,7 @@ class HomeViewModel {
             section.append(newsSection(news: news))
         }
         
-        if AppStorage.shared.user?.isPro ?? false {
+        if user?.isPro ?? false {
             if let events = highlight.events {
                 section.append(eventSection(events: events))
             }
@@ -147,7 +149,7 @@ class HomeViewModel {
         
         section.append(videoSection(videos: videos))
         
-        if AppStorage.shared.user?.isPro ?? false  {
+        if user?.isPro ?? false  {
             section.append(insightsSection(insights: insights))
         }
         

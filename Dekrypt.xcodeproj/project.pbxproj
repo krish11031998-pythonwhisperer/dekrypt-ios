@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EF1E8A1A2BBDEEDB00FC84D3 /* YoutubeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A192BBDEEDB00FC84D3 /* YoutubeViewController.swift */; };
 		EF1E8A1F2BBF29A500FC84D3 /* VideoCarouselLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A1E2BBF29A500FC84D3 /* VideoCarouselLayout.swift */; };
 		EF1E8A212BBF30B500FC84D3 /* VidoCarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A202BBF30B500FC84D3 /* VidoCarouselCell.swift */; };
 		EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A232BC33FF900FC84D3 /* SearchHeader.swift */; };
@@ -56,10 +55,11 @@
 		EFDA7EFB2BD521A70036E720 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = EFDA7EFA2BD521A70036E720 /* GoogleSignIn */; };
 		EFDA7EFD2BD521A70036E720 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EFDA7EFC2BD521A70036E720 /* GoogleSignInSwift */; };
 		EFDA7F002BD523E70036E720 /* SplashScreenVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */; };
+		EFE2FA802BEC3A270009B103 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2FA7F2BEC3A270009B103 /* VideoPlayerViewController.swift */; };
+		EFE2FA822BECBBFE0009B103 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2FA812BECBBFE0009B103 /* VideoPlayerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EF1E8A192BBDEEDB00FC84D3 /* YoutubeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeViewController.swift; sourceTree = "<group>"; };
 		EF1E8A1E2BBF29A500FC84D3 /* VideoCarouselLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCarouselLayout.swift; sourceTree = "<group>"; };
 		EF1E8A202BBF30B500FC84D3 /* VidoCarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VidoCarouselCell.swift; sourceTree = "<group>"; };
 		EF1E8A232BC33FF900FC84D3 /* SearchHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeader.swift; sourceTree = "<group>"; };
@@ -106,6 +106,8 @@
 		EFDA7EF32BD521250036E720 /* FirebaseAuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseAuthService.swift; sourceTree = "<group>"; };
 		EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenVIewController.swift; sourceTree = "<group>"; };
 		EFDA7F012BD5281A0036E720 /* Dekrypt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dekrypt.entitlements; sourceTree = "<group>"; };
+		EFE2FA7F2BEC3A270009B103 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
+		EFE2FA812BECBBFE0009B103 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,10 +129,11 @@
 		EF1E8A1D2BBF297C00FC84D3 /* VideoCarousel */ = {
 			isa = PBXGroup;
 			children = (
-				EF1E8A192BBDEEDB00FC84D3 /* YoutubeViewController.swift */,
 				EF1E8A1E2BBF29A500FC84D3 /* VideoCarouselLayout.swift */,
 				EF1E8A202BBF30B500FC84D3 /* VidoCarouselCell.swift */,
 				EFDA7EE82BCDBA980036E720 /* VideoCarouselCellV2.swift */,
+				EFE2FA7F2BEC3A270009B103 /* VideoPlayerViewController.swift */,
+				EFE2FA812BECBBFE0009B103 /* VideoPlayerViewModel.swift */,
 			);
 			path = VideoCarousel;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				EFDA7EF72BD521250036E720 /* AuthInterface.swift in Sources */,
 				EFA716042BD56B860001F555 /* TabViewController.swift in Sources */,
 				EF1E8A212BBF30B500FC84D3 /* VidoCarouselCell.swift in Sources */,
+				EFE2FA822BECBBFE0009B103 /* VideoPlayerViewModel.swift in Sources */,
 				EFA716102BD5C8810001F555 /* OnboardingScreen.swift in Sources */,
 				EFB133BC2BAE4A0C00004025 /* TickerDetailView.swift in Sources */,
 				EFB133C52BAE4A0C00004025 /* MainTabModel.swift in Sources */,
@@ -438,13 +442,13 @@
 				EFB133C32BAE4A0C00004025 /* HomeViewModel.swift in Sources */,
 				EFB133BD2BAE4A0C00004025 /* TickerDetailViewModel.swift in Sources */,
 				EFA7160E2BD5C1930001F555 /* AppStorage.swift in Sources */,
-				EF1E8A1A2BBDEEDB00FC84D3 /* YoutubeViewController.swift in Sources */,
 				EFB133C12BAE4A0C00004025 /* NewsDetailView.swift in Sources */,
 				EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */,
 				EF1E8A1F2BBF29A500FC84D3 /* VideoCarouselLayout.swift in Sources */,
 				EFB133C72BAE4A0C00004025 /* NewsFeedViewController.swift in Sources */,
 				EFB133C22BAE4A0C00004025 /* HomeViewController.swift in Sources */,
 				EFB133C02BAE4A0C00004025 /* TickerViewModel.swift in Sources */,
+				EFE2FA802BEC3A270009B103 /* VideoPlayerViewController.swift in Sources */,
 				EFB8DD002BC560D9001AC56F /* InsightsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
