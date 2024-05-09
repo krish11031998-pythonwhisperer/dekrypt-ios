@@ -135,8 +135,8 @@ public class HomeViewController: UIViewController, TabViewController {
                     vc.pushTo(target: NewsFeedViewController(newsService: NewsService.shared, type: .preloaded(.init(news: news))))
                 case .toTickerDetail(let detail):
                     vc.pushTo(target: TickerDetailView(tickerService: TickerService.shared, eventService: EventService.shared, ticker: detail.ticker, tickerName: detail.name))
-                case .toVideo(let videoModel):
-                    vc.pushTo(target: VideoFeedViewController(videoModel: videoModel), asSheet: true)
+                case .toVideo(let videoModel, let video):
+                    vc.pushTo(target: VideoFeedViewController(videoModel: videoModel, videoToScrollTo: video), asSheet: true)
                 case .toInsight(_):
                     print("(DEBUG) Clicked on insight")
                 case .toAllInsights(let insights):

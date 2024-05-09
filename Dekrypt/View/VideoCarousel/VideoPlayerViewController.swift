@@ -24,8 +24,8 @@ class VideoFeedViewController: UIViewController {
     private let viewModel: VideoFeedViewModel
     private let reachedEnd: PassthroughSubject<Void, Never> = .init()
     
-    init(videoModel: [VideoModel], videoService: VideoServiceInterface = VideoService.shared) {
-        self.viewModel = .init(videoModel: videoModel, videoService: videoService)
+    init(videoModel: [VideoModel], videoToScrollTo: VideoModel? = nil, videoService: VideoServiceInterface = VideoService.shared) {
+        self.viewModel = .init(videoModel: videoModel, videoToScrollTo: videoToScrollTo, videoService: videoService)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,11 +38,25 @@ class VideoFeedViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         standardNavBar(title: "Video".styled(font: CustomFonts.semibold, color: .appWhite, size: 24),
-                       leftBarButton: Self.closeButton(self),
+                       leftBarButton: isPresented ? Self.closeButton(self) : nil,
                        color: .clear,
                        scrollColor: .clear,
                        showBackByDefault: true)
         bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isPresented {
+            hideTabBar()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if !isPresented {
+            showTabBar()
+        }
     }
     
     private func setupView() {
@@ -58,7 +72,7 @@ class VideoFeedViewController: UIViewController {
             .withUnretained(self)
             .sinkReceive { (vc, section) in
                 vc.collectionView.reloadWithDynamicSection(sections: [section]) { [weak vc] in
-                    vc?.setupReachedEnd()
+                    vc?.setupReachedEnd(videoToScrollTo: output.videoToScrollTo)
                 }
             }
             .store(in: &bag)
@@ -79,7 +93,15 @@ class VideoFeedViewController: UIViewController {
         
     }
     
-    private func setupReachedEnd() {
+    private func setupReachedEnd(videoToScrollTo: AnyPublisher<IndexPath, Never>?) {
+        
+        videoToScrollTo?
+            .withUnretained(self)
+            .sinkReceive({ (vc, index) in
+                vc.collectionView.scrollToItem(at: index, at: .top, animated: false)
+            })
+            .store(in: &bag)
+        
         guard let reachedEnd = collectionView.reachedEnd else { return }
         
         reachedEnd
@@ -91,6 +113,8 @@ class VideoFeedViewController: UIViewController {
                 vc.reachedEnd.send(())
             }
             .store(in: &bag)
+        
+        
     }
 }
 

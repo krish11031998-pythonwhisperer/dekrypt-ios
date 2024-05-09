@@ -56,7 +56,7 @@ public class TickerDetailView: UIViewController {
     
     private func setupNavBar() {
         showNavbar()
-        
+        setupTransparentNavBar(color: .surfaceBackground, scrollColor: .surfaceBackground)
         if let isPro = AppStorage.shared.user?.isPro, isPro {
             navigationItem.rightBarButtonItems = [addHabit, addFavorites]
         } else {
@@ -144,6 +144,9 @@ public class TickerDetailView: UIViewController {
                     vc.pushTo(target: viewController)
                 case .toHabit:
                     viewController = TickerHabitBuilder()
+                    vc.pushTo(target: viewController)
+                case .videos(let videos, let videoToScrollTo):
+                    viewController = VideoFeedViewController(videoModel: videos, videoToScrollTo: videoToScrollTo)
                     vc.pushTo(target: viewController)
                 case .showAlertForOnboarding:
                     vc.presentErrorToast(error: "You have to sign in.")

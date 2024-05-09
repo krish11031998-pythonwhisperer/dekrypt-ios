@@ -19,14 +19,17 @@ class VideoFeedViewModel {
     
     struct Output {
         let sections: AnyPublisher<DiffableCollectionSection, Never>
+        let videoToScrollTo: AnyPublisher<IndexPath, Never>?
     }
     
     private var videoModel: [VideoModel]
+    private let videoToScrollTo: VideoModel?
     private var page: Int = 1
     private let videoService: VideoServiceInterface
     
-    init(videoModel: [VideoModel], videoService: VideoServiceInterface) {
+    init(videoModel: [VideoModel], videoToScrollTo: VideoModel?, videoService: VideoServiceInterface) {
         self.videoModel = videoModel
+        self.videoToScrollTo = videoToScrollTo
         self.videoService = videoService
     }
     
@@ -57,6 +60,19 @@ class VideoFeedViewModel {
             }
             .eraseToAnyPublisher()
         
+        let videoToScrollTo: AnyPublisher<IndexPath, Never> = Just(videoToScrollTo)
+            .compactMap { $0 }
+            .withUnretained(self)
+            .compactMap { (vm, videoToScrollTo) in
+               let index = vm.videoModel.firstIndex { video in
+                    video.title == videoToScrollTo.title
+                }
+                guard let index else { return nil }
+                print("(DEBUG) vm.videoModel.firstIndex(of: video): ", index)
+                return IndexPath(item: index, section: 0)
+            }
+            .eraseToAnyPublisher()
+        
         let sections = Publishers.Merge(videos, fetchNextVideos)
             .map {
                 let videoCells = $0.map { DiffableCollectionCell<VideoPlayerViewV2>(.init(video: $0)) }
@@ -69,6 +85,6 @@ class VideoFeedViewModel {
             }
             .eraseToAnyPublisher()
         
-        return .init(sections: sections)
+        return .init(sections: sections, videoToScrollTo: videoToScrollTo)
     }
 }

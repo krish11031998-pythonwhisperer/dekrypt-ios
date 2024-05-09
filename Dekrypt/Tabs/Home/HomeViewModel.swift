@@ -44,7 +44,7 @@ class HomeViewModel {
         case toEvent(EventModel)
         case toTickers([MentionTickerModel])
         case toTickerDetail(MentionTickerModel)
-        case toVideo([VideoModel])
+        case toVideo([VideoModel], VideoModel)
         case toAllNews([NewsModel])
         case toAllInsights([InsightDigestModel])
         case toInsight(InsightDigestModel)
@@ -295,7 +295,7 @@ class HomeViewModel {
         
         let cells = videos.limit(to: 4).map { video in
             DiffableCollectionItem<VideoCard>(.init(model: video, size: .small) { [weak self] in
-                self?.navigation.send(.toVideo(videos))
+                self?.navigation.send(.toVideo(videos, video))
             })
         }
         

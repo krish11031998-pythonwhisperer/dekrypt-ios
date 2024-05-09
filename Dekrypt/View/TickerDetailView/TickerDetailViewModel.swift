@@ -44,6 +44,7 @@ public class TickerDetailViewModel {
     enum Navigation {
         case toNews(NewsModel)
         case toEvent(EventModel)
+        case videos([VideoModel], VideoModel)
         case toHabit
         case showAlertForOnboarding
     }
@@ -313,12 +314,18 @@ public class TickerDetailViewModel {
         let videoSectionLayout = NSCollectionLayoutSection.twoGrid(interItemSpacing: .appVerticalPadding.half, height: height, inset: .sectionInsets)
             .addHeader()
         
+        let action: (VideoModel) -> Callback = { video in
+            return { [weak self] in
+                self?.navigation.send(.videos(videos, video))
+            }
+        }
+        
         let videoCells = videos
             .limit(to: 4)
             .indices
             .map { idx in
                 let video = videos[idx]
-                return DiffableCollectionItem<VideoCard>(.init(model: video, size: .small))
+                return DiffableCollectionItem<VideoCard>(.init(model: video, size: .small, action: action(video)))
             }
         
         return .init(Section.video.rawValue, cells: videoCells, header: videoSectionHeader, sectionLayout: videoSectionLayout)
