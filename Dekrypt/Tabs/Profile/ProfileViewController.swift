@@ -11,7 +11,7 @@ import KKit
 import Combine
 import DekryptUI
 
-public class ProfileViewController: UIViewController, TabViewController {
+public class ProfileViewController: UIViewController, TabViewControllerType {
     
     private lazy var collectionView: UICollectionView = { .init(frame: .zero, collectionViewLayout: .init()) }()
     private let viewModel: ProfileViewModel = .init()
@@ -19,7 +19,11 @@ public class ProfileViewController: UIViewController, TabViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        hideNavbar()
+        if isPresented {
+            self.standardNavBar(leftBarButton: Self.closeButton(self))
+        } else {
+            hideTabBar()
+        }
         setupView()
         bind()
     }

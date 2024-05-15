@@ -10,7 +10,7 @@ import DekryptService
 import UIKit
 import Combine
 
-class SearchViewController: UIViewController, TabViewController {
+class SearchViewController: UIViewController, TabViewControllerType {
     
     private lazy var collectionView: UICollectionView = .init(frame: .zero, collectionViewLayout: .init())
     private lazy var header: SearchHeader = .init(placeHolder: "Explore coins...", header: "Search", onSearch: viewModel.searchParam)

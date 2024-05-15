@@ -13,6 +13,10 @@ import UIKit
 
 class HomeViewModel {
    
+    struct Input {
+        let settings: AnyPublisher<Void, Never>
+    }
+    
     struct Output {
         let sections: AnyPublisher<[DiffableCollectionSection], Never>
         let navigation: AnyPublisher<Navigation, Never>
@@ -48,6 +52,7 @@ class HomeViewModel {
         case toAllNews([NewsModel])
         case toAllInsights([InsightDigestModel])
         case toInsight(InsightDigestModel)
+        case settings
     }
     
 
@@ -63,7 +68,7 @@ class HomeViewModel {
     }
     
     
-    func transform() -> Output {
+    func transform(input: Input) -> Output {
         
         let refreshPublisher = refreshData
             .removeDuplicates()
@@ -92,7 +97,15 @@ class HomeViewModel {
             })
             .eraseToAnyPublisher()
         
-        return .init(sections: sections, navigation: navigation.eraseToAnyPublisher())
+        let settingsNav = input.settings
+            .handleEvents(receiveOutput: { print("(DEBUG) input.settings tapped!") })
+            .map { _ in Navigation.settings }
+            .eraseToAnyPublisher()
+        
+        let navPublisher = navigation.eraseToAnyPublisher().merge(with: settingsNav)
+            .eraseToAnyPublisher()
+        
+        return .init(sections: sections, navigation: navPublisher)
     }
     
     

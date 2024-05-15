@@ -12,7 +12,7 @@ import Combine
 import DekryptUI
 import DekryptService
 
-class NewsFeedViewController: UIViewController, TabViewController {
+class NewsFeedViewController: TabViewController {
 
     private lazy var collectionView: UICollectionView = { .init(frame: .zero, collectionViewLayout: .init()) }()
     
@@ -25,6 +25,10 @@ class NewsFeedViewController: UIViewController, TabViewController {
         self.viewModel = .init(newsService: newsService, includeSegmentControl: includeSegmentControl, type: type)
         super.init(nibName: nil, bundle: nil)
     }
+    
+    override class var navName: String { "News" }
+    
+    override class var iconName: UIImage.Catalogue { .news }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -43,24 +47,7 @@ class NewsFeedViewController: UIViewController, TabViewController {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.backgroundColor = .surfaceBackground
         collectionView.refreshControl = refreshControl
-        setupNavBar()
         startLoadingAnimation()
-    }
-
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavBar()
-    }
-    
-    private func setupNavBar() {
-        if navigationController?.viewControllers.first !== self {
-            standardNavBar()
-            showNavbar()
-        } else {
-            setupTransparentNavBar()
-            standardNavBar(leftBarButton: .init(view: "News".styled(font: CustomFonts.semibold, color: .textColor, size: 24).generateLabel))
-            showNavbar()
-        }
     }
     
     private func bind() {
@@ -112,9 +99,4 @@ class NewsFeedViewController: UIViewController, TabViewController {
                 self.viewModel.nextPage.send(true)
             }
     }
-    
-    
-    // MARK: - TabViewController
-    
-    var tabItem: MainTabModel { .news }
 }

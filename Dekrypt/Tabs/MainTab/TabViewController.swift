@@ -2,19 +2,49 @@
 //  TabViewController.swift
 //  Dekrypt
 //
-//  Created by Krishna Venkatramani on 21/04/2024.
+//  Created by Krishna Venkatramani on 15/05/2024.
 //
 
-import Foundation
 import UIKit
+import DekryptUI
 
-protocol TabViewController {
-    var tabItem: MainTabModel { get }
-    func asTabController() -> UINavigationController
-}
-
-extension TabViewController where Self: UIViewController {
-    func asTabController() -> UINavigationController {
-        self.withNavigationController(swipable: true).tabBarItem(tabItem)
+class TabViewController: UIViewController, TabViewControllerType {
+    
+    var tabItem: MainTabModel { .init(name: Self.navName, iconName: Self.iconName) }
+    
+    class var showNavbar: Bool {
+        true
     }
+    
+    class var navName: String {
+        name
+    }
+    
+    class var iconName: UIImage.Catalogue {
+        .appleLogo
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavbar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if Self.showNavbar {
+            showNavbar()
+        }
+    }
+    
+    private func setupNavbar() {
+        if navigationController?.viewControllers.first !== self {
+            standardNavBar()
+        } else {
+            setupTransparentNavBar()
+            standardNavBar(leftBarButton: .init(view: Self.navName.styled(font: CustomFonts.semibold, color: .textColor, size: 24).generateLabel))
+            showNavbar()
+        }
+    }
+    
+    
 }

@@ -11,7 +11,7 @@ import KKit
 import DekryptUI
 import DekryptService
 
-public class HomeViewController: UIViewController, TabViewController {
+public class HomeViewController: UIViewController, TabViewControllerType {
     
     private lazy var collectionView: UICollectionView = {
         .init(frame: .zero, collectionViewLayout: .init())
@@ -22,6 +22,7 @@ public class HomeViewController: UIViewController, TabViewController {
     private weak var headerViewTopConstraint: NSLayoutConstraint!
     private let headerViewAnimator: UIViewPropertyAnimator = { .init(duration: 0.3, curve: .easeIn) }()
     private(set) var initialLoad: PassthroughSubject<Void, Never> = .init()
+    
     public init(socialService: SocialHighlightServiceInterface = StubSocialHighlightService(),
                 videoService: VideoServiceInterface = StubVideoService()) {
         self.viewModel = .init(socialService: socialService, videoService: videoService)
@@ -62,8 +63,7 @@ public class HomeViewController: UIViewController, TabViewController {
         let headerContainer = UIView()
         headerContainer.backgroundColor = .surfaceBackground
         
-        let headerView = HeaderView()
-        headerView.configure(with: .init(name: "Welcome to Dekrypt"))
+        headerView.configure(with: .init(title: "Welcome to Dekrypt"))
         headerContainer.addSubview(headerView)
         headerView
             .pinHorizontalAnchorsTo(constant: 0)
@@ -97,7 +97,7 @@ public class HomeViewController: UIViewController, TabViewController {
             }
             .store(in: &bag)
         
-        let output = viewModel.transform()
+        let output = viewModel.transform(input: .init(settings: headerView.settingsTapped))
         let sections = output.sections.share()
         
         sections
@@ -141,6 +141,8 @@ public class HomeViewController: UIViewController, TabViewController {
                     print("(DEBUG) Clicked on insight")
                 case .toAllInsights(let insights):
                     vc.pushTo(target: InsightViewController())
+                case .settings:
+                    vc.pushTo(target: ProfileViewController(), asSheet: true)
                 }
             }
             .store(in: &bag)

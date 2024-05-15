@@ -19,6 +19,7 @@ class MainTabViewController: UITabBarController {
     private var news: NewsFeedViewController!
     private var profile: ProfileViewController!
     private var search: SearchViewController!
+    private var watchlist: WatchlistViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,14 +49,15 @@ class MainTabViewController: UITabBarController {
         news = NewsFeedViewController()
         profile = ProfileViewController()
         search = SearchViewController()
-        
+        watchlist = WatchlistViewController()
         #else
         home = HomeViewController(socialService: SocialHighlightService.shared, videoService: VideoService.shared)
         news = NewsFeedViewController(newsService: NewsService.shared)
         profile = ProfileViewController()
         search = SearchViewController()
+        watchlist = WatchlistViewController()
         #endif
-        return [home, search, news, profile].map { ($0 as! TabViewController).asTabController() }
+        return [home, search, news, watchlist].map { ($0 as! TabViewControllerType).asTabController() }
     }
     
     private func setupInitialLoadListeners() {

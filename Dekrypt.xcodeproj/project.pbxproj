@@ -15,7 +15,7 @@
 		EF4133672BDC4F5F00EF834B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF4133662BDC4F5E00EF834B /* GoogleService-Info.plist */; };
 		EF42AA9F2BE9490000C54D0F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */; };
 		EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */; };
-		EFA716042BD56B860001F555 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA716032BD56B860001F555 /* TabViewController.swift */; };
+		EFA716042BD56B860001F555 /* TabViewControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA716032BD56B860001F555 /* TabViewControllerType.swift */; };
 		EFA716062BD571F00001F555 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFA716052BD571F00001F555 /* Assets.xcassets */; };
 		EFA716092BD591D00001F555 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EFA716082BD591D00001F555 /* GoogleMobileAds */; };
 		EFA7160E2BD5C1930001F555 /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA7160D2BD5C1930001F555 /* AppStorage.swift */; };
@@ -57,6 +57,9 @@
 		EFDA7F002BD523E70036E720 /* SplashScreenVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */; };
 		EFE2FA802BEC3A270009B103 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2FA7F2BEC3A270009B103 /* VideoPlayerViewController.swift */; };
 		EFE2FA822BECBBFE0009B103 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2FA812BECBBFE0009B103 /* VideoPlayerViewModel.swift */; };
+		EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */; };
+		EFE5CC022BF44EE500B1C93C /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */; };
+		EFE5CC042BF4530A00B1C93C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC032BF4530A00B1C93C /* TabViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,7 +71,7 @@
 		EF4133662BDC4F5E00EF834B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentPageControl.swift; sourceTree = "<group>"; };
-		EFA716032BD56B860001F555 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		EFA716032BD56B860001F555 /* TabViewControllerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewControllerType.swift; sourceTree = "<group>"; };
 		EFA716052BD571F00001F555 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
 		EFA7160D2BD5C1930001F555 /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
 		EFA7160F2BD5C8810001F555 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
@@ -108,6 +111,9 @@
 		EFDA7F012BD5281A0036E720 /* Dekrypt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dekrypt.entitlements; sourceTree = "<group>"; };
 		EFE2FA7F2BEC3A270009B103 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		EFE2FA812BECBBFE0009B103 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
+		EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewController.swift; sourceTree = "<group>"; };
+		EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
+		EFE5CC032BF4530A00B1C93C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,7 +255,8 @@
 				EFB133AB2BAE4A0C00004025 /* MainTab.swift */,
 				EFB133AC2BAE4A0C00004025 /* MainTabModel.swift */,
 				EFB133AD2BAE4A0C00004025 /* MainTabViewController.swift */,
-				EFA716032BD56B860001F555 /* TabViewController.swift */,
+				EFA716032BD56B860001F555 /* TabViewControllerType.swift */,
+				EFE5CC032BF4530A00B1C93C /* TabViewController.swift */,
 			);
 			path = MainTab;
 			sourceTree = "<group>";
@@ -278,6 +285,7 @@
 		EFB133B82BAE4A0C00004025 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				EFE5CBFE2BF44E4200B1C93C /* Watchlist */,
 				EF1E8A222BC33FEF00FC84D3 /* Search */,
 				EFB133AA2BAE4A0C00004025 /* Home */,
 				EFB133AE2BAE4A0C00004025 /* MainTab */,
@@ -322,6 +330,15 @@
 				EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */,
 			);
 			path = SplashScreen;
+			sourceTree = "<group>";
+		};
+		EFE5CBFE2BF44E4200B1C93C /* Watchlist */ = {
+			isa = PBXGroup;
+			children = (
+				EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */,
+				EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */,
+			);
+			path = Watchlist;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -410,6 +427,7 @@
 			files = (
 				EFDA7F002BD523E70036E720 /* SplashScreenVIewController.swift in Sources */,
 				EFB133C62BAE4A0C00004025 /* MainTabViewController.swift in Sources */,
+				EFE5CC022BF44EE500B1C93C /* WatchlistViewModel.swift in Sources */,
 				EFB133BA2BAE4A0C00004025 /* EventDetailView.swift in Sources */,
 				EFB133BB2BAE4A0C00004025 /* EventDetailViewModel.swift in Sources */,
 				EFB133CA2BAE4A0C00004025 /* ProfileHeaderView.swift in Sources */,
@@ -427,18 +445,20 @@
 				EF42AA9F2BE9490000C54D0F /* UserDefaults.swift in Sources */,
 				EFB133B92BAE4A0C00004025 /* EventDetailHeaderView.swift in Sources */,
 				EFDA7EF72BD521250036E720 /* AuthInterface.swift in Sources */,
-				EFA716042BD56B860001F555 /* TabViewController.swift in Sources */,
+				EFA716042BD56B860001F555 /* TabViewControllerType.swift in Sources */,
 				EF1E8A212BBF30B500FC84D3 /* VidoCarouselCell.swift in Sources */,
 				EFE2FA822BECBBFE0009B103 /* VideoPlayerViewModel.swift in Sources */,
 				EFA716102BD5C8810001F555 /* OnboardingScreen.swift in Sources */,
 				EFB133BC2BAE4A0C00004025 /* TickerDetailView.swift in Sources */,
 				EFB133C52BAE4A0C00004025 /* MainTabModel.swift in Sources */,
 				EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */,
+				EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */,
 				EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */,
 				EFDA7EF52BD521250036E720 /* AuthPublisher.swift in Sources */,
 				EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */,
 				EFB133C82BAE4A0C00004025 /* NewsViewControllerModel .swift in Sources */,
 				EFDA7EE92BCDBA980036E720 /* VideoCarouselCellV2.swift in Sources */,
+				EFE5CC042BF4530A00B1C93C /* TabViewController.swift in Sources */,
 				EFB133C32BAE4A0C00004025 /* HomeViewModel.swift in Sources */,
 				EFB133BD2BAE4A0C00004025 /* TickerDetailViewModel.swift in Sources */,
 				EFA7160E2BD5C1930001F555 /* AppStorage.swift in Sources */,
@@ -692,7 +712,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = versionRange;
+				maximumVersion = 10.0.0;
 				minimumVersion = 1.0.0;
 			};
 		};
