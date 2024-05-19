@@ -57,7 +57,7 @@ public class TickerDetailViewModel {
     struct Output {
         let section: AnyPublisher<[DiffableCollectionSection], Never>
         let navigation: AnyPublisher<Navigation, Never>
-        let addedFavorite: AnyPublisher<Bool, Never>
+        let addedFavorite: AnyPublisher<UserModel, Never>
         let errorMessage: AnyPublisher<String?, Error>
     }
     
@@ -67,7 +67,7 @@ public class TickerDetailViewModel {
     private var navigation: PassthroughSubject<Navigation, Never> = .init()
     private let currentSentimentPage: PassthroughSubject<Int, Never> = .init()
     private let refreshData: CurrentValueSubject<Bool, Never> = .init(false)
-    private let ticker: String
+    public let ticker: String
     private let tickerName: String
     private let tickerService: TickerServiceInterface
     private let eventService: EventServiceInterface
@@ -89,6 +89,11 @@ public class TickerDetailViewModel {
             .flatMap { (vm, model) in
                 let (isFavorite, user) = model
                 return UserService.shared.addAssetToWatchlist(uid: user.uid, asset: vm.ticker)
+                    .handleEvents(receiveOutput: { resp in
+                        guard let user = resp.data else { return }
+                        AppStorage.shared.user = user
+                    })
+                    .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
         
@@ -123,16 +128,15 @@ public class TickerDetailViewModel {
             .flatMap { (vm, user) in
                 if let watching = user.watching, watching.contains(vm.ticker) {
                     UserService.shared.removeAssetToWatchlist(uid: user.uid, asset: vm.ticker)
-                        .map { _ in false }
-                        .replaceError(with: true)
+                        .replaceError(with: .init(data: nil, success: false, err: nil))
                         .eraseToAnyPublisher()
                 } else {
                     UserService.shared.addAssetToWatchlist(uid: user.uid, asset: vm.ticker)
-                        .map { _ in true }
-                        .replaceError(with: false)
+                        .replaceError(with: .init(data: nil, success: false, err: nil))
                         .eraseToAnyPublisher()
                 }
             }
+            .compactMap(\.data)
             .eraseToAnyPublisher()
         
         // Reload Header when favorite
@@ -217,11 +221,12 @@ public class TickerDetailViewModel {
             cells.append(DiffableCollectionCellView<TickerPriceView>(model: .init(marketData: sparkline, selectedTimeline: $selectedTimeLine.eraseToAnyPublisher())))
         }
         
-        
-        let timelineSegment = DiffableCollectionItem<FilterView>(.init(filterCases: PriceTimeline.allCases, selectedCase: PriceTimeline.sevenDays, addHorizontalPadding: false, selectedFilterHandler: { [weak self] filter in
+        let filterAction: (any FilterType) -> Void  = { [weak self] filter in
             guard let self, let selectedFilter = filter as? PriceTimeline else { return }
             self.selectedPriceTimeLine(selectedFilter)
-        }))
+        }
+        
+        let timelineSegment = DiffableCollectionItem<FilterView>(.init(filterCases: PriceTimeline.allCases, selectedCase: PriceTimeline.sevenDays, addHorizontalPadding: false, selectedFilterHandler: filterAction))
         
         cells.append(timelineSegment)
         

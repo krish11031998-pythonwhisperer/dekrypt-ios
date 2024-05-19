@@ -23,7 +23,7 @@ public class TickerDetailView: UIViewController {
     private var bag: Set<AnyCancellable> = .init()
     private lazy var refreshControl: UIRefreshControl = .init()
     private lazy var addFavorites: UIBarButtonItem = {
-        NavbarButton.navbarButton(img: .local(img: .Catalogue.heartOutline.image))
+        NavbarButton.navbarButton(img: .local(img: .Catalogue.heartOutline.image), highlightImg: .local(img: .Catalogue.heart.image))
     }()
     private lazy var addHabit: UIBarButtonItem = {
         NavbarButton.navbarButton(img: .local(img: .Catalogue.trendingUp.image))
@@ -113,9 +113,7 @@ public class TickerDetailView: UIViewController {
             .store(in: &bag)
         
         AppStorage.shared.userPublisher
-            .handleEvents(receiveOutput: {
-                print("(DEBUG) from TickerDetail: ", $0?.isPro)
-            })
+            .prefix(1)
             .withUnretained(self)
             .sinkReceive { (vc, user) in
                 guard let user else {
@@ -126,6 +124,9 @@ public class TickerDetailView: UIViewController {
                 }
                 if user.isPro {
                     vc.navigationItem.rightBarButtonItems?.insert(vc.addHabit, at: 0)
+                }
+                
+                if let watching = user.watching, watching.contains(vc.viewModel.ticker) {
                     vc.addFavorites.navBarButton?.isSelected = true
                 }
             }
@@ -156,8 +157,9 @@ public class TickerDetailView: UIViewController {
         
         output.addedFavorite
             .withUnretained(self)
-            .sinkReceive { (vc, state) in
-                vc.addFavorites.navBarButton?.isSelected = state
+            .sinkReceive { (vc, user) in
+//                vc.addFavorites.navBarButton?.isSelected = state
+                AppStorage.shared.user = user
             }
             .store(in: &bag)
         
