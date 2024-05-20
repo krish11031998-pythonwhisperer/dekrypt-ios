@@ -32,6 +32,7 @@ public class ProfileViewController: UIViewController, TabViewControllerType {
         view.addSubview(collectionView)
         collectionView.fillSuperview()
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.backgroundColor = .surfaceBackground
     }
     
     private func bind() {
@@ -53,7 +54,7 @@ public class ProfileViewController: UIViewController, TabViewControllerType {
                 case .onboarding:
                     self.navigationController?.setViewControllers([OnboardingScreen()], animated: false)
                 case .toTicker(let ticker):
-                    vc.presentView(style: .sheet(), target: TickerDetailView(ticker: ticker, tickerName: ticker), onDimissal: nil)
+                    vc.pushTo(target: TickerDetailView(ticker: ticker, tickerName: ticker))
                 }
             }
             .store(in: &bag)

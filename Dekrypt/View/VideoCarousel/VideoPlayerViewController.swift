@@ -23,9 +23,11 @@ class VideoFeedViewController: UIViewController {
     private var bag: Set<AnyCancellable> = .init()
     private let viewModel: VideoFeedViewModel
     private let reachedEnd: PassthroughSubject<Void, Never> = .init()
+    private var autoScrollToVideoIfNeeded: Bool
     
     init(videoModel: [VideoModel], videoToScrollTo: VideoModel? = nil, videoService: VideoServiceInterface = VideoService.shared) {
         self.viewModel = .init(videoModel: videoModel, videoToScrollTo: videoToScrollTo, videoService: videoService)
+        self.autoScrollToVideoIfNeeded = videoToScrollTo != nil
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -94,7 +96,8 @@ class VideoFeedViewController: UIViewController {
     }
     
     private func setupReachedEnd(videoToScrollTo: AnyPublisher<IndexPath, Never>?) {
-        
+        guard autoScrollToVideoIfNeeded else { return }
+        autoScrollToVideoIfNeeded = false
         videoToScrollTo?
             .withUnretained(self)
             .sinkReceive({ (vc, index) in

@@ -142,7 +142,7 @@ public class HomeViewController: UIViewController, TabViewControllerType {
                 case .toAllInsights(let insights):
                     vc.pushTo(target: InsightViewController())
                 case .settings:
-                    vc.pushTo(target: ProfileViewController(), asSheet: true)
+                    vc.pushTo(target: ProfileViewController().withNavigationController(), asSheet: true)
                 }
             }
             .store(in: &bag)

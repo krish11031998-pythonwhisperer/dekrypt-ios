@@ -179,4 +179,10 @@ public class VideoPlayerViewV2: DiffableConfigurableCollectionCell {
         self.shouldPlay = shouldPlay
     }
     
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        //DispatchQueue.main.async {
+        self.player.alpha = 0
+        //s}
+    }
 }

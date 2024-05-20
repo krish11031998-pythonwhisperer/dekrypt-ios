@@ -24,7 +24,7 @@ class VideoFeedViewModel {
     
     private var videoModel: [VideoModel]
     private let videoToScrollTo: VideoModel?
-    private var page: Int = 1
+    private var page: Int = 2
     private let videoService: VideoServiceInterface
     
     init(videoModel: [VideoModel], videoToScrollTo: VideoModel?, videoService: VideoServiceInterface) {
@@ -55,6 +55,7 @@ class VideoFeedViewModel {
                     return nil
                 }
                 vm.page += 1
+                print("(DEBUG) page Updated: ", vm.page)
                 vm.videoModel += videos
                 return vm.videoModel
             }

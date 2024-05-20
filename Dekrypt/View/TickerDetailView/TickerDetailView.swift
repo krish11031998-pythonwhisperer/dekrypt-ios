@@ -113,7 +113,6 @@ public class TickerDetailView: UIViewController {
             .store(in: &bag)
         
         AppStorage.shared.userPublisher
-            .prefix(1)
             .withUnretained(self)
             .sinkReceive { (vc, user) in
                 guard let user else {
@@ -122,11 +121,11 @@ public class TickerDetailView: UIViewController {
                     }
                     return
                 }
-                if user.isPro {
+                if user.isPro, vc.navigationItem.rightBarButtonItems?.first !== vc.addHabit {
                     vc.navigationItem.rightBarButtonItems?.insert(vc.addHabit, at: 0)
                 }
                 
-                if let watching = user.watching, watching.contains(vc.viewModel.ticker) {
+                if let watching = user.watching, watching.contains(vc.viewModel.ticker), vc.addFavorites.navBarButton?.isSelected != true  {
                     vc.addFavorites.navBarButton?.isSelected = true
                 }
             }
