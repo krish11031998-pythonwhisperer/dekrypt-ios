@@ -192,7 +192,7 @@ class EventDetailViewModel {
     
     private func newsSection(news: [NewsModel]) -> DiffableCollectionSection {
      
-        let limitedNews = news.limit(to: 3)
+        let limitedNews = news
         let newsCells = limitedNews.indices.map { idx in
             let news = limitedNews[idx]
             let cellModel = NewsViewModel(model: news, isFirst: idx == 0, isLast: idx == (limitedNews.count - 1)) { [weak self] in
@@ -202,14 +202,10 @@ class EventDetailViewModel {
             return DiffableCollectionItem<NewsView>(cellModel)
         }
         
-        let viewMoreCallback: Callback = { [weak self] in
-            self?.viewMoreArticles.send(())
-        }
-        
         let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44.0), insets: .sectionInsets, spacing: .appVerticalPadding)
             .addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0)))
         
-        let header = CollectionSupplementaryView<SectionHeader>(.init(label: Section.news.name, accessory: .viewMore("View more", viewMoreCallback), addHorizontalInset: false))
+        let header = CollectionSupplementaryView<SectionHeader>(.init(label: Section.news.name, addHorizontalInset: false))
         
         return .init(Section.news.rawValue, cells: newsCells, header: header, sectionLayout: sectionLayout)
     }

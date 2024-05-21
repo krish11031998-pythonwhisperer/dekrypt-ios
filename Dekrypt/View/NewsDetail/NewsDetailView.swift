@@ -317,6 +317,20 @@ public class NewsDetailView: UIViewController {
 //                strongSelf.pushTo(target: TickerDetailView(ticker: ticker, tickerName: ticker) )
 //            }
 //            .store(in: &bag)
+        
+        NewsArticleParser.shared.fetchArticle(urlString: news.newsUrl)
+            .withUnretained(self)
+            .sinkReceive { (vc, elements) in
+                for element in elements {
+                    switch element {
+                    case .text(let str):
+                        print("(DEBUG) text: ", str)
+                    case .image(let url):
+                        print("(DEBUG) img: ", url.absoluteString)
+                    }
+                }
+            }
+            .store(in: &bag)
     }
     
     private func addGradient() {

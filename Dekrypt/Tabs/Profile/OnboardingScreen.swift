@@ -25,7 +25,8 @@ final class OnboardingScreen: UIViewController {
         addSplash()
         setupView()
         bind()
-        hideNavbar()
+        standardNavBar(leftBarButton: Self.closeButton(self))
+       // hideNavbar()
     }
     
     private func addSplash() {

@@ -177,9 +177,9 @@ public class TickerDetailViewModel {
             sections.append(setupNewsSection(news: news))
         }
         
-        if let videos = tickerDetail.videos {
-            sections.append(setupVideoSection(videos: videos))
-        }
+//        if let videos = tickerDetail.videos {
+//            sections.append(setupVideoSection(videos: videos))
+//        }
         
         if let events = tickerDetail.events {
             sections.append(setupEventSection(events: events))

@@ -60,6 +60,8 @@
 		EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */; };
 		EFE5CC022BF44EE500B1C93C /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */; };
 		EFE5CC042BF4530A00B1C93C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC032BF4530A00B1C93C /* TabViewController.swift */; };
+		EFE5CC072BFD487500B1C93C /* NewsArticleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC062BFD487500B1C93C /* NewsArticleParser.swift */; };
+		EFE5CC0A2BFD48C900B1C93C /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = EFE5CC092BFD48C900B1C93C /* SwiftSoup */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +116,7 @@
 		EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewController.swift; sourceTree = "<group>"; };
 		EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
 		EFE5CC032BF4530A00B1C93C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		EFE5CC062BFD487500B1C93C /* NewsArticleParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsArticleParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +129,7 @@
 				EFA716092BD591D00001F555 /* GoogleMobileAds in Frameworks */,
 				EFDA7EFB2BD521A70036E720 /* GoogleSignIn in Frameworks */,
 				EFDA7EFD2BD521A70036E720 /* GoogleSignInSwift in Frameworks */,
+				EFE5CC0A2BFD48C900B1C93C /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,13 +233,13 @@
 		EFB133A72BAE4A0C00004025 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EFE5CC052BFD484800B1C93C /* NewsDetail */,
 				EFDA7EFF2BD523E70036E720 /* SplashScreen */,
 				EFB8DCFE2BC560CC001AC56F /* InsightsView */,
 				EF1E8A1D2BBF297C00FC84D3 /* VideoCarousel */,
 				EFB1339E2BAE4A0C00004025 /* EventDetail */,
 				EFB133A22BAE4A0C00004025 /* TickerDetailView */,
 				EFB133A52BAE4A0C00004025 /* TickersView */,
-				EFB133A62BAE4A0C00004025 /* NewsDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -341,6 +345,15 @@
 			path = Watchlist;
 			sourceTree = "<group>";
 		};
+		EFE5CC052BFD484800B1C93C /* NewsDetail */ = {
+			isa = PBXGroup;
+			children = (
+				EFB133A62BAE4A0C00004025 /* NewsDetailView.swift */,
+				EFE5CC062BFD487500B1C93C /* NewsArticleParser.swift */,
+			);
+			path = NewsDetail;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -363,6 +376,7 @@
 				EFDA7EFA2BD521A70036E720 /* GoogleSignIn */,
 				EFDA7EFC2BD521A70036E720 /* GoogleSignInSwift */,
 				EFA716082BD591D00001F555 /* GoogleMobileAds */,
+				EFE5CC092BFD48C900B1C93C /* SwiftSoup */,
 			);
 			productName = Dekrypt;
 			productReference = EFB133812BAE49A200004025 /* Dekrypt.app */;
@@ -397,6 +411,7 @@
 				EFB133CE2BAEEE1E00004025 /* XCRemoteSwiftPackageReference "DekryptUI-SPM" */,
 				EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				EFA716072BD591D00001F555 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				EFE5CC082BFD48C900B1C93C /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = EFB133822BAE49A200004025 /* Products */;
 			projectDirPath = "";
@@ -463,6 +478,7 @@
 				EFB133BD2BAE4A0C00004025 /* TickerDetailViewModel.swift in Sources */,
 				EFA7160E2BD5C1930001F555 /* AppStorage.swift in Sources */,
 				EFB133C12BAE4A0C00004025 /* NewsDetailView.swift in Sources */,
+				EFE5CC072BFD487500B1C93C /* NewsArticleParser.swift in Sources */,
 				EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */,
 				EF1E8A1F2BBF29A500FC84D3 /* VideoCarouselLayout.swift in Sources */,
 				EFB133C72BAE4A0C00004025 /* NewsFeedViewController.swift in Sources */,
@@ -725,6 +741,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		EFE5CC082BFD48C900B1C93C /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -752,6 +776,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		EFE5CC092BFD48C900B1C93C /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFE5CC082BFD48C900B1C93C /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -19,11 +19,7 @@ public class ProfileViewController: UIViewController, TabViewControllerType {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        if isPresented {
-            self.standardNavBar(leftBarButton: Self.closeButton(self))
-        } else {
-            hideTabBar()
-        }
+        self.standardNavBar(leftBarButton: Self.closeButton(self))
         setupView()
         bind()
     }

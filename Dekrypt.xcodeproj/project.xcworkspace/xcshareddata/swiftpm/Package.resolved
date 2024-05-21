@@ -1,5 +1,5 @@
 {
-  "originHash" : "a363ee4259e0089b69d3e359bfbdf9321e087b28b4a1ca9b0ea8b76bcf7c6b80",
+  "originHash" : "68794de94f5488ee0bfa2baac78865d2efb993627974faa48f9a71b6461c18a8",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git",
       "state" : {
-        "revision" : "594040db4dbbf6522eff650bb30e9a839161a64b",
-        "version" : "2.1.4"
+        "revision" : "3ba55335aee5acd2bc8f7eedf47fe798a76b9c1d",
+        "version" : "2.1.6"
       }
     },
     {
@@ -133,7 +133,7 @@
       "location" : "https://github.com/krish11031998-pythonwhisperer/KKit-Swift-Package.git",
       "state" : {
         "branch" : "master",
-        "revision" : "48a590948477cffae1478c66ced4ea10708e3842"
+        "revision" : "a84dcce06f33cedc08268bbac047284dffbfcacd"
       }
     },
     {
@@ -215,6 +215,15 @@
       "state" : {
         "revision" : "9f0c76544701845ad98716f3f6a774a892152bcb",
         "version" : "1.26.0"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "state" : {
+        "revision" : "028487d4a8a291b2fe1b4392b5425b6172056148",
+        "version" : "2.7.2"
       }
     },
     {
