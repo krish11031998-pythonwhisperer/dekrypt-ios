@@ -24,9 +24,20 @@ public class NewsFeedViewControllerModel {
     // MARK: Tab
     
     enum Tab: String, CaseIterable, SegmentType {
-        case all, positive, negative, neutral, libra, top
-        
-        var value: String { rawValue.capitalized }
+        case general, futures, institutions, taxes, upgrade, whales, mining, NFT, podcast, pricemovement, priceforecast, regulations, stablecoins, tanalysis
+       
+        var value: String {
+            if case .NFT = self {
+                return "NFT"
+            } else if case .priceforecast = self {
+                return "Price Forecast"
+            } else if case .pricemovement = self {
+                return "Price Movement"
+            } else {
+                return rawValue.capitalized
+            }
+            
+        }
         
         static var allTabs: [NewsFeedViewControllerModel.Tab] { Self.allCases }
     }
@@ -94,14 +105,15 @@ public class NewsFeedViewControllerModel {
     
     private let newsService: NewsServiceInterface
     private let preloadedNews: [NewsModel]
-    private let selectedTab: CurrentValueSubject<Tab, Never> = .init(Tab.all)
+    private let selectedTab: CurrentValueSubject<Tab, Never> = .init(Tab.general)
     let nextPage: CurrentValueSubject<Bool, Never>
     private let refreshData: CurrentValueSubject<Bool, Never> = .init(false)
+    private var isRefreshing: Bool { refreshData.value }
     private let navigation: PassthroughSubject<Navigation, Never> = .init()
     
     private let type: FeedType
-    private var news: [NewsModel] = []
-    private var page: Int
+    private var news: [Tab : [NewsModel]] = [:]
+    private var page: [Tab : Int] = [:]
     private var limit: Int = 10
     private let includeSegmentControl: Bool
     
@@ -110,7 +122,7 @@ public class NewsFeedViewControllerModel {
         self.includeSegmentControl = includeSegmentControl
         self.preloadedNews = type.preloadedNews
         self.nextPage = .init(type.preloadedNews.isEmpty)
-        self.page = type.page
+        self.page = [.general : type.page]
         self.type = type
     }
     
@@ -118,68 +130,108 @@ public class NewsFeedViewControllerModel {
         
         let refreshedNews = refreshData
             .filter({ $0 })
-            .handleEvents(receiveOutput: { [weak self] _ in
-                self?.page = 0
-                self?.news.removeAll()
+            .handleEvents(receiveOutput: { [weak self] (_) in
+                guard let self else { return }
+                let tab = self.selectedTab.value
+                self.page[tab] = 1
+                self.news[tab]?.removeAll()
             })
             .withUnretained(self)
             .flatMap { (vm, refresh) in
-                vm.fetchNews(page: 0, refresh: refresh)
+                let tab = vm.selectedTab.value
+                return vm.fetchNews(selectedTab: tab, refresh: refresh)
             }
             .eraseToAnyPublisher()
         
-        let fetchedNews = nextPage
-            .filter({ [weak self] in
+        let fetchNextPageNews = nextPage
+            .filter({ [weak self] nextPage in
                 guard let self else { return false }
-                return $0 && !self.refreshData.value
+                return nextPage && !self.isRefreshing
             })
-            .map { [weak self] in ($0, (self?.page ?? -1) + 1) }
-            .removeDuplicates(by: { $0.1 == $1.1 })
-            .flatMap { [weak self] (nextPage, page) -> AnyPublisher<[NewsModel], Never> in
-                guard let self else { return Just([]).setFailureType(to: Never.self).eraseToAnyPublisher() }
-                print("(DEBUG) fetching next page: ", page)
-                return self.fetchNews(page: page, refresh: true)
+            .flatMap { [weak self] (_) -> AnyPublisher<[NewsModel], Never> in
+                guard let self else { return .just([]) }
+                let selectedTab = self.selectedTab.value
+                return self.fetchNextPageForCurrentTab(selectedTab: selectedTab)
             }
+            .eraseToAnyPublisher()
         
         let preloadedNews = AnyPublisher<[NewsModel], Never>.just(preloadedNews)
         
-        let fetchNews = Publishers.Merge3(fetchedNews, refreshedNews, preloadedNews)
-            .withUnretained(self)
-            .map { (vm, fetchedNews) in
-                if !fetchedNews.isEmpty {
-                    vm.page += 1
-                }
-                if vm.news.isEmpty {
-                    vm.news = fetchedNews
-                } else {
-                    let removedDuplicates = fetchedNews.filter { news in
-                        !vm.news.contains { newsEl in
-                            newsEl == news
-                        }
-                    }
-                    vm.news.append(contentsOf: removedDuplicates)
-                }
-                return ()
-            }
+        let fetchNews = Publishers.Merge3(fetchNextPageNews, refreshedNews, preloadedNews)
             .eraseToAnyPublisher()
         
-        let section = Publishers.CombineLatest(fetchNews, selectedTab)
+        // MARK: FetchNewsBasedOnTab
+    
+        let fetchNewsBasedOnTab = selectedTab
+            .dropFirst(1)
+            .withUnretained(self)
+            .flatMap { (vm, tab) -> AnyPublisher<[NewsModel], Never> in
+                if tab != .general {
+                    if let news = vm.news[tab] {
+                        return .just(news)
+                    }
+                    return vm.fetchNewsForTopic(topic: tab.rawValue.lowercased(), page: vm.page[tab] ?? 1, refresh: false)
+                } else {
+                    if let generalNews = vm.news[.general] {
+                        return .just(generalNews)
+                    }
+                    return vm.fetchGeneralNews(page: vm.page[tab] ?? 1, refresh: false)
+                }
+            }
+            .eraseToAnyPublisher()
+
+        // MARK: Section
+        
+        let section = Publishers.Merge(fetchNews, fetchNewsBasedOnTab)
             .handleEvents(receiveOutput: { [weak self] _ in
                 guard let self else { return }
                 if self.refreshData.value {
                     self.refreshData.send(false)
                 }
             })
-            .compactMap { [weak self] (_, tab) -> [DiffableCollectionSection]? in
+            .compactMap { [weak self] (news) -> [DiffableCollectionSection]? in
                 guard let self else { return nil }
-                return self.setupNewsSection(tab: tab)
+                let tab = self.selectedTab.value
+                return self.setupNewsSection(news: self.news[tab] ?? news, tab: tab)
             }
             .eraseToAnyPublisher()
         
         return .init(section: section, navigation: navigation.eraseToAnyPublisher())
     }
     
-    private func fetchNews(page: Int, refresh: Bool) -> AnyPublisher<[NewsModel], Never> {
+    private func fetchNextPageForCurrentTab(selectedTab tab: Tab) -> AnyPublisher<[NewsModel], Never> {
+        let page = (page[tab] ?? 0) + 1
+    
+        return Just((page, tab))
+            .removeDuplicates(by: { $0.0 == $1.0 })
+            .withUnretained(self)
+            .flatMap { (vm, combinedData) in
+                vm.fetchNews(selectedTab: combinedData.1, page: combinedData.0, refresh: false)
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    private func fetchNews(selectedTab tab: Tab, page pageToLoad: Int? = nil, refresh: Bool) -> AnyPublisher<[NewsModel], Never> {
+        
+        let newsPublisher: AnyPublisher<[NewsModel], Never>
+        let page = pageToLoad ?? (page[tab] ?? 1)
+        let tabName = tab.rawValue.lowercased()
+        
+        if (tab == .general) {
+            newsPublisher = fetchGeneralNews(page: page, refresh: refresh)
+        } else {
+            newsPublisher = fetchNewsForTopic(topic: tabName, page: page, refresh: refresh)
+        }
+        
+        return newsPublisher
+            .handleEvents(receiveOutput: { [weak self] fetchedNews in
+                guard let vm = self else { return }
+                vm.updatingPageAndNewsModels(tab: tab, fetchedNews: fetchedNews)
+            })
+            .eraseToAnyPublisher()
+    }
+    
+    private func fetchGeneralNews(page: Int, refresh: Bool) -> AnyPublisher<[NewsModel], Never> {
         let newsResult: AnyPublisher<NewsResult, Error>
         if case .preloaded(let preloadedFeedModel) = type, let query = preloadedFeedModel.query {
             newsResult = newsService.newsSearch(query: query, page: page, limit: 10, refresh: refresh, topic: nil)
@@ -195,9 +247,40 @@ public class NewsFeedViewControllerModel {
             .eraseToAnyPublisher()
     }
     
+    private func fetchNewsForTopic(topic: String, page: Int , refresh: Bool) -> AnyPublisher<[NewsModel], Never> {
+        newsService.newsSearch(query: "", page: page, limit: 10, refresh: refresh, topic: topic)
+            .compactMap(\.data)
+            .catch({ err -> AnyPublisher<[NewsModel], Never> in
+                print("(ERROR) err while fetching Topic (\(topic)) News: ", err.localizedDescription)
+                return .just([])
+            })
+            .eraseToAnyPublisher()
+    }
+    
+    private func updatingPageAndNewsModels(tab: Tab, fetchedNews: [NewsModel]) {
+        let page = self.page[tab] ?? 1
+        if !fetchedNews.isEmpty {
+            self.page[tab] = page + 1
+        }
+        
+        let newsForTab = self.news[tab] ?? []
+        
+        if newsForTab.isEmpty {
+            self.news[tab] = fetchedNews
+        } else {
+            let removedDuplicates = fetchedNews.filter { news in
+                !newsForTab.contains { newsEl in
+                    newsEl == news
+                }
+            }
+            self.news[tab]?.append(contentsOf: removedDuplicates)
+        }
+    }
+    
+    
     // MARK: Parse News
     
-    private func setupNewsSection(tab: Tab) -> [DiffableCollectionSection] {
+    private func setupNewsSection(news: [NewsModel], tab: Tab) -> [DiffableCollectionSection] {
         
         let sectionHeaderModel = SegmentControl.Model(selectedTab: selectedTab)
         
@@ -209,7 +292,7 @@ public class NewsFeedViewControllerModel {
             sectionLayout.addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44)), pinHeader: true)
         }
         
-        let cell = self.news.indices
+        let cell = news.indices
             .compactMap { idx -> (DiffableCollectionCellProvider)? in
                 let newsArticle = news[idx]
                 let action: Callback = { [weak self] in
@@ -219,30 +302,7 @@ public class NewsFeedViewControllerModel {
                                                                   isFirst: idx == 0,
                                                                   isLast: idx == news.count - 1,
                                                                   action: action))
-                switch tab {
-                case .all:
-                    return cell
-                case .positive:
-                    if newsArticle.sentiment == .positve {
-                        return cell
-                    }
-                case .neutral:
-                    if newsArticle.sentiment == .neutral {
-                        return cell
-                    }
-                case .negative:
-                    if newsArticle.sentiment == .negative {
-                        return cell
-                    }
-                case .libra:
-                    if newsArticle.topics?.contains(where: { $0 == "libra"}) == true {
-                        return cell
-                    }
-                default:
-                    return nil
-                }
-                
-                return nil
+                return cell
             }
         
         return [DiffableCollectionSection(Section.news.rawValue, cells: cell, header: includeSegmentControl ? sectionHeader : nil, sectionLayout: sectionLayout)]
