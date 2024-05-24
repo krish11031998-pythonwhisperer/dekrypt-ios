@@ -22,7 +22,7 @@ class InsightViewController: UIViewController {
         return pageControl
     }()
     
-    private let viewModel: InsightViewModel = .init(insightService: StubSocialHighlightService())
+    private let viewModel: InsightViewModel = .init(insightService: SocialHighlightService.shared)
     private var bag: Set<AnyCancellable> = .init()
     
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ class InsightViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        collectionBottomConstraint.constant = -(.safeAreaInsets.bottom +  2 * .appVerticalPadding + pageControl.frame.height)
+        collectionView.contentInset.bottom = .safeAreaInsets.bottom + 2 * .appVerticalPadding + pageControl.frame.height
     }
     
     private func setupView() {
@@ -63,8 +63,9 @@ class InsightViewController: UIViewController {
         view.addSubview(pageControl)
         pageControl
             .pinHorizontalAnchorsTo(constant: .appHorizontalPadding * 2)
-            .pinBottomAnchorTo(constant: .safeAreaInsets.bottom + .appVerticalPadding)
-
+            .pinBottomAnchorTo(constant: .appVerticalPadding)
+        pageControl.isUserInteractionEnabled = false
+        viewModel.verticalInsets = .safeAreaInsets.bottom + 2 * .appVerticalPadding + pageControl.compressedSize.height + .safeAreaInsets.top + navBarHeight
         standardNavBar()
     }
     
@@ -90,6 +91,16 @@ class InsightViewController: UIViewController {
             .withUnretained(self)
             .sinkReceive { (vc, index) in
                 vc.pageControl.currentPage = index
+            }
+            .store(in: &bag)
+        
+        output.navigation
+            .withUnretained(self)
+            .sinkReceive { (vc, nav) in
+                switch nav {
+                case .toInsight(let digest):
+                    vc.pushTo(target: InsightDetailViewController(insight: digest))
+                }
             }
             .store(in: &bag)
     }

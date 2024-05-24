@@ -332,6 +332,7 @@ class HomeViewModel {
         }
         
         let insightCallback: (InsightDigestModel) -> Callback = { [weak self] insight in
+            print("(DEBUG) insightCallback!")
             return {
                 self?.navigation.send(.toInsight(insight))
             }
