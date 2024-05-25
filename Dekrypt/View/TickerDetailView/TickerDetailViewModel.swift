@@ -17,6 +17,15 @@ public enum TickerError: StandardError {
     case tickerError
 }
 
+fileprivate extension Array {
+    
+    func last(_ val: Int) -> [Self.Element] {
+        guard val < count else { return self }
+        return self.reversed().limit(to: 30).reversed()
+    }
+    
+}
+
 public class TickerDetailViewModel {
     typealias ItemReloadBody = (Section, Int, DiffableCollectionCellProvider, Bool)
     
@@ -168,7 +177,7 @@ public class TickerDetailViewModel {
         }
         
         if let timeline = tickerDetail.sentiment?.timeline,
-           let sentimentSection = setupSentimentSection(total: tickerDetail.sentiment?.total, sentiment: Array(timeline.values))
+           let sentimentSection = setupSentimentSection(total: tickerDetail.sentiment?.total, sentiment: timeline)
         {
             sections.append(sentimentSection)
         }
@@ -238,18 +247,28 @@ public class TickerDetailViewModel {
     
     // MARK: - Sentiement Chart
         
-    private func setupSentimentSection(total: SentimentModel?, sentiment: [SentimentModel]?) -> DiffableCollectionSection? {
+    private func setupSentimentSection(total: SentimentModel?, sentiment: [String: SentimentModel]?) -> DiffableCollectionSection? {
         guard let total, let sentiment, !sentiment.isEmpty else { return nil }
         
-        let sentimentCell = DiffableCollectionCellView<SentimentBarChartCard>(model: .init(title: "Sentiment this Month", sentiment: sentiment))
+        var sentimentAndDates: [Date : SentimentModel] = [:]
+        sentiment.sorted(by: { $0.key < $1.key }).last(30).forEach {
+            guard let date = $0.key.date else { return }
+            sentimentAndDates[date] = $0.value
+        }
         
-        let totalSentimentCell = DiffableCollectionCellView<SentimentDonutChartCard>(model: .init(sentiment: total, reload: false, showCount: true, title: "Total Sentiment"))
+        let sentimentsForDate = Array(sentimentAndDates.keys.sorted()).compactMap { sentimentAndDates[$0] }
+        
+        let sentimentCell = DiffableCollectionItem<SentimentChartView>(sentimentsForDate)
+        
+        let totalSentimentCell = DiffableCollectionItem<SentimentCalendarView>(.init(sentimentDays: sentimentAndDates))
         
         let sectionHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.sentiment.name, addHorizontalInset: true))
         
         let insets: NSDirectionalEdgeInsets = .init(top: .standardColumnSpacing, leading: .zero, bottom: .appVerticalPadding.half, trailing: .zero)
         
-        let sectionLayout = NSCollectionLayoutSection.singleRowLayout(width: .fractionalWidth(1), height: .absolute(440), insets: .section(insets), spacing: .zero)
+        let height = 5 * ((CGFloat.totalWidth - 2 * .appHorizontalPadding)/7) + 4 * .appVerticalPadding + 50
+        
+        let sectionLayout = NSCollectionLayoutSection.singleRowLayout(width: .fractionalWidth(1), height: .absolute(height), insets: .section(insets), spacing: .zero)
             .addHeader()
             .addFooter(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0)))
         
