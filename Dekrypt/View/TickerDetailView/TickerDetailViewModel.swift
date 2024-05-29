@@ -54,6 +54,8 @@ public class TickerDetailViewModel {
         case toNews(NewsModel)
         case toEvent(EventModel)
         case videos([VideoModel], VideoModel)
+        case toNewsWithDate(String)
+        case toSentimentDetail(SentimentForTicker)
         case toHabit
         case showAlertForOnboarding
     }
@@ -185,11 +187,6 @@ public class TickerDetailViewModel {
         if let news = tickerDetail.news {
             sections.append(setupNewsSection(news: news))
         }
-        
-//        if let videos = tickerDetail.videos {
-//            sections.append(setupVideoSection(videos: videos))
-//        }
-        
         if let events = tickerDetail.events {
             sections.append(setupEventSection(events: events))
         }
@@ -259,22 +256,17 @@ public class TickerDetailViewModel {
         let sentimentsForDate = Array(sentimentAndDates.keys.sorted()).compactMap { sentimentAndDates[$0] }
         
         let sentimentCell = DiffableCollectionItem<SentimentChartView>(sentimentsForDate)
+
+        let viewSentimentAction: Callback = { [weak self]  in
+            self?.navigation.send(.toSentimentDetail(.init(total: total, timeline: sentiment)))
+        }
         
-        let totalSentimentCell = DiffableCollectionItem<SentimentCalendarView>(.init(sentimentDays: sentimentAndDates))
+        let sectionHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.sentiment.name, accessory: .viewMore("See more", viewSentimentAction), addHorizontalInset: true))
         
-        let sectionHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.sentiment.name, addHorizontalInset: true))
+        let insets: NSDirectionalEdgeInsets = .init(top: .standardColumnSpacing, leading: .zero, bottom: .appVerticalPadding, trailing: .zero)
         
-        let insets: NSDirectionalEdgeInsets = .init(top: .standardColumnSpacing, leading: .zero, bottom: .appVerticalPadding.half, trailing: .zero)
-        
-        let height = 5 * ((CGFloat.totalWidth - 2 * .appHorizontalPadding)/7) + 4 * .appVerticalPadding + 50
-        
-        let sectionLayout = NSCollectionLayoutSection.singleRowLayout(width: .fractionalWidth(1), height: .absolute(height), insets: .section(insets), spacing: .zero)
+        let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1), height: .absolute(.totalWidth/0.95), insets: .section(insets), spacing: .zero)
             .addHeader()
-            .addFooter(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0)))
-        
-        sectionLayout.orthogonalScrollingBehavior = .groupPaging
-        
-        let sectionFooter = CollectionSupplementaryView<SentimentPageControl>(.init(count: 2, startIndex: 0, updateIndex: currentSentimentPage.eraseToAnyPublisher()))
         
         sectionLayout.visibleItemsInvalidationHandler = { [weak self] items, point, environment in
             let x = point.x
@@ -283,7 +275,7 @@ public class TickerDetailViewModel {
             self?.currentSentimentPage.send(Int(currentIndex))
         }
         
-        let section = DiffableCollectionSection(Section.sentiment.rawValue, cells: [totalSentimentCell, sentimentCell], header: sectionHeader, footer: sectionFooter, sectionLayout: sectionLayout)
+        let section = DiffableCollectionSection(Section.sentiment.rawValue, cells: [sentimentCell], header: sectionHeader, sectionLayout: sectionLayout)
         
         return section
     }

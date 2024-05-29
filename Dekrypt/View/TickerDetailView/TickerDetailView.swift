@@ -150,6 +150,10 @@ public class TickerDetailView: UIViewController {
                     vc.pushTo(target: viewController)
                 case .showAlertForOnboarding:
                     vc.presentErrorToast(error: "You have to sign in.")
+                case .toNewsWithDate(let dateString):
+                    vc.pushTo(target: TickerNewsFeedViewController(ticker: vc.viewModel.ticker, date: dateString, newsService: NewsService.shared))
+                case .toSentimentDetail(let sentimentForTicker):
+                    vc.pushTo(target: SentimentDetailViewController(model: sentimentForTicker, ticker: vc.viewModel.ticker))
                 }
             }
             .store(in: &bag)

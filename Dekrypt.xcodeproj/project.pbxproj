@@ -45,6 +45,11 @@
 		EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */; };
 		EFB133CD2BAE4A0C00004025 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */; };
 		EFB133D02BAEEE1E00004025 /* DekryptUI in Frameworks */ = {isa = PBXBuildFile; productRef = EFB133CF2BAEEE1E00004025 /* DekryptUI */; };
+		EFB66E7A2C05E2D000DE5A30 /* TickerNewsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E792C05E2D000DE5A30 /* TickerNewsFeedViewController.swift */; };
+		EFB66E7C2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E7B2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift */; };
+		EFB66E7F2C06892C00DE5A30 /* SentimentDetailSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E7E2C06892C00DE5A30 /* SentimentDetailSummaryView.swift */; };
+		EFB66E812C068CE700DE5A30 /* SentimentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E802C068CE700DE5A30 /* SentimentDetailViewController.swift */; };
+		EFB66E832C068D1F00DE5A30 /* SentimentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E822C068D1F00DE5A30 /* SentimentDetailViewModel.swift */; };
 		EFB8DD002BC560D9001AC56F /* InsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB8DCFF2BC560D9001AC56F /* InsightsViewController.swift */; };
 		EFB8DD022BC560FD001AC56F /* InsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB8DD012BC560FD001AC56F /* InsightViewModel.swift */; };
 		EFDA7EE92BCDBA980036E720 /* VideoCarouselCellV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EE82BCDBA980036E720 /* VideoCarouselCellV2.swift */; };
@@ -103,6 +108,11 @@
 		EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		EFB66E792C05E2D000DE5A30 /* TickerNewsFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerNewsFeedViewController.swift; sourceTree = "<group>"; };
+		EFB66E7B2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerNewsFeedViewModel.swift; sourceTree = "<group>"; };
+		EFB66E7E2C06892C00DE5A30 /* SentimentDetailSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentDetailSummaryView.swift; sourceTree = "<group>"; };
+		EFB66E802C068CE700DE5A30 /* SentimentDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentDetailViewController.swift; sourceTree = "<group>"; };
+		EFB66E822C068D1F00DE5A30 /* SentimentDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentDetailViewModel.swift; sourceTree = "<group>"; };
 		EFB8DCFF2BC560D9001AC56F /* InsightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewController.swift; sourceTree = "<group>"; };
 		EFB8DD012BC560FD001AC56F /* InsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightViewModel.swift; sourceTree = "<group>"; };
 		EFDA7EE82BCDBA980036E720 /* VideoCarouselCellV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCarouselCellV2.swift; sourceTree = "<group>"; };
@@ -235,6 +245,7 @@
 		EFB133A72BAE4A0C00004025 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EFB66E7D2C06891800DE5A30 /* SentimentDetailView */,
 				EFE5CC052BFD484800B1C93C /* NewsDetail */,
 				EFDA7EFF2BD523E70036E720 /* SplashScreen */,
 				EFB8DCFE2BC560CC001AC56F /* InsightsView */,
@@ -299,6 +310,18 @@
 				EFB133B72BAE4A0C00004025 /* Profile */,
 			);
 			path = Tabs;
+			sourceTree = "<group>";
+		};
+		EFB66E7D2C06891800DE5A30 /* SentimentDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				EFB66E7E2C06892C00DE5A30 /* SentimentDetailSummaryView.swift */,
+				EFB66E802C068CE700DE5A30 /* SentimentDetailViewController.swift */,
+				EFB66E822C068D1F00DE5A30 /* SentimentDetailViewModel.swift */,
+				EFB66E792C05E2D000DE5A30 /* TickerNewsFeedViewController.swift */,
+				EFB66E7B2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift */,
+			);
+			path = SentimentDetailView;
 			sourceTree = "<group>";
 		};
 		EFB8DCFE2BC560CC001AC56F /* InsightsView */ = {
@@ -450,10 +473,13 @@
 				EFB133BB2BAE4A0C00004025 /* EventDetailViewModel.swift in Sources */,
 				EFB133CA2BAE4A0C00004025 /* ProfileHeaderView.swift in Sources */,
 				EFDA7EF82BD521250036E720 /* FirebaseAuthService.swift in Sources */,
+				EFB66E832C068D1F00DE5A30 /* SentimentDetailViewModel.swift in Sources */,
 				EFB133852BAE49A200004025 /* AppDelegate.swift in Sources */,
+				EFB66E7F2C06892C00DE5A30 /* SentimentDetailSummaryView.swift in Sources */,
 				EFB133CD2BAE4A0C00004025 /* ProfileViewModel.swift in Sources */,
 				EFB133C42BAE4A0C00004025 /* MainTab.swift in Sources */,
 				EFB8DD022BC560FD001AC56F /* InsightViewModel.swift in Sources */,
+				EFB66E7A2C05E2D000DE5A30 /* TickerNewsFeedViewController.swift in Sources */,
 				EFDA7EF62BD521250036E720 /* AppleAuthService.swift in Sources */,
 				EFB133872BAE49A200004025 /* SceneDelegate.swift in Sources */,
 				EFB133BE2BAE4A0C00004025 /* TickerSentimentCard.swift in Sources */,
@@ -469,10 +495,12 @@
 				EFE2FA822BECBBFE0009B103 /* VideoPlayerViewModel.swift in Sources */,
 				EFA716102BD5C8810001F555 /* OnboardingScreen.swift in Sources */,
 				EFB133BC2BAE4A0C00004025 /* TickerDetailView.swift in Sources */,
+				EFB66E812C068CE700DE5A30 /* SentimentDetailViewController.swift in Sources */,
 				EFB133C52BAE4A0C00004025 /* MainTabModel.swift in Sources */,
 				EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */,
 				EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */,
 				EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */,
+				EFB66E7C2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift in Sources */,
 				EFDA7EF52BD521250036E720 /* AuthPublisher.swift in Sources */,
 				EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */,
 				EFB133C82BAE4A0C00004025 /* NewsViewControllerModel .swift in Sources */,
