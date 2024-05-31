@@ -57,9 +57,14 @@ public class TickerDetailView: UIViewController {
     private func setupNavBar() {
         showNavbar()
         setupTransparentNavBar(color: .surfaceBackground, scrollColor: .surfaceBackground)
-        if let isPro = AppStorage.shared.user?.isPro, isPro {
-            navigationItem.rightBarButtonItems = [addHabit, addFavorites]
-        } else {
+//        if let isPro = AppStorage.shared.user?.isPro, isPro {
+//            navigationItem.rightBarButtonItems = [addHabit, addFavorites]
+//        }
+//        else {
+//            navigationItem.rightBarButtonItems = [addFavorites]
+//        }
+//        
+        if AppStorage.shared.user != nil {
             navigationItem.rightBarButtonItems = [addFavorites]
         }
         
@@ -138,6 +143,9 @@ public class TickerDetailView: UIViewController {
                 switch navigation {
                 case .toNews(let news):
                     viewController = NewsDetailView(news: news)
+                    vc.pushTo(target: viewController)
+                case .moreNews(let preloaded):
+                    viewController = NewsFeedViewController(newsService: NewsService.shared, includeSegmentControl: false, type: .preloaded(preloaded))
                     vc.pushTo(target: viewController)
                 case .toEvent(let event):
                     viewController = EventDetailView(event: event)

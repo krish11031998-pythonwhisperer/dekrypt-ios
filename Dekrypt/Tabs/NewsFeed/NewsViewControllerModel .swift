@@ -155,7 +155,10 @@ public class NewsFeedViewControllerModel {
             }
             .eraseToAnyPublisher()
         
-        let preloadedNews = AnyPublisher<[NewsModel], Never>.just(preloadedNews)
+        let preloadedNews = AnyPublisher<[NewsModel], Never>.just(preloadedNews).handleEvents(receiveOutput: { [weak self] preloadedNews in
+            guard let self else { return }
+            self.news[.general] = preloadedNews
+        }).eraseToAnyPublisher()
         
         let fetchNews = Publishers.Merge3(fetchNextPageNews, refreshedNews, preloadedNews)
             .eraseToAnyPublisher()

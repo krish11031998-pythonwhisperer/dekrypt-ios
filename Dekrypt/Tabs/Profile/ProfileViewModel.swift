@@ -28,7 +28,7 @@ public class ProfileViewModel {
     }
     
     enum ProfileSettings: String, Hashable, CaseIterable {
-        case profile, reportBug, habit
+        case profile, reportBug//, habit
         
         
         var stylizedText: String {
@@ -37,8 +37,8 @@ public class ProfileViewModel {
                 return "🧑‍🚀  Profile"
             case .reportBug:
                 return "👻  Report Bug"
-            case .habit:
-                return "⌚️  Set Habit Time"
+//            case .habit:
+//                return "⌚️  Set Habit Time"
             }
         }
     }

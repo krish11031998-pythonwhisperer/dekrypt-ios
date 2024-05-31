@@ -55,6 +55,7 @@ public class TickerDetailViewModel {
         case toEvent(EventModel)
         case videos([VideoModel], VideoModel)
         case toNewsWithDate(String)
+        case moreNews(NewsFeedViewControllerModel.PreloadedFeedModel)
         case toSentimentDetail(SentimentForTicker)
         case toHabit
         case showAlertForOnboarding
@@ -298,7 +299,13 @@ public class TickerDetailViewModel {
     // MARK: - News Section
     
     private func setupNewsSection(news: [NewsModel]) -> DiffableCollectionSection {
-        let newsSectionHeader = CollectionSectionHeader(.init(label: Section.news.name, addHorizontalInset: false))
+        
+        let action: Callback = { [weak self] in
+            self?.navigation.send(.moreNews(.init(news: news, query: self?.ticker, page: 2)))
+        }
+    
+        
+        let newsSectionHeader = CollectionSectionHeader(.init(label: Section.news.name, accessory: .viewMore("View More", action), addHorizontalInset: false))
         let newsSectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0),
                                                                              height: .estimated(44),
                                                                              insets: .sectionInsets)
