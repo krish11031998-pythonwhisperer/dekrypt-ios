@@ -61,22 +61,24 @@ struct SentimentDetailSummaryView: ConfigurableView {
         }
         .padding(.vertical, .appVerticalPadding)
         .padding(.horizontal, .appHorizontalPadding)
+        .frame(maxWidth: .infinity, alignment: .center)
         .asCard(cornerRadius: 16, material: .regular)
+        .padding(.trailing, CGFloat.appHorizontalPadding)
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: .appVerticalPadding) {
             GeometryReader { proxy in
-                HStack(alignment: .center, spacing: .appHorizontalPadding) {
+                LazyHStack(alignment: .center, spacing: .appHorizontalPadding) {
                     if let sentiments = sentimentModel.timeline {
                         SentimentChartView(sentiment: Array(sentiments.values.dropFirst(sentiments.count - 30)))
                             .frame(width: proxy.size.width, alignment: .center)
                     }
                     if let total = sentimentModel.total {
                         breakdownView(total: total)
-                            .frame(width: proxy.size.width, alignment: .center)
-                    }
+                            .frame(width: proxy.size.width, alignment: .center)                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
                 .offset(x: self.type == .breakdown ? -proxy.size.width : 0)
             }
             .frame(maxHeight: .infinity, alignment: .top)

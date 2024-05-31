@@ -77,7 +77,7 @@ class TickerNewsFeedViewModel {
             return DiffableCollectionItem<NewsView>(.init(model: news, isFirst: idx == 0, isLast: idx == fetchedNews.count - 1, action: action(news)))
         }
         
-        let layout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44.0), insets: .sectionInsets)
+        let layout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44.0), insets: .sectionInsets, spacing: .appVerticalPadding)
         
         return .init(0, cells: cells, sectionLayout: layout)
     }

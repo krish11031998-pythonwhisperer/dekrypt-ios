@@ -50,12 +50,7 @@ class SentimentDetailViewController: UIViewController {
     private func bind() {
         let output = viewModel.transform()
         
-        output.section
-            .withUnretained(self)
-            .sinkReceive { (vc, section) in
-                vc.collectionView.reloadWithDynamicSection(sections: section)
-            }
-            .store(in: &bag)
+        collectionView.reloadWithDynamicSection(sections: viewModel.section())
         
         output.navigation
             .withUnretained(self)

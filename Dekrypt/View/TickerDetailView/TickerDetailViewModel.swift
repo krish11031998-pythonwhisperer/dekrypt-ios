@@ -261,9 +261,9 @@ public class TickerDetailViewModel {
             self?.navigation.send(.toSentimentDetail(.init(total: total, timeline: sentiment)))
         }
         
-        let sectionHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.sentiment.name, accessory: .viewMore("See more", viewSentimentAction), addHorizontalInset: true))
+        let sectionHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.sentiment.name, accessory: .viewMore("See more", viewSentimentAction), addHorizontalInset: false))
         
-        let insets: NSDirectionalEdgeInsets = .init(top: .standardColumnSpacing, leading: .zero, bottom: .appVerticalPadding, trailing: .zero)
+        let insets: NSDirectionalEdgeInsets = .sectionInsets
         
         let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1), height: .absolute(.totalWidth/0.95), insets: .section(insets), spacing: .zero)
             .addHeader()
