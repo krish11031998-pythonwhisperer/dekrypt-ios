@@ -12,7 +12,6 @@
 		EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A232BC33FF900FC84D3 /* SearchHeader.swift */; };
 		EF1E8A262BC348D300FC84D3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A252BC348D300FC84D3 /* SearchViewController.swift */; };
 		EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */; };
-		EF4133672BDC4F5F00EF834B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF4133662BDC4F5E00EF834B /* GoogleService-Info.plist */; };
 		EF42AA9F2BE9490000C54D0F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */; };
 		EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */; };
 		EFA716042BD56B860001F555 /* TabViewControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA716032BD56B860001F555 /* TabViewControllerType.swift */; };
@@ -61,6 +60,12 @@
 		EFDA7F002BD523E70036E720 /* SplashScreenVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDA7EFE2BD523E70036E720 /* SplashScreenVIewController.swift */; };
 		EFE2FA802BEC3A270009B103 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2FA7F2BEC3A270009B103 /* VideoPlayerViewController.swift */; };
 		EFE2FA822BECBBFE0009B103 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2FA812BECBBFE0009B103 /* VideoPlayerViewModel.swift */; };
+		EFE590A82C0B512100D7902F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EFE590A72C0B512100D7902F /* GoogleService-Info.plist */; };
+		EFE590AA2C0B68F000D7902F /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590A92C0B68F000D7902F /* SubscriptionViewController.swift */; };
+		EFE590AD2C0BC67600D7902F /* ReceiptParser in Frameworks */ = {isa = PBXBuildFile; productRef = EFE590AC2C0BC67600D7902F /* ReceiptParser */; };
+		EFE590AF2C0BC67600D7902F /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = EFE590AE2C0BC67600D7902F /* RevenueCat */; };
+		EFE590B12C0BC67600D7902F /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = EFE590B02C0BC67600D7902F /* RevenueCatUI */; };
+		EFE590B62C0BC6CC00D7902F /* RevenueCatDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */; };
 		EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */; };
 		EFE5CC022BF44EE500B1C93C /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */; };
 		EFE5CC042BF4530A00B1C93C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC032BF4530A00B1C93C /* TabViewController.swift */; };
@@ -75,7 +80,6 @@
 		EF1E8A232BC33FF900FC84D3 /* SearchHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeader.swift; sourceTree = "<group>"; };
 		EF1E8A252BC348D300FC84D3 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		EF4133662BDC4F5E00EF834B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentPageControl.swift; sourceTree = "<group>"; };
 		EFA716032BD56B860001F555 /* TabViewControllerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewControllerType.swift; sourceTree = "<group>"; };
@@ -122,6 +126,9 @@
 		EFDA7F012BD5281A0036E720 /* Dekrypt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dekrypt.entitlements; sourceTree = "<group>"; };
 		EFE2FA7F2BEC3A270009B103 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		EFE2FA812BECBBFE0009B103 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
+		EFE590A72C0B512100D7902F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EFE590A92C0B68F000D7902F /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
+		EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatDelegate.swift; sourceTree = "<group>"; };
 		EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewController.swift; sourceTree = "<group>"; };
 		EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
 		EFE5CC032BF4530A00B1C93C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -137,6 +144,9 @@
 				EFB133D02BAEEE1E00004025 /* DekryptUI in Frameworks */,
 				EFB1339A2BAE49B400004025 /* KKit in Frameworks */,
 				EFA716092BD591D00001F555 /* GoogleMobileAds in Frameworks */,
+				EFE590AD2C0BC67600D7902F /* ReceiptParser in Frameworks */,
+				EFE590AF2C0BC67600D7902F /* RevenueCat in Frameworks */,
+				EFE590B12C0BC67600D7902F /* RevenueCatUI in Frameworks */,
 				EFDA7EFB2BD521A70036E720 /* GoogleSignIn in Frameworks */,
 				EFDA7EFD2BD521A70036E720 /* GoogleSignInSwift in Frameworks */,
 				EFE5CC0A2BFD48C900B1C93C /* SwiftSoup in Frameworks */,
@@ -196,13 +206,13 @@
 		EFB133832BAE49A200004025 /* Dekrypt */ = {
 			isa = PBXGroup;
 			children = (
-				EF4133662BDC4F5E00EF834B /* GoogleService-Info.plist */,
+				EFE590B42C0BC6BA00D7902F /* AppDelegate */,
+				EFE590A72C0B512100D7902F /* GoogleService-Info.plist */,
 				EFA716052BD571F00001F555 /* Assets.xcassets */,
 				EFDA7F012BD5281A0036E720 /* Dekrypt.entitlements */,
 				EFDA7EF42BD521250036E720 /* Auth */,
 				EFB133B82BAE4A0C00004025 /* Tabs */,
 				EFB133A72BAE4A0C00004025 /* View */,
-				EFB133842BAE49A200004025 /* AppDelegate.swift */,
 				EFB133862BAE49A200004025 /* SceneDelegate.swift */,
 				EFB1338F2BAE49A300004025 /* LaunchScreen.storyboard */,
 				EFB133922BAE49A300004025 /* Info.plist */,
@@ -293,6 +303,7 @@
 				EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */,
 				EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */,
 				EFA7160F2BD5C8810001F555 /* OnboardingScreen.swift */,
+				EFE590A92C0B68F000D7902F /* SubscriptionViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -359,6 +370,15 @@
 			path = SplashScreen;
 			sourceTree = "<group>";
 		};
+		EFE590B42C0BC6BA00D7902F /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				EFB133842BAE49A200004025 /* AppDelegate.swift */,
+				EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
 		EFE5CBFE2BF44E4200B1C93C /* Watchlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -400,6 +420,9 @@
 				EFDA7EFC2BD521A70036E720 /* GoogleSignInSwift */,
 				EFA716082BD591D00001F555 /* GoogleMobileAds */,
 				EFE5CC092BFD48C900B1C93C /* SwiftSoup */,
+				EFE590AC2C0BC67600D7902F /* ReceiptParser */,
+				EFE590AE2C0BC67600D7902F /* RevenueCat */,
+				EFE590B02C0BC67600D7902F /* RevenueCatUI */,
 			);
 			productName = Dekrypt;
 			productReference = EFB133812BAE49A200004025 /* Dekrypt.app */;
@@ -435,6 +458,7 @@
 				EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				EFA716072BD591D00001F555 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				EFE5CC082BFD48C900B1C93C /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				EFE590AB2C0BC67600D7902F /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			productRefGroup = EFB133822BAE49A200004025 /* Products */;
 			projectDirPath = "";
@@ -450,9 +474,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF4133672BDC4F5F00EF834B /* GoogleService-Info.plist in Resources */,
 				EFA716062BD571F00001F555 /* Assets.xcassets in Resources */,
 				EFB133912BAE49A300004025 /* Base in Resources */,
+				EFE590A82C0B512100D7902F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +497,7 @@
 				EFB66E832C068D1F00DE5A30 /* SentimentDetailViewModel.swift in Sources */,
 				EFB133852BAE49A200004025 /* AppDelegate.swift in Sources */,
 				EFB133CD2BAE4A0C00004025 /* ProfileViewModel.swift in Sources */,
+				EFE590AA2C0B68F000D7902F /* SubscriptionViewController.swift in Sources */,
 				EFB133C42BAE4A0C00004025 /* MainTab.swift in Sources */,
 				EFB8DD022BC560FD001AC56F /* InsightViewModel.swift in Sources */,
 				EFB66E7A2C05E2D000DE5A30 /* TickerNewsFeedViewController.swift in Sources */,
@@ -505,6 +530,7 @@
 				EFB133C32BAE4A0C00004025 /* HomeViewModel.swift in Sources */,
 				EFB133BD2BAE4A0C00004025 /* TickerDetailViewModel.swift in Sources */,
 				EFA7160E2BD5C1930001F555 /* AppStorage.swift in Sources */,
+				EFE590B62C0BC6CC00D7902F /* RevenueCatDelegate.swift in Sources */,
 				EFB133C12BAE4A0C00004025 /* NewsDetailView.swift in Sources */,
 				EFE5CC072BFD487500B1C93C /* NewsArticleParser.swift in Sources */,
 				EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */,
@@ -669,8 +695,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Krishna.Dekrypt;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dekrypt.dekrypt-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -700,8 +726,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Krishna.Dekrypt;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dekrypt.dekrypt-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -769,6 +795,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		EFE590AB2C0BC67600D7902F /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.41.2;
+			};
+		};
 		EFE5CC082BFD48C900B1C93C /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
@@ -804,6 +838,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EFDA7EF92BD521A70036E720 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		EFE590AC2C0BC67600D7902F /* ReceiptParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFE590AB2C0BC67600D7902F /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = ReceiptParser;
+		};
+		EFE590AE2C0BC67600D7902F /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFE590AB2C0BC67600D7902F /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
+		EFE590B02C0BC67600D7902F /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EFE590AB2C0BC67600D7902F /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCatUI;
 		};
 		EFE5CC092BFD48C900B1C93C /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;

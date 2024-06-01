@@ -1,5 +1,5 @@
 {
-  "originHash" : "68794de94f5488ee0bfa2baac78865d2efb993627974faa48f9a71b6461c18a8",
+  "originHash" : "1b54ad3d53ca8a998b885b22a4ed00dc0110edae1aeefefb3e9ddaf499538ef0",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git",
       "state" : {
-        "revision" : "3563636f4ae271853b7597ef716a432b75635afe",
-        "version" : "2.4.4"
+        "revision" : "c870d190a1f0c0943b727fb46027a432ae7f17b7",
+        "version" : "2.4.7"
       }
     },
     {
@@ -170,6 +170,15 @@
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "purchases-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios.git",
+      "state" : {
+        "revision" : "966743b0d4353fae28300df677fe303607fd75d0",
+        "version" : "4.41.2"
       }
     },
     {

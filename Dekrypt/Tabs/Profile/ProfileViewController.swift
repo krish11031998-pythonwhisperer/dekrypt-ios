@@ -10,6 +10,7 @@ import UIKit
 import KKit
 import Combine
 import DekryptUI
+import SwiftUI
 
 public class ProfileViewController: UIViewController, TabViewControllerType {
     
@@ -19,7 +20,7 @@ public class ProfileViewController: UIViewController, TabViewControllerType {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.standardNavBar(leftBarButton: Self.closeButton(self))
+        self.standardNavBar(leftBarButton: Self.closeButton(self), color: .clear, scrollColor: .clear)
         setupView()
         bind()
     }
@@ -51,6 +52,8 @@ public class ProfileViewController: UIViewController, TabViewControllerType {
                     self.navigationController?.setViewControllers([OnboardingScreen()], animated: false)
                 case .toTicker(let ticker):
                     vc.pushTo(target: TickerDetailView(ticker: ticker, tickerName: ticker))
+                case .toSubscription:
+                    vc.pushTo(target: SubscriptionViewController())
                 }
             }
             .store(in: &bag)

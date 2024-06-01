@@ -20,6 +20,7 @@ public class ProfileViewModel {
         case onboarding
         case toTicker(String)
         case errorMessage(Error)
+        case toSubscription
     }
     
     struct Output {
@@ -28,7 +29,7 @@ public class ProfileViewModel {
     }
     
     enum ProfileSettings: String, Hashable, CaseIterable {
-        case profile, reportBug//, habit
+        case profile, reportBug, subscription//, habit
         
         
         var stylizedText: String {
@@ -37,6 +38,8 @@ public class ProfileViewModel {
                 return "🧑‍🚀  Profile"
             case .reportBug:
                 return "👻  Report Bug"
+            case .subscription:
+                return "🧾 Manage Subcription"
 //            case .habit:
 //                return "⌚️  Set Habit Time"
             }
@@ -100,8 +103,11 @@ public class ProfileViewModel {
     private func generalSection() -> DiffableCollectionSection {
         let cells = ProfileSettings.allCases
             .map { setting in
-                return DiffableCollectionItem<ProfileCell>(.init(label: setting.stylizedText, isLast: ProfileSettings.allCases.last == setting, action: {
+                return DiffableCollectionItem<ProfileCell>(.init(label: setting.stylizedText, isLast: ProfileSettings.allCases.last == setting, action: { [weak self] in
                     print("(DEBUG) setting: ", setting.rawValue)
+                    if setting == .subscription {
+                        self?.navigationPublisher.send(.toSubscription)
+                    }
                 }))
             }
         
