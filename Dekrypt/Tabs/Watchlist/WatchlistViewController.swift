@@ -22,6 +22,7 @@ class WatchlistViewController:TabViewController {
     @Published private var selectedFilter: (WatchlistViewModel.Section) = .tickers
     private let viewModel: WatchlistViewModel = .init(tickerService: TickerService.shared)
     private var bag: Set<AnyCancellable> = .init()
+    private var emptyStateView: UIView?
     
     private lazy var collectionView: UICollectionView = .init(frame: .init(), collectionViewLayout: .init())
     
@@ -63,8 +64,23 @@ class WatchlistViewController:TabViewController {
         
         output.sections
             .withUnretained(self)
-            .sinkReceive { (vc, sections) in
-                vc.collectionView.reloadWithDynamicSection(sections: sections, completion: vc.afterCollectionLoad)
+            .sinkReceive { (vc, watchlistResult) in
+                switch watchlistResult {
+                case .noTickers(let section):
+                    vc.collectionView.reloadWithDynamicSection(sections: [section]) {
+                        vc.addEmptyWatchlist(state: .noTickers)
+                    }
+                case .noUserSession(let section):
+                    vc.collectionView.reloadWithDynamicSection(sections: [section]) {
+                        vc.addEmptyWatchlist(state: .noUser)
+                    }
+                case .ticker(let section):
+                    if vc.emptyStateView != nil {
+                        vc.emptyStateView?.removeFromSuperview()
+                        vc.emptyStateView = nil
+                    }
+                    vc.collectionView.reloadWithDynamicSection(sections: [section])
+                }
             }
             .store(in: &bag)
         
@@ -92,5 +108,20 @@ class WatchlistViewController:TabViewController {
                 vc.viewModel.nextPage.send(vc.viewModel.nextPage.value + 1)
             }
             .store(in: &bag)
+    }
+    
+    private func addEmptyWatchlist(state: EmptyWatchlistStateView.State) {
+        let emptyView = EmptyWatchlistStateView(state: state)
+        
+        if self.emptyStateView != nil {
+            self.emptyStateView?.removeFromSuperview()
+            self.emptyStateView = nil
+        }
+        
+        self.emptyStateView = addSwiftUIView(emptyView)
+        
+        self.emptyStateView?
+            .pinCenterXAnchorTo(constant: 0)
+            .pinCenterYAnchorTo(constant: 0)
     }
 }

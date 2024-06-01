@@ -44,6 +44,12 @@ class WatchlistViewModel {
         }
     }
     
+    enum WatchlistResult {
+        case noTickers(DiffableCollectionSection)
+        case noUserSession(DiffableCollectionSection)
+        case ticker(DiffableCollectionSection)
+    }
+    
     enum Navigation {
         case toTicker(MentionTickerModel)
     }
@@ -53,7 +59,7 @@ class WatchlistViewModel {
     }
     
     struct Output {
-        let sections: AnyPublisher<[DiffableCollectionSection], Never>
+        let sections: AnyPublisher<WatchlistResult, Never>
         let navigation: AnyPublisher<Navigation, Never>
     }
     
@@ -69,36 +75,36 @@ class WatchlistViewModel {
         
         let tickers = fetchTickers()
         
-        let sections = Publishers.CombineLatest4(input.selectedTab, AppStorage.shared.userPublisher, tickers, nextPage)
+        let sections: AnyPublisher<WatchlistResult, Never> = Publishers.CombineLatest4(input.selectedTab, AppStorage.shared.userPublisher, tickers, nextPage)
             .subscribe(on: DispatchQueue.global(qos: .background))
-            .map { (tab, user, allTickers, page) in
-                let tickers: [MentionTickerModel]
+            .withUnretained(self)
+            .map { (vm, combineLatestData) in
+                let (tab, user, allTickers, page) = combineLatestData
+                let result: WatchlistResult
                 switch tab {
                 case .tickers:
                     print("(DEBUG) allTicker.count: ", allTickers.count)
-                    tickers = allTickers.limit(from: 0, to: page * 100)
+                    let tickers = allTickers.limit(from: 0, to: page * 100)
+                    result = .ticker(vm.tickerSection(tickers: tickers))
                 case .watchlist:
-                    if let user, let watching = user.watching {
-                        let watchListTickers = allTickers.compactMap { ticker -> MentionTickerModel? in
-                            guard watching.contains(ticker.ticker) else { return nil }
-                            print("(DEBUG) watchlist Ticker: \(ticker.ticker) (in mainThread: \(Thread.isMainThread))", ticker.ticker)
-                            return ticker
+                    if let user {
+                        if let watching = user.watching {
+                            let watchListTickers = allTickers.filter({ watching.contains($0.ticker)})
+                            result = .ticker(vm.tickerSection(tickers: watchListTickers))
+                        } else {
+                            result = .noTickers(vm.tickerSection(tickers: []))
                         }
-                        tickers = watchListTickers
                     } else {
-                        tickers = []
+                        result = .noUserSession(vm.tickerSection(tickers: []))
                     }
                 }
                 
-                return tickers
-            }
-            .withUnretained(self)
-            .map {
-                [$0.tickerSection(tickers: $1)]
+                return result
             }
             .eraseToAnyPublisher()
         
-        return .init(sections: sections, navigation: navigation.eraseToAnyPublisher())
+        return .init(sections: sections,
+                     navigation: navigation.eraseToAnyPublisher())
     }
     
     // MARK: - Fetch Tickers

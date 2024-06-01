@@ -47,7 +47,6 @@
 		EFB133D02BAEEE1E00004025 /* DekryptUI in Frameworks */ = {isa = PBXBuildFile; productRef = EFB133CF2BAEEE1E00004025 /* DekryptUI */; };
 		EFB66E7A2C05E2D000DE5A30 /* TickerNewsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E792C05E2D000DE5A30 /* TickerNewsFeedViewController.swift */; };
 		EFB66E7C2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E7B2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift */; };
-		EFB66E7F2C06892C00DE5A30 /* SentimentDetailSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E7E2C06892C00DE5A30 /* SentimentDetailSummaryView.swift */; };
 		EFB66E812C068CE700DE5A30 /* SentimentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E802C068CE700DE5A30 /* SentimentDetailViewController.swift */; };
 		EFB66E832C068D1F00DE5A30 /* SentimentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB66E822C068D1F00DE5A30 /* SentimentDetailViewModel.swift */; };
 		EFB8DD002BC560D9001AC56F /* InsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB8DCFF2BC560D9001AC56F /* InsightsViewController.swift */; };
@@ -110,7 +109,6 @@
 		EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		EFB66E792C05E2D000DE5A30 /* TickerNewsFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerNewsFeedViewController.swift; sourceTree = "<group>"; };
 		EFB66E7B2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerNewsFeedViewModel.swift; sourceTree = "<group>"; };
-		EFB66E7E2C06892C00DE5A30 /* SentimentDetailSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentDetailSummaryView.swift; sourceTree = "<group>"; };
 		EFB66E802C068CE700DE5A30 /* SentimentDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentDetailViewController.swift; sourceTree = "<group>"; };
 		EFB66E822C068D1F00DE5A30 /* SentimentDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentDetailViewModel.swift; sourceTree = "<group>"; };
 		EFB8DCFF2BC560D9001AC56F /* InsightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewController.swift; sourceTree = "<group>"; };
@@ -315,7 +313,6 @@
 		EFB66E7D2C06891800DE5A30 /* SentimentDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				EFB66E7E2C06892C00DE5A30 /* SentimentDetailSummaryView.swift */,
 				EFB66E802C068CE700DE5A30 /* SentimentDetailViewController.swift */,
 				EFB66E822C068D1F00DE5A30 /* SentimentDetailViewModel.swift */,
 				EFB66E792C05E2D000DE5A30 /* TickerNewsFeedViewController.swift */,
@@ -475,7 +472,6 @@
 				EFDA7EF82BD521250036E720 /* FirebaseAuthService.swift in Sources */,
 				EFB66E832C068D1F00DE5A30 /* SentimentDetailViewModel.swift in Sources */,
 				EFB133852BAE49A200004025 /* AppDelegate.swift in Sources */,
-				EFB66E7F2C06892C00DE5A30 /* SentimentDetailSummaryView.swift in Sources */,
 				EFB133CD2BAE4A0C00004025 /* ProfileViewModel.swift in Sources */,
 				EFB133C42BAE4A0C00004025 /* MainTab.swift in Sources */,
 				EFB8DD022BC560FD001AC56F /* InsightViewModel.swift in Sources */,
