@@ -52,7 +52,7 @@ class SentimentDetailViewModel {
         let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .absolute(450), insets: .sectionInsets)
             .addHeader()
         
-        let header = CollectionSupplementaryView<SectionHeader>(.init(label: "Summary", addHorizontalInset: false))
+        let header = CollectionSupplementaryView<SectionHeader>(.init(label: "Summary", addHorizontalInset: false, addVerticalInset: true))
         
         return .init(0, cells: [sentimentSummaryCell], header: header, sectionLayout: sectionLayout)
     }

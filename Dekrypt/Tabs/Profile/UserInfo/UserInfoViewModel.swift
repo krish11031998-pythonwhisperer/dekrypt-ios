@@ -66,7 +66,7 @@ class UserInfoViewModel {
         let sectionLayout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44.0), insets: .sectionInsets, spacing: .appVerticalPadding)
             .addHeader()
         
-        let header = CollectionSectionHeader(.init(label: "User Info", addHorizontalInset: false))
+        let header = CollectionSectionHeader(.init(label: "User Info", addHorizontalInset: false, addVerticalInset: true))
         
         let section = DiffableCollectionSection(0, cells: [nameItem, emailItem, uidItem, deleteUser], header: header, sectionLayout: sectionLayout)
         

@@ -121,14 +121,14 @@ public class TickerDetailView: UIViewController {
             .withUnretained(self)
             .sinkReceive { (vc, user) in
                 guard let user else {
-                    if vc.navigationItem.rightBarButtonItems?.first === vc.addHabit {
-                        vc.navigationItem.rightBarButtonItems?.removeFirst()
-                    }
+//                    if vc.navigationItem.rightBarButtonItems?.first === vc.addHabit {
+//                        vc.navigationItem.rightBarButtonItems?.removeFirst()
+//                    }
                     return
                 }
-                if user.isPro, vc.navigationItem.rightBarButtonItems?.first !== vc.addHabit {
-                    vc.navigationItem.rightBarButtonItems?.insert(vc.addHabit, at: 0)
-                }
+//                if user.isPro, vc.navigationItem.rightBarButtonItems?.first !== vc.addHabit {
+//                    vc.navigationItem.rightBarButtonItems?.insert(vc.addHabit, at: 0)
+//                }
                 
                 if let watching = user.watching, watching.contains(vc.viewModel.ticker), vc.addFavorites.navBarButton?.isSelected != true  {
                     vc.addFavorites.navBarButton?.isSelected = true

@@ -40,7 +40,6 @@
 		EFB133C72BAE4A0C00004025 /* NewsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133AF2BAE4A0C00004025 /* NewsFeedViewController.swift */; };
 		EFB133C82BAE4A0C00004025 /* NewsViewControllerModel .swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B02BAE4A0C00004025 /* NewsViewControllerModel .swift */; };
 		EFB133C92BAE4A0C00004025 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B22BAE4A0C00004025 /* ProfileCell.swift */; };
-		EFB133CA2BAE4A0C00004025 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */; };
 		EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */; };
 		EFB133CD2BAE4A0C00004025 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */; };
 		EFB133D02BAEEE1E00004025 /* DekryptUI in Frameworks */ = {isa = PBXBuildFile; productRef = EFB133CF2BAEEE1E00004025 /* DekryptUI */; };
@@ -110,7 +109,6 @@
 		EFB133AF2BAE4A0C00004025 /* NewsFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsFeedViewController.swift; sourceTree = "<group>"; };
 		EFB133B02BAE4A0C00004025 /* NewsViewControllerModel .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NewsViewControllerModel .swift"; sourceTree = "<group>"; };
 		EFB133B22BAE4A0C00004025 /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
-		EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		EFB66E792C05E2D000DE5A30 /* TickerNewsFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerNewsFeedViewController.swift; sourceTree = "<group>"; };
@@ -305,7 +303,6 @@
 				EFE590B82C0BD01600D7902F /* UserInfo */,
 				EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */,
 				EFB133B22BAE4A0C00004025 /* ProfileCell.swift */,
-				EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */,
 				EFB133B62BAE4A0C00004025 /* ProfileViewModel.swift */,
 				EFA7160F2BD5C8810001F555 /* OnboardingScreen.swift */,
 				EFE590A92C0B68F000D7902F /* SubscriptionViewController.swift */,
@@ -506,7 +503,6 @@
 				EFE5CC022BF44EE500B1C93C /* WatchlistViewModel.swift in Sources */,
 				EFB133BA2BAE4A0C00004025 /* EventDetailView.swift in Sources */,
 				EFB133BB2BAE4A0C00004025 /* EventDetailViewModel.swift in Sources */,
-				EFB133CA2BAE4A0C00004025 /* ProfileHeaderView.swift in Sources */,
 				EFDA7EF82BD521250036E720 /* FirebaseAuthService.swift in Sources */,
 				EFB66E832C068D1F00DE5A30 /* SentimentDetailViewModel.swift in Sources */,
 				EFB133852BAE49A200004025 /* AppDelegate.swift in Sources */,

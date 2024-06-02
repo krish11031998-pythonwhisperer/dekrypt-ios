@@ -289,7 +289,7 @@ public class TickerDetailViewModel {
         guard let ticker else { return nil }
         
         let tickerSummaryHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.metrics.name, addHorizontalInset: false))
-        let tickerSummaryLayout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44), insets: .section(.init(vertical: .standardColumnSpacing, horizontal: .appHorizontalPadding)))
+        let tickerSummaryLayout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(44), insets: .sectionInsets)
             .addHeader(size: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0)))
         
         return DiffableCollectionSection(Section.metrics.rawValue, cells: [DiffableCollectionCellView<TickerSummaryView>(model: ticker)], header: tickerSummaryHeader, sectionLayout: tickerSummaryLayout)

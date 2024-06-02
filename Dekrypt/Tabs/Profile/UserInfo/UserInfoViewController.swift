@@ -32,6 +32,7 @@ class UserInfoViewController: UIViewController {
     private func setupView() {
         view.addSubview(collectionView)
         collectionView.fillSuperview()
+        collectionView.backgroundColor = .surfaceBackground
     }
     
     private func bind() {

@@ -82,7 +82,7 @@ public class ProfileViewModel {
             .compactMap({ $0 })
             .withUnretained(self)
             .map { (vm, user) in
-                return [vm.profileSection(user: user), vm.tickerSection(user: user), vm.generalSection()].compactMap({ $0 })
+                return [vm.profileSection(user: user), vm.generalSection()].compactMap({ $0 })
             }
             .eraseToAnyPublisher()
         
@@ -158,9 +158,9 @@ public class ProfileViewModel {
         
         let imageSource = ImageSource.remote(url: profileImageURL)
         
-        let cell = DiffableCollectionItem<ProfileHeaderView>(.init(profileImageView: imageSource, profileName: user.name, profileUsername: "\(user.uid)"))
+        let cell = DiffableCollectionItem<UserHeaderView>(.init(profileImageView: imageSource, profileName: user.name, profileUsername: user.uid, watchlist: user.watching ?? [], isPro: user.isPro, showPro: false))
         
-        let layout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(150), insets: .section(.init(vertical: .standardColumnSpacing, horizontal: 0)))
+        let layout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(150), insets: .sectionInsets)
         
         return .init(Section.profile.rawValue, cells: [cell], sectionLayout: layout)
     }
