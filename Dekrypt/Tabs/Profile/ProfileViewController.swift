@@ -54,6 +54,8 @@ public class ProfileViewController: UIViewController, TabViewControllerType {
                     vc.pushTo(target: TickerDetailView(ticker: ticker, tickerName: ticker))
                 case .toSubscription:
                     vc.pushTo(target: SubscriptionViewController())
+                case .toProfile:
+                    vc.pushTo(target: UserInfoViewController())
                 }
             }
             .store(in: &bag)

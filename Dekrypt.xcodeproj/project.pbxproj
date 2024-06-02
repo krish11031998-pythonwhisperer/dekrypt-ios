@@ -66,6 +66,8 @@
 		EFE590AF2C0BC67600D7902F /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = EFE590AE2C0BC67600D7902F /* RevenueCat */; };
 		EFE590B12C0BC67600D7902F /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = EFE590B02C0BC67600D7902F /* RevenueCatUI */; };
 		EFE590B62C0BC6CC00D7902F /* RevenueCatDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */; };
+		EFE590BA2C0BD02200D7902F /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590B92C0BD02200D7902F /* UserInfoViewController.swift */; };
+		EFE590BE2C0C7B9100D7902F /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590BD2C0C7B9100D7902F /* UserInfoViewModel.swift */; };
 		EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */; };
 		EFE5CC022BF44EE500B1C93C /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */; };
 		EFE5CC042BF4530A00B1C93C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC032BF4530A00B1C93C /* TabViewController.swift */; };
@@ -129,6 +131,8 @@
 		EFE590A72C0B512100D7902F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EFE590A92C0B68F000D7902F /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
 		EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatDelegate.swift; sourceTree = "<group>"; };
+		EFE590B92C0BD02200D7902F /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		EFE590BD2C0C7B9100D7902F /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
 		EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewController.swift; sourceTree = "<group>"; };
 		EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
 		EFE5CC032BF4530A00B1C93C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -298,6 +302,7 @@
 		EFB133B72BAE4A0C00004025 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				EFE590B82C0BD01600D7902F /* UserInfo */,
 				EFB133B52BAE4A0C00004025 /* ProfileViewController.swift */,
 				EFB133B22BAE4A0C00004025 /* ProfileCell.swift */,
 				EFB133B32BAE4A0C00004025 /* ProfileHeaderView.swift */,
@@ -377,6 +382,15 @@
 				EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */,
 			);
 			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		EFE590B82C0BD01600D7902F /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				EFE590B92C0BD02200D7902F /* UserInfoViewController.swift */,
+				EFE590BD2C0C7B9100D7902F /* UserInfoViewModel.swift */,
+			);
+			path = UserInfo;
 			sourceTree = "<group>";
 		};
 		EFE5CBFE2BF44E4200B1C93C /* Watchlist */ = {
@@ -514,6 +528,7 @@
 				EFA716042BD56B860001F555 /* TabViewControllerType.swift in Sources */,
 				EF1E8A212BBF30B500FC84D3 /* VidoCarouselCell.swift in Sources */,
 				EFE2FA822BECBBFE0009B103 /* VideoPlayerViewModel.swift in Sources */,
+				EFE590BE2C0C7B9100D7902F /* UserInfoViewModel.swift in Sources */,
 				EFA716102BD5C8810001F555 /* OnboardingScreen.swift in Sources */,
 				EFB133BC2BAE4A0C00004025 /* TickerDetailView.swift in Sources */,
 				EFB66E812C068CE700DE5A30 /* SentimentDetailViewController.swift in Sources */,
@@ -536,6 +551,7 @@
 				EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */,
 				EF1E8A1F2BBF29A500FC84D3 /* VideoCarouselLayout.swift in Sources */,
 				EFB133C72BAE4A0C00004025 /* NewsFeedViewController.swift in Sources */,
+				EFE590BA2C0BD02200D7902F /* UserInfoViewController.swift in Sources */,
 				EFB133C22BAE4A0C00004025 /* HomeViewController.swift in Sources */,
 				EFB133C02BAE4A0C00004025 /* TickerViewModel.swift in Sources */,
 				EFE2FA802BEC3A270009B103 /* VideoPlayerViewController.swift in Sources */,

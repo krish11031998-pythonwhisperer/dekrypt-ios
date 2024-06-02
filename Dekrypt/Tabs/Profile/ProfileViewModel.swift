@@ -21,6 +21,7 @@ public class ProfileViewModel {
         case toTicker(String)
         case errorMessage(Error)
         case toSubscription
+        case toProfile
     }
     
     struct Output {
@@ -101,14 +102,16 @@ public class ProfileViewModel {
     }
     
     private func generalSection() -> DiffableCollectionSection {
+        
+        let sectionAction: (ProfileSettings) -> Callback = { [weak self] setting in
+            {
+                self?.navigateTo(setting: setting)
+            }
+        }
+        
         let cells = ProfileSettings.allCases
             .map { setting in
-                return DiffableCollectionItem<ProfileCell>(.init(label: setting.stylizedText, isLast: ProfileSettings.allCases.last == setting, action: { [weak self] in
-                    print("(DEBUG) setting: ", setting.rawValue)
-                    if setting == .subscription {
-                        self?.navigationPublisher.send(.toSubscription)
-                    }
-                }))
+                return DiffableCollectionItem<ProfileCell>(.init(label: setting.stylizedText, isLast: ProfileSettings.allCases.last == setting, action: sectionAction(setting)))
             }
         
         let sectionLayout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1), height: .estimated(44), insets: .section(.init(vertical: .appVerticalPadding, horizontal: 0)), spacing: .standardColumnSpacing)
@@ -160,7 +163,17 @@ public class ProfileViewModel {
         let layout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(150), insets: .section(.init(vertical: .standardColumnSpacing, horizontal: 0)))
         
         return .init(Section.profile.rawValue, cells: [cell], sectionLayout: layout)
-        
+    }
+    
+    private func navigateTo(setting: ProfileSettings) {
+        switch setting {
+        case .profile:
+            navigationPublisher.send(.toProfile)
+        case .reportBug:
+            break
+        case .subscription:
+            return navigationPublisher.send(.toSubscription)
+        }
     }
 }
 

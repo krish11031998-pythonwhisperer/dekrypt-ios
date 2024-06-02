@@ -44,10 +44,10 @@ class WatchlistViewModel {
         }
     }
     
-    enum WatchlistResult {
-        case noTickers(DiffableCollectionSection)
-        case noUserSession(DiffableCollectionSection)
-        case ticker(DiffableCollectionSection)
+    enum WatchlistState {
+        case noTickers
+        case noUserSession
+        case ticker
     }
     
     enum Navigation {
@@ -59,12 +59,14 @@ class WatchlistViewModel {
     }
     
     struct Output {
-        let sections: AnyPublisher<WatchlistResult, Never>
+        let sections: AnyPublisher<[DiffableCollectionSection], Never>
         let navigation: AnyPublisher<Navigation, Never>
+        let watchlistState: AnyPublisher<WatchlistState, Never>
     }
     
     private let tickerService: TickerServiceInterface
     private let navigation: PassthroughSubject<Navigation, Never> = .init()
+    private let watchlistState: PassthroughSubject<WatchlistState, Never> = .init()
     public let nextPage: CurrentValueSubject<Int, Never> = .init(1)
     
     init(tickerService: TickerServiceInterface) {
@@ -75,36 +77,45 @@ class WatchlistViewModel {
         
         let tickers = fetchTickers()
         
-        let sections: AnyPublisher<WatchlistResult, Never> = Publishers.CombineLatest4(input.selectedTab, AppStorage.shared.userPublisher, tickers, nextPage)
-            .subscribe(on: DispatchQueue.global(qos: .background))
+        let sections: AnyPublisher<[DiffableCollectionSection], Never> = Publishers.CombineLatest4(input.selectedTab, AppStorage.shared.userPublisher, tickers, nextPage)
             .withUnretained(self)
-            .map { (vm, combineLatestData) in
+            .map { (vm, combineLatestData) -> ([MentionTickerModel], UserModel?) in
                 let (tab, user, allTickers, page) = combineLatestData
-                let result: WatchlistResult
                 switch tab {
                 case .tickers:
-                    print("(DEBUG) allTicker.count: ", allTickers.count)
                     let tickers = allTickers.limit(from: 0, to: page * 100)
-                    result = .ticker(vm.tickerSection(tickers: tickers))
+                    return (tickers, user)
                 case .watchlist:
                     if let user {
                         if let watching = user.watching {
                             let watchListTickers = allTickers.filter({ watching.contains($0.ticker)})
-                            result = .ticker(vm.tickerSection(tickers: watchListTickers))
+                            return (watchListTickers, user)
                         } else {
-                            result = .noTickers(vm.tickerSection(tickers: []))
+                            return ([], user)
                         }
                     } else {
-                        result = .noUserSession(vm.tickerSection(tickers: []))
+                        return ([], user)
                     }
                 }
-                
-                return result
             }
+            .handleEvents(receiveOutput: { [weak self] (tickers, user) in
+                if tickers.isEmpty {
+                    if  user != nil {
+                        self?.watchlistState.send(.noTickers)
+                    } else {
+                        self?.watchlistState.send(.noUserSession)
+                    }
+                } else {
+                    self?.watchlistState.send(.ticker)
+                }
+            })
+            .withUnretained(self)
+            .map { [$0.tickerSection(tickers: $1.0)] }
             .eraseToAnyPublisher()
         
         return .init(sections: sections,
-                     navigation: navigation.eraseToAnyPublisher())
+                     navigation: navigation.eraseToAnyPublisher(),
+                     watchlistState: watchlistState.eraseToAnyPublisher())
     }
     
     // MARK: - Fetch Tickers

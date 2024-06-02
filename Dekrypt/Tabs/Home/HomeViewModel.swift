@@ -327,9 +327,9 @@ class HomeViewModel {
         
         //layout.orthogonalScrollingBehavior = .groupPaging
         
-        let viewMoreCallBack: Callback = { [weak self] in
-            self?.navigation.send(.toAllInsights(insights))
-        }
+//        let viewMoreCallBack: Callback = { [weak self] in
+//            self?.navigation.send(.toAllInsights(insights))
+//        }
         
         let insightCallback: (InsightDigestModel) -> Callback = { [weak self] insight in
             print("(DEBUG) insightCallback!")
@@ -338,7 +338,7 @@ class HomeViewModel {
             }
         }
         
-        let sectionHeader = CollectionSectionHeader(.init(label: "Insights", accessory: .viewMore("View more", viewMoreCallBack), addHorizontalInset: false))
+        let sectionHeader = CollectionSectionHeader(.init(label: "Insights", addHorizontalInset: false))
         
         let cells = insights.limit(to: 1).map { DiffableCollectionItem<InsightView>(.init(insight: $0, mode: .carousel, action: insightCallback($0))) }
         

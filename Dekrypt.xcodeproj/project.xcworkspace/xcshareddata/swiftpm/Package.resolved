@@ -1,5 +1,5 @@
 {
-  "originHash" : "1b54ad3d53ca8a998b885b22a4ed00dc0110edae1aeefefb3e9ddaf499538ef0",
+  "originHash" : "50eb66521a51ab77e1f72d3c9c9bd875805c3e9227b231e9d7d937831be7cf7e",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krish11031998-pythonwhisperer/DekryptUI-SPM.git",
       "state" : {
-        "revision" : "c870d190a1f0c0943b727fb46027a432ae7f17b7",
-        "version" : "2.4.7"
+        "revision" : "c03ef6be5191abec41d7f8af6397c2ef63eab785",
+        "version" : "2.4.8"
       }
     },
     {

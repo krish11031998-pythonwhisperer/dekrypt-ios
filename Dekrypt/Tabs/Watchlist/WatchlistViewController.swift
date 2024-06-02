@@ -64,23 +64,8 @@ class WatchlistViewController:TabViewController {
         
         output.sections
             .withUnretained(self)
-            .sinkReceive { (vc, watchlistResult) in
-                switch watchlistResult {
-                case .noTickers(let section):
-                    vc.collectionView.reloadWithDynamicSection(sections: [section]) {
-                        vc.addEmptyWatchlist(state: .noTickers)
-                    }
-                case .noUserSession(let section):
-                    vc.collectionView.reloadWithDynamicSection(sections: [section]) {
-                        vc.addEmptyWatchlist(state: .noUser)
-                    }
-                case .ticker(let section):
-                    if vc.emptyStateView != nil {
-                        vc.emptyStateView?.removeFromSuperview()
-                        vc.emptyStateView = nil
-                    }
-                    vc.collectionView.reloadWithDynamicSection(sections: [section])
-                }
+            .sinkReceive { (vc, section) in
+                vc.collectionView.reloadWithDynamicSection(sections: section)
             }
             .store(in: &bag)
         
@@ -90,6 +75,25 @@ class WatchlistViewController:TabViewController {
                 switch nav {
                 case .toTicker(let ticker):
                     vc.pushTo(target: TickerDetailView(ticker: ticker.ticker, tickerName: ticker.name))
+                }
+            }
+            .store(in: &bag)
+        
+        output.watchlistState
+            .withUnretained(self)
+            .sinkReceive { (vc, state) in
+                switch state {
+                case .noTickers:
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(150)) {
+                        vc.addEmptyWatchlist(state: .noTickers)
+                    }
+                case .noUserSession:
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(150)) {
+                        vc.addEmptyWatchlist(state: .noUser)
+                    }
+                case .ticker:
+                    vc.emptyStateView?.removeFromSuperview()
+                    vc.emptyStateView = nil
                 }
             }
             .store(in: &bag)
