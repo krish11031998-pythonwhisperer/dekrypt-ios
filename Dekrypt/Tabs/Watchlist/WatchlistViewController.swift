@@ -40,6 +40,7 @@ class WatchlistViewController:TabViewController {
     private func setupView() {
         view.addSubview(collectionView)
         collectionView.fillSuperview()
+        collectionView.backgroundColor = .surfaceBackground
         setupHeader()
     }
     

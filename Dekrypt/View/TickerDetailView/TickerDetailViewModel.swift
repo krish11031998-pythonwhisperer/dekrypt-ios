@@ -199,7 +199,8 @@ public class TickerDetailViewModel {
     // MARK: - FetchTickerDetail
     
     private func fetchTickerDetail(user: UserModel?, refresh: Bool) -> AnyPublisher<TickerDetailModel, Never> {
-        tickerService.fetchTickerDetail(ticker: ticker, isPro: user?.isPro ?? false, refresh: refresh)
+        let pro = RemoteConfigManager.shared.betaPro || (user?.isPro ?? false)
+        return tickerService.fetchTickerDetail(ticker: ticker, isPro: pro, refresh: refresh)
             .compactMap(\.data)
             .catch({ err -> AnyPublisher<TickerDetailModel, Never> in
                 print("(ERROR) err: ", err.localizedDescription)
@@ -254,27 +255,18 @@ public class TickerDetailViewModel {
             sentimentAndDates[date] = $0.value
         }
         
-        let sentimentsForDate = Array(sentimentAndDates.keys.sorted()).compactMap { sentimentAndDates[$0] }
-        
-        let sentimentCell = DiffableCollectionItem<SentimentChartView>(sentimentsForDate)
+        let sentimentCell = DiffableCollectionItem<SentimentScoreView>(.init(sentiment: total, asCard: true))
 
         let viewSentimentAction: Callback = { [weak self]  in
             self?.navigation.send(.toSentimentDetail(.init(total: total, timeline: sentiment)))
         }
         
-        let sectionHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.sentiment.name, accessory: .viewMore("See more", viewSentimentAction), addHorizontalInset: false))
+        let sectionHeader = CollectionSupplementaryView<SectionHeader>(.init(label: Section.sentiment.name, includeBeta: RemoteConfigManager.shared.betaPro, accessory: .viewMore("See more", viewSentimentAction), addHorizontalInset: false))
         
         let insets: NSDirectionalEdgeInsets = .sectionInsets
         
-        let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1), height: .absolute(.totalWidth/0.95), insets: .section(insets), spacing: .zero)
+        let sectionLayout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1), height: .absolute(.totalWidth/0.83), insets: .section(insets), spacing: .zero)
             .addHeader()
-        
-        sectionLayout.visibleItemsInvalidationHandler = { [weak self] items, point, environment in
-            let x = point.x
-            let width = environment.container.contentSize.width
-            let currentIndex = (x/width).rounded(.down)
-            self?.currentSentimentPage.send(Int(currentIndex))
-        }
         
         let section = DiffableCollectionSection(Section.sentiment.rawValue, cells: [sentimentCell], header: sectionHeader, sectionLayout: sectionLayout)
         
@@ -358,7 +350,7 @@ public class TickerDetailViewModel {
     // MARK: - Event Section
     
     private func setupEventSection(events: [EventModel]) -> DiffableCollectionSection {
-        let eventSectionHeader = CollectionSectionHeader(.init(label: Section.event.name, addHorizontalInset: false))
+        let eventSectionHeader = CollectionSectionHeader(.init(label: Section.event.name, includeBeta: RemoteConfigManager.shared.betaPro, addHorizontalInset: false))
         let layout = NSCollectionLayoutSection.singleRowLayout(width: .absolute(225), height: .absolute(250), insets: .sectionInsets,  spacing: .appHorizontalPadding)
             .addHeader()
         

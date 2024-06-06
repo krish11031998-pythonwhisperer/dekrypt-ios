@@ -67,14 +67,14 @@ class HomeViewModel {
         self.videoService = videoService
     }
     
-    
     func transform(input: Input) -> Output {
-        
         let refreshPublisher = refreshData
             .removeDuplicates()
             .filter({ $0 })
             .prepend(true)
             .eraseToAnyPublisher()
+        
+        let remoteConfigNotification = NotificationCenter.default.publisher(for: .FetchedRemoteConfig).map { _ in true }.prepend(false).print("(DEBUG) Notification.FetchedRemoteConfig: ").eraseToAnyPublisher()
         
         let sections = Publishers.CombineLatest(AppStorage.shared.userPublisher, refreshPublisher)
             .withUnretained(self)
@@ -149,12 +149,11 @@ class HomeViewModel {
             section.append(newsSection(news: news))
         }
         
-        if user?.isPro ?? false {
+        if RemoteConfigManager.shared.betaPro || (user?.isPro ?? false) {
             if let events = highlight.events {
                 section.append(eventSection(events: events))
             }
         }
-        
         
         if let mention = highlight.topMention {
             section.append(tickerMentionSection(mention: mention))
@@ -162,7 +161,7 @@ class HomeViewModel {
         
         section.append(videoSection(videos: videos))
         
-        if user?.isPro ?? false  {
+        if RemoteConfigManager.shared.betaPro || (user?.isPro ?? false)  {
             section.append(insightsSection(insights: insights))
         }
         
@@ -230,7 +229,7 @@ class HomeViewModel {
         }
         let ratio: CGFloat = 375/310
         let width: CGFloat = .totalWidth
-        let sectionHeader = CollectionSectionHeader(.init(label: Section.event.name, addHorizontalInset: false))
+        let sectionHeader = CollectionSectionHeader(.init(label: Section.event.name, includeBeta: RemoteConfigManager.shared.betaPro, addHorizontalInset: false))
         let height: CGFloat = ratio * width
         let sectionLayout: NSCollectionLayoutSection = .singleRowLayout(width: .absolute(0.8 * .totalWidth), height: .absolute(height),
                                                                         insets: .sectionInsets, spacing: .appHorizontalPadding)
@@ -325,12 +324,6 @@ class HomeViewModel {
         
         let layout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .absolute(325), insets: .sectionInsets, spacing: .appHorizontalPadding).addHeader()
         
-        //layout.orthogonalScrollingBehavior = .groupPaging
-        
-//        let viewMoreCallBack: Callback = { [weak self] in
-//            self?.navigation.send(.toAllInsights(insights))
-//        }
-        
         let insightCallback: (InsightDigestModel) -> Callback = { [weak self] insight in
             print("(DEBUG) insightCallback!")
             return {
@@ -338,7 +331,7 @@ class HomeViewModel {
             }
         }
         
-        let sectionHeader = CollectionSectionHeader(.init(label: "Insights", addHorizontalInset: false))
+        let sectionHeader = CollectionSectionHeader(.init(label: "Insights", includeBeta: RemoteConfigManager.shared.betaPro, addHorizontalInset: false))
         
         let cells = insights.limit(to: 1).map { DiffableCollectionItem<InsightView>(.init(insight: $0, mode: .carousel, action: insightCallback($0))) }
         

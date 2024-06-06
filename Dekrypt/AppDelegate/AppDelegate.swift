@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         RevenueCatManager.shared.configure()
+        RemoteConfigManager.shared.setup()
         return true
     }
 

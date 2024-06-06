@@ -62,6 +62,10 @@ public class ProfileViewModel {
         }
     }
     
+    private var hasFetchedProducts: Bool {
+        RemoteConfigManager.shared.includeSubscriptionManagementValue && RevenueCatManager.shared.monthlyProductToDisplay != nil
+    }
+    
     func transform() -> Output {
         #if DEBUG
         let sections = Section.allCases.map { section in
@@ -109,9 +113,17 @@ public class ProfileViewModel {
             }
         }
         
-        let cells = ProfileSettings.allCases
+        let profileSettings = {
+            if hasFetchedProducts {
+                return ProfileSettings.allCases
+            } else {
+                return  ProfileSettings.allCases.filter( { $0 != .subscription })
+            }
+        }()
+        
+        let cells = profileSettings
             .map { setting in
-                return DiffableCollectionItem<ProfileCell>(.init(label: setting.stylizedText, isLast: ProfileSettings.allCases.last == setting, action: sectionAction(setting)))
+                return DiffableCollectionItem<ProfileCell>(.init(label: setting.stylizedText, isLast: profileSettings.last == setting, action: sectionAction(setting)))
             }
         
         let sectionLayout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1), height: .estimated(44), insets: .section(.init(vertical: .appVerticalPadding, horizontal: 0)), spacing: .standardColumnSpacing)
@@ -231,7 +243,7 @@ extension ProfileViewModel {
         
         let imageSource = ImageSource.remote(url: profileImageURL)
         
-        let cell = DiffableCollectionItem<ProfileHeaderView>(.init(profileImageView: imageSource, profileName: "Krishna Venkatramani", profileUsername: "@krishUser"))
+        let cell = DiffableCollectionItem<UserHeaderView>(.init(profileImageView: imageSource, profileName: "Krishna Venkatramani", profileUsername: "@krishUser", watchlist: ["BTC"], isPro: true, showPro: true))
         
         let layout: NSCollectionLayoutSection = .singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(150), insets: .section(.init(vertical: .standardColumnSpacing, horizontal: 0)))
         

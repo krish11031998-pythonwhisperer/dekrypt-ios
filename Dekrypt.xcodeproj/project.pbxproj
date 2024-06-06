@@ -67,6 +67,7 @@
 		EFE590B62C0BC6CC00D7902F /* RevenueCatDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */; };
 		EFE590BA2C0BD02200D7902F /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590B92C0BD02200D7902F /* UserInfoViewController.swift */; };
 		EFE590BE2C0C7B9100D7902F /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590BD2C0C7B9100D7902F /* UserInfoViewModel.swift */; };
+		EFE590C12C0FD3C800D7902F /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE590C02C0FD3C800D7902F /* RemoteConfigManager.swift */; };
 		EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */; };
 		EFE5CC022BF44EE500B1C93C /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */; };
 		EFE5CC042BF4530A00B1C93C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE5CC032BF4530A00B1C93C /* TabViewController.swift */; };
@@ -131,6 +132,7 @@
 		EFE590B52C0BC6CC00D7902F /* RevenueCatDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatDelegate.swift; sourceTree = "<group>"; };
 		EFE590B92C0BD02200D7902F /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		EFE590BD2C0C7B9100D7902F /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
+		EFE590C02C0FD3C800D7902F /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
 		EFE5CBFF2BF44E5400B1C93C /* WatchlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewController.swift; sourceTree = "<group>"; };
 		EFE5CC012BF44EE500B1C93C /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
 		EFE5CC032BF4530A00B1C93C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 		EFDA7EF42BD521250036E720 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				EFE590BF2C0FD3B800D7902F /* RemoteConfig */,
 				EFA7160C2BD5C1860001F555 /* AppStorage */,
 				EFDA7EF02BD521250036E720 /* AuthPublishers */,
 				EFDA7EF12BD521250036E720 /* AppleAuthService.swift */,
@@ -388,6 +391,14 @@
 				EFE590BD2C0C7B9100D7902F /* UserInfoViewModel.swift */,
 			);
 			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		EFE590BF2C0FD3B800D7902F /* RemoteConfig */ = {
+			isa = PBXGroup;
+			children = (
+				EFE590C02C0FD3C800D7902F /* RemoteConfigManager.swift */,
+			);
+			path = RemoteConfig;
 			sourceTree = "<group>";
 		};
 		EFE5CBFE2BF44E4200B1C93C /* Watchlist */ = {
@@ -530,6 +541,7 @@
 				EFB66E812C068CE700DE5A30 /* SentimentDetailViewController.swift in Sources */,
 				EFB133C52BAE4A0C00004025 /* MainTabModel.swift in Sources */,
 				EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */,
+				EFE590C12C0FD3C800D7902F /* RemoteConfigManager.swift in Sources */,
 				EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */,
 				EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */,
 				EFB66E7C2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift in Sources */,
