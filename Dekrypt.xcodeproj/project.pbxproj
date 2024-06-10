@@ -14,6 +14,8 @@
 		EF1E8A282BC3492700FC84D3 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */; };
 		EF42AA9F2BE9490000C54D0F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */; };
 		EF6E805C2BC41AAB00755A17 /* SentimentPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */; };
+		EF9E5F9C2C15A5E500CCF75C /* TweetFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9E5F9B2C15A5E500CCF75C /* TweetFeedViewModel.swift */; };
+		EF9E5F9E2C15A67800CCF75C /* TweetFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9E5F9D2C15A67800CCF75C /* TweetFeedViewController.swift */; };
 		EFA716042BD56B860001F555 /* TabViewControllerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA716032BD56B860001F555 /* TabViewControllerType.swift */; };
 		EFA716062BD571F00001F555 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFA716052BD571F00001F555 /* Assets.xcassets */; };
 		EFA716092BD591D00001F555 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EFA716082BD591D00001F555 /* GoogleMobileAds */; };
@@ -84,6 +86,8 @@
 		EF1E8A272BC3492700FC84D3 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		EF42AA9E2BE9490000C54D0F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		EF6E805B2BC41AAB00755A17 /* SentimentPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentimentPageControl.swift; sourceTree = "<group>"; };
+		EF9E5F9B2C15A5E500CCF75C /* TweetFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetFeedViewModel.swift; sourceTree = "<group>"; };
+		EF9E5F9D2C15A67800CCF75C /* TweetFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetFeedViewController.swift; sourceTree = "<group>"; };
 		EFA716032BD56B860001F555 /* TabViewControllerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewControllerType.swift; sourceTree = "<group>"; };
 		EFA716052BD571F00001F555 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
 		EFA7160D2BD5C1930001F555 /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
@@ -182,6 +186,15 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		EF9E5F9A2C15A35300CCF75C /* TweetFeedViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EF9E5F9B2C15A5E500CCF75C /* TweetFeedViewModel.swift */,
+				EF9E5F9D2C15A67800CCF75C /* TweetFeedViewController.swift */,
+			);
+			path = TweetFeedViewController;
+			sourceTree = "<group>";
+		};
 		EFA7160C2BD5C1860001F555 /* AppStorage */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,6 +270,7 @@
 		EFB133A72BAE4A0C00004025 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EF9E5F9A2C15A35300CCF75C /* TweetFeedViewController */,
 				EFB66E7D2C06891800DE5A30 /* SentimentDetailView */,
 				EFE5CC052BFD484800B1C93C /* NewsDetail */,
 				EFDA7EFF2BD523E70036E720 /* SplashScreen */,
@@ -542,6 +556,7 @@
 				EFB133C52BAE4A0C00004025 /* MainTabModel.swift in Sources */,
 				EF1E8A242BC33FF900FC84D3 /* SearchHeader.swift in Sources */,
 				EFE590C12C0FD3C800D7902F /* RemoteConfigManager.swift in Sources */,
+				EF9E5F9E2C15A67800CCF75C /* TweetFeedViewController.swift in Sources */,
 				EFE5CC002BF44E5500B1C93C /* WatchlistViewController.swift in Sources */,
 				EFB133CC2BAE4A0C00004025 /* ProfileViewController.swift in Sources */,
 				EFB66E7C2C05E2DE00DE5A30 /* TickerNewsFeedViewModel.swift in Sources */,
@@ -561,6 +576,7 @@
 				EFB133C72BAE4A0C00004025 /* NewsFeedViewController.swift in Sources */,
 				EFE590BA2C0BD02200D7902F /* UserInfoViewController.swift in Sources */,
 				EFB133C22BAE4A0C00004025 /* HomeViewController.swift in Sources */,
+				EF9E5F9C2C15A5E500CCF75C /* TweetFeedViewModel.swift in Sources */,
 				EFB133C02BAE4A0C00004025 /* TickerViewModel.swift in Sources */,
 				EFE2FA802BEC3A270009B103 /* VideoPlayerViewController.swift in Sources */,
 				EFB8DD002BC560D9001AC56F /* InsightsViewController.swift in Sources */,
@@ -719,7 +735,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dekrypt.dekrypt-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -750,7 +766,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dekrypt.dekrypt-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

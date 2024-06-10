@@ -30,7 +30,7 @@ public class TickerDetailViewModel {
     typealias ItemReloadBody = (Section, Int, DiffableCollectionCellProvider, Bool)
     
     enum Section: Int {
-        case price = 1, metrics, news, video, event, sentiment
+        case price = 1, metrics, news, video, event, sentiment, tweets
         
         var name: String {
             switch self {
@@ -46,6 +46,8 @@ public class TickerDetailViewModel {
                 return "Sentiments"
             case .event:
                 return "Events"
+            case .tweets:
+                return "Tweets"
             }
         }
     }
@@ -59,6 +61,7 @@ public class TickerDetailViewModel {
         case toSentimentDetail(SentimentForTicker)
         case toHabit
         case showAlertForOnboarding
+        case toTweets([TweetsModel])
     }
     
     struct Input {
@@ -80,7 +83,7 @@ public class TickerDetailViewModel {
     private let currentSentimentPage: PassthroughSubject<Int, Never> = .init()
     private let refreshData: CurrentValueSubject<Bool, Never> = .init(false)
     public let ticker: String
-    private let tickerName: String
+    public let tickerName: String
     private let tickerService: TickerServiceInterface
     private let eventService: EventServiceInterface
     
@@ -192,6 +195,10 @@ public class TickerDetailViewModel {
             sections.append(setupEventSection(events: events))
         }
         
+        if let tweets = tickerDetail.tweets {
+            sections.append(setupTweetSection(tweets: tweets))
+        }
+        
         return sections
     }
     
@@ -200,11 +207,11 @@ public class TickerDetailViewModel {
     
     private func fetchTickerDetail(user: UserModel?, refresh: Bool) -> AnyPublisher<TickerDetailModel, Never> {
         let pro = RemoteConfigManager.shared.betaPro || (user?.isPro ?? false)
-        return tickerService.fetchTickerDetail(ticker: ticker, isPro: pro, refresh: refresh)
+        return tickerService.fetchTickerDetail(ticker: ticker, tickerName: tickerName, isPro: pro, refresh: refresh)
             .compactMap(\.data)
             .catch({ err -> AnyPublisher<TickerDetailModel, Never> in
                 print("(ERROR) err: ", err.localizedDescription)
-                return .just(TickerDetailModel(ticker: nil, sentiment: nil, videos: nil, news: nil, events: nil))
+                return .just(TickerDetailModel(ticker: nil, sentiment: nil, videos: nil, news: nil, events: nil, tweets: nil))
             })
             .eraseToAnyPublisher()
     }
@@ -368,6 +375,38 @@ public class TickerDetailViewModel {
         
         return .init(Section.event.rawValue, cells: eventCells, header: eventSectionHeader, sectionLayout: layout)
         
+    }
+    
+    
+    // MARK: - Tweets
+    
+    private func setupTweetSection(tweets: [TweetsModel]) -> DiffableCollectionSection {
+        let tweetAction: (TweetsModel) -> Callback = { [weak self] tweet in
+            return {
+                print("(DEBUG) clicked on tweet!")
+                let urlString = "twitter://status?id=\(tweet.statusId)"
+                if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        }
+        
+        let tweetLinkAction: (URL) -> Void = { [weak self] url in
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            }
+        }
+        
+        let tweetCell = tweets.limit(to: 5).map { tweet in
+            DiffableCollectionItem<TweetView>(.init(tweet: tweet, action: tweetAction(tweet), tweetLinkAction: tweetLinkAction))
+        }
+        let layout = NSCollectionLayoutSection.singleColumnLayout(width: .fractionalWidth(1.0), height: .estimated(100), insets: .sectionInsets).addHeader()
+        let viewMoreAction: Callback = { [weak self] in
+            self?.navigation.send(.toTweets(tweets))
+        }
+        let header = CollectionSectionHeader(.init(label: Section.tweets.name, includeBeta: true, accessory: .viewMore("View More", viewMoreAction), addHorizontalInset: false))
+        
+        return .init(Section.tweets.rawValue, cells: tweetCell, header: header, sectionLayout: layout)
     }
     
     private func addFavorite() {

@@ -162,6 +162,8 @@ public class TickerDetailView: UIViewController {
                     vc.pushTo(target: TickerNewsFeedViewController(ticker: vc.viewModel.ticker, date: dateString, newsService: NewsService.shared))
                 case .toSentimentDetail(let sentimentForTicker):
                     vc.pushTo(target: SentimentDetailViewController(model: sentimentForTicker, ticker: vc.viewModel.ticker))
+                case .toTweets:
+                    vc.pushTo(target: TweetFeedViewController(ticker: vc.viewModel.ticker, tickerName: vc.viewModel.tickerName))
                 }
             }
             .store(in: &bag)
