@@ -30,15 +30,14 @@ public class ProfileViewModel {
     }
     
     enum ProfileSettings: String, Hashable, CaseIterable {
-        case profile, reportBug, subscription//, habit
+//        case profile, reportBug, subscription//, habit
+        case profile, subscription//, habit
         
         
         var stylizedText: String {
             switch self {
             case .profile:
                 return "🧑‍🚀  Profile"
-            case .reportBug:
-                return "👻  Report Bug"
             case .subscription:
                 return "🧾 Manage Subcription"
 //            case .habit:
@@ -181,8 +180,6 @@ public class ProfileViewModel {
         switch setting {
         case .profile:
             navigationPublisher.send(.toProfile)
-        case .reportBug:
-            break
         case .subscription:
             return navigationPublisher.send(.toSubscription)
         }

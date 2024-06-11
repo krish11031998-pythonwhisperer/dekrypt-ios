@@ -195,9 +195,9 @@ public class TickerDetailViewModel {
             sections.append(setupEventSection(events: events))
         }
         
-        if let tweets = tickerDetail.tweets {
-            sections.append(setupTweetSection(tweets: tweets))
-        }
+//        if let tweets = tickerDetail.tweets {
+//            sections.append(setupTweetSection(tweets: tweets))
+//        }
         
         return sections
     }
