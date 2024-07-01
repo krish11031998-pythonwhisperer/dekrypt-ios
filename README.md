@@ -5,16 +5,9 @@
 
 Dekrypt is a CryptoCurrency News Aggregator that helps users to stay upto date with all the events that are happening around the crpyo world.
 
-Features of the App
-The App aggreagates data from multiple sources and distributed as the following format
-
-#### Sources
-- Twitter 
-- News APIs
-
 #### Features
-- Tweets
-    - Trending Tweets in the cryptocurrency space
+- Sentiment Analysis
+    - Understand the sentiments of the cryptocurrency of choice by analysing the bullish/bearish events and news coverage at your fingertips
 - News
     - Trending News for repsective tickers with sentiment
 - Events
@@ -24,17 +17,17 @@ The App aggreagates data from multiple sources and distributed as the following 
     - Important cryptocurrency videos from youtube.
 - Trending Headlines
 - Trending cryptocurrencies
-- Cryptocurrency social sentiment
 - User can add cryptocurrencies to their watchlist and keep track of their favorite cryptocurrencies
 
-App available on [TestFlight](https://testflight.apple.com/join/hJEPAHw2)
-
+App available on [TestFlight](https://testflight.apple.com/join/ZKYUpfgZ)
 
 
 
 ## 🛠 Technologies
 The technologies used for developing this app:
 - UIKit
+- SwiftUI
+- Swift Package Manager (Modular Approach Build)
 - Combine
 - Swift
 
@@ -44,31 +37,3 @@ The libraries used for this app:
 - Firebase Auth (for autheniticating the user)
 - Lottie (for loading and using json animations)
 
-
-## Demo
-
-#### Home
-<img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/HomeScreen.png?raw=true" width=25% height=25%/>  <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/HomeScreen.gif?raw=true" width=25% height=25%/>
-
-
-#### Tweets
-
-<img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/TweetDetail.png?raw=true" width=25% height=25%/>  <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/TweetFeed.png?raw=true" width=25% height=25%/>
- 
-
-#### News
-
-<img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/NewsSearch.gif?raw=true" width=25% height=25%/> <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/NewsDetail.png?raw=true" width=25% height=25%/> <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/NewsFeed.png?raw=true" width=25% height=25%/> <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/NewsArticle.png?raw=true" width=25% height=25%/>
-
-#### Events
-
-<img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/EventsDetail.gif?raw=true" width=25% height=25%/> <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/EventsDetail.png?raw=true" width=25% height=25%/> <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/EventsFeed.png?raw=true" width=25% height=25%/>
-
-#### Video
-
-<img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/Watchlist.gif?raw=true" width=25% height=25%/> <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/Watchlist.png?raw=true" width=25% height=25%/> <img src="https://github.com/krish11031998-pythonwhisperer/Dekrypt/blob/master/Screenshot/Profile.png?raw=true" width=25% height=25%/>
-</p>
-
-
-#### Data
-The data is curated from a backend service that I created : CrybseServer
