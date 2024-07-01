@@ -1,5 +1,5 @@
 
-<img src="https://github.com/krish11031998-pythonwhisperer/Signal/blob/master/Screenshot/ItunesArtwork@2x.png?raw=true" width="100" height="100">
+<img src="https://github.com/krish11031998-pythonwhisperer/dekrypt-ios/blob/master/Assets.xcassets/AppIcon.appiconset/1024.png?raw=true" width="100" height="100">
 
 # Dekrypt 
 
